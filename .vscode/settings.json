@@ -1,0 +1,20 @@
+{
+  "files.associations": {
+    "*.ndjson": "jsonl",
+    "*.dbclient-js": "javascript",
+    "iostream": "cpp",
+    "cmath": "cpp",
+    "initializer_list": "cpp",
+    "valarray": "cpp",
+    "ostream": "cpp",
+    "*.tcc": "cpp",
+    "random": "cpp",
+    "bitset": "cpp",
+    "algorithm": "cpp",
+    "chrono": "cpp",
+    "array": "cpp",
+    "regex": "cpp",
+    "utility": "cpp"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
