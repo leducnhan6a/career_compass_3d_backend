@@ -11,6 +11,7 @@ import { checkOverload } from './helpers/check.connect.js'
 const app = express();
 
 // implement new Route
+import accessRoutes from './routes/access.route.js'
 
 // init middleware
 app.use(express.json()); // đọc được filejson từ req.body
@@ -26,12 +27,13 @@ dotenv.config();
 
 // init mongoDB database
 // instanceMongodb
-checkOverload()
+// checkOverload()
 
 // middleware discord log bot
 // app.use(pushToDiscordLog)
 
 // init route
+app.use('/api/v1/access', accessRoutes)
 
 // handling error ngoài này
 app.use((req, res, next) => {
