@@ -13,7 +13,6 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
             expiresIn: '7 days'
         })
 
-
         // thực ra chỗ này không cần thiết, vì chúng ta đang debug trên dev
         // jwt.verify(accessToken, publicKey, (err, decode) => { 
         //     if (err) { 
@@ -22,10 +21,11 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
         //         console.log('Decode::: ', decode)
         //     }
         // })
+        
         const tokens = { accessToken, refreshToken }
         return tokens
     } catch (error) {
-        next(error)
+        throw new BadRequestError('Invalid token')
     }
 }
 

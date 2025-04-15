@@ -1,17 +1,18 @@
 'use strict';
 
-import userModel from '../models/user.model.js';
-import { BadRequestError } from '../core/error.response.js';
-import bcryptjs from 'bcryptjs';
 import crypto from 'crypto';
+import bcryptjs from 'bcryptjs';
 
+import { findByName } from './user.service.js';
+import APIKeyService from './apiKey.service.js';
+import userModel from '../models/user.model.js';
 // import KeyTokenService from './keyToken.service.js';
 import { createTokenPair } from '../auth/auth.util.js';
-import APIKeyService from './apiKey.service.js';
 import { getIntoData } from '../utils/getIntoData.util.js';
+import { BadRequestError, AuthFailureError } from '../core/error.response.js';
 
 class AccessService {
-    static async signup({ email, name, password, gender }) {
+    static async signUp({ email, name, password, gender }) {
         // find user
         const foundUser = await userModel.findOne({ user_email: email });
         // if have user then return error
@@ -43,11 +44,11 @@ class AccessService {
             //     publicKey,
             // });
 
-            if (!keyStore) {
-                return {
-                    message: 'Error keyStore',
-                };
-            }
+            // if (!keyStore) {
+            //     return {
+            //         message: 'Error keyStore',
+            //     };
+            // }
 
             const tokens = await createTokenPair(
                 {
@@ -62,12 +63,41 @@ class AccessService {
                 tokens,
             };
         }
+    }
+
+    static async logIn({ name, password }) {
+        const user = await findByName({ name });
+        if (!user) throw new BadRequestError('Invalid input');
+
+        const isPasswordValid = await bcryptjs.compare(password, user.user_password);
+        if (!isPasswordValid) throw new AuthFailureError('Invalid password');
+
+        const privateKey = crypto.randomBytes(64).toString('hex');
+        const publicKey = crypto.randomBytes(64).toString('hex');
+
+        const { _id: userId } = user;
+        const tokens = await createTokenPair({ userId, name }, publicKey, privateKey);
+
+        const keyStore = await KeyTokenService.generateToken({
+            userId,
+            publicKey,
+            privateKey,
+            refreshToken: tokens.refreshToken,
+        });
+
+        if (!keyStore) throw new BadRequestError('Failed to generate keystore');
 
         return {
-            code: 200,
-            metadata: null,
+            user: getIntoData({ fields: ['_id', 'user_name', 'user_email'], object: user }),
+            tokens,
         };
+    }
 
+    static async logOut(keyStore) {
+        if (!keyStore?._id) throw new BadRequestError('Invalid keystore');
+        const result = await KeyTokenService.removeKeyById(keyStore._id);
+        if (!result) throw new BadRequestError('Failed to remove keystore');
+        return { message: 'Logged out successfully' };
     }
 }
 
