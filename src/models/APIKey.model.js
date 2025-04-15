@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 import { model, Schema } from 'mongoose';
 
 const DOCUMENT_NAME = 'APIKey';
