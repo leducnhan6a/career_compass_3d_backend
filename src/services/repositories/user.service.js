@@ -1,5 +1,6 @@
 'use strict';
 
+import { NotFoundError } from '../../core/error.response.js';
 import userModel from '../../models/user.model.js';
 
 const findUserByName = async ({
@@ -15,4 +16,10 @@ const findUserByName = async ({
     return await userModel.findOne({ user_name: name }).select(select).lean();
 };
 
-export { findUserByName };
+const findHistoryResultByUserId = async (userId) => { 
+    const foundUser = await userModel.findById(userId).lean();
+    if (!foundUser.user_history) throw new NotFoundError('User history not found!')
+    return foundUser.user_history
+}
+
+export { findUserByName, findHistoryResultByUserId };

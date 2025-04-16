@@ -23,6 +23,12 @@ router.get('/questions', asyncHandler(SurveyController.getQuestionsByGroup));
 // create new question
 router.post('/questions', asyncHandler(SurveyController.createQuestion));
 
+// post result data
+router.post('/result', asyncHandler(SurveyController.solveSurveyResult));
+
+// get all history result
+router.get('/history', asyncHandler(SurveyController.getAllHistoryResult));
+
 // update question
 router.put('/questions/:questionId', asyncHandler(SurveyController.updateQuestion));
 
