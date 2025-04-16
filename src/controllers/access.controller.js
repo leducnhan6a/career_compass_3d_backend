@@ -15,6 +15,7 @@ class AccessController {
     async login (req, res) {
         const result = await AccessService.logIn(req.body);
         new SuccessResponse({
+            message: 'Login successfully!',
             metadata: result,
         }).send(res);
     };

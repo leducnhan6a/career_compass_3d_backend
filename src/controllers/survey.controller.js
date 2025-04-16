@@ -7,7 +7,7 @@ class SurveyController {
     async getQuestionsByGroup(req, res) {
         const result = await SurveyService.getQuestionsByGroup(req)
         new SuccessResponse({
-            message: 'Grouped questions',
+            message: 'Get questions by group name successfully!',
             metadata: result,
         }).send(res);
     }

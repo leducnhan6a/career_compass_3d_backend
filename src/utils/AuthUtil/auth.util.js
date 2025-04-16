@@ -42,6 +42,10 @@ const authenticationV2 = async (req, res, next) => {
         4. check use in database
         5. check keystore with useId
         6. -OK return next
+        headers: { 
+            x-client-id: userId,
+            authorization: accessToken
+        }
     */
 
     const userId = req.headers[HEADER.CLIENT_ID];
@@ -51,8 +55,6 @@ const authenticationV2 = async (req, res, next) => {
     //2
     const keyStore = await KeyTokenService.findByUserId(userId);
     if (!keyStore) throw new NotFoundError('Not found key store');
-
-    console.log('key store::: ', keyStore);
 
     // 2.5
     // if (req.headers[HEADER.REFRESHTOKEN]) {
@@ -86,8 +88,8 @@ const authenticationV2 = async (req, res, next) => {
     }
 };
 
-const verifyJWT = async (token, keySecret) => {
-    return await jwt.verify(token, keySecret);
-};
+// const verifyJWT = async (token, keySecret) => {
+//     return await jwt.verify(token, keySecret);
+// };
 
-export { createTokenPair, authenticationV2, verifyJWT };
+export { createTokenPair, authenticationV2 };

@@ -10,7 +10,7 @@ const findGroupByGroupName = async (group) => {
 
 // Tìm question với group
 const getAllQuestionsByGroupName = async (groupName) => { 
-    return await HollandQuestionModel.find({ question_code: groupName[0] }).lean();
+    return await HollandQuestionModel.find({ question_code: groupName[0] }).select('question_code question_text -_id').lean();
 }
 
 // Tìm question với id

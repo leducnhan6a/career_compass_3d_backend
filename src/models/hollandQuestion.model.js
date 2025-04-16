@@ -12,6 +12,7 @@ const hollandQuestionSchema = new Schema(
             type: String,
             ref: 'HollandGroup',
             required: true,
+            index: true,
             enum: ['R', 'I', 'A', 'S', 'E', 'C']
         }, // ??? 
 

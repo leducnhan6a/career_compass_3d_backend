@@ -7,9 +7,8 @@ const findUserByName = async ({
     name,
     select = {
         user_name: 1,
-        user_password: 0,
         user_email: 1,
-        user_gender: 0,
+        user_password: 1,
         user_permission: 1,
     },
 }) => {
