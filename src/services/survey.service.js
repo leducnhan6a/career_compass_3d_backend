@@ -1,31 +1,37 @@
 'use strict';
 
-import HollandQuestionModel from '../models/hollandQuestions.model.js';
+import HollandQuestionModel from '../models/hollandQuestion.model.js';
 import HollandGroupModel from '../models/hollandGroup.model.js';
-import { NotFoundError } from '../core/error.response.js';
+import { BadRequestError, NotFoundError } from '../core/error.response.js';
+import { findGroupByGroupName, getAllQuestionsByGroupName } from './repositories/survey.service.js';
 
 class SurveyService {
 
     // Lấy các câu hỏi cùng nhóm
-    async getQuestionsByGroup(groupName) {
-        const group = await HollandGroupModel.findOne({ holland_full_code: groupName });
-        if (!group) throw new NotFoundError('Group not found');
+    async getQuestionsByGroup({ groupName }) {
+        const questionsGroup = await getAllQuestionsByGroupName(groupName)
+        if (!questionsGroup) throw new NotFoundError('Group not found');
 
-        return await HollandQuestionModel.find({
-            question_type: group._id,
-            is_deleted: { $ne: true },
-        }).lean();
+        return questionsGroup
+        // return await HollandQuestionModel.find({
+        //     question_type: group._id,
+        //     is_deleted: { $ne: true },
+        // }).lean();
     }
 
     // Tạo câu hỏi mới
     async createQuestion({ group, question }) {
-        const groupDoc = await HollandGroupModel.findOne({ holland_full_code: group });
-        if (!groupDoc) throw new NotFoundError('Group not found');
+        const foundGroup = await findGroupByGroupName(group);
+        if (!foundGroup) throw new NotFoundError('Group not found');
 
-        return await HollandQuestionModel.create({
+        const newQuestion =  await HollandQuestionModel.create({
+            question_code: group,
             question_text: question,
-            question_type: groupDoc._id,
+            // question_options: options
         });
+
+        if (!newQuestion) throw new BadRequestError("Cannot create new question")
+        return newQuestion
     }
 
     // Cập nhật lại nội dung câu hỏi
