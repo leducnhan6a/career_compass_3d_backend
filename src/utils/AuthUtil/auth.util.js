@@ -1,6 +1,6 @@
 'use strict';
 
-import { BadRequestError } from '../../core/error.response';
+import { BadRequestError } from '../../core/error.response.js';
 import jwt from 'jsonwebtoken';
 
 const createTokenPair = async (payload, publicKey, privateKey) => {

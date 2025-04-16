@@ -1,6 +1,6 @@
 'use strict';
 
-import AccessService from '../services/access.service';
+import AccessService from '../services/access.service.js';
 import { CREATED, SuccessResponse } from '../core/success.response.js';
 
 class AccessController {
