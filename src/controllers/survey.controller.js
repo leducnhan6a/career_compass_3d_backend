@@ -12,6 +12,22 @@ class SurveyController {
         }).send(res);
     }
 
+    async solveSurveyResult(req, res) {
+        const result = await SurveyService.solveSurveyResult(req.body);
+        new SuccessResponse({
+            message: 'Solve survey result successfully',
+            metadata: result,
+        }).send(res);
+    }
+
+    async getAllHistoryResult(req, res) { 
+        const result = await SurveyService.getAllHistoryResult()
+        new SuccessResponse({
+            message: 'Get user history result successfully',
+            metadata: result,
+        }).send(res);
+    }
+
     async createQuestion(req, res) {
         const result = await SurveyService.createQuestion(req.body);
         new CREATED({
