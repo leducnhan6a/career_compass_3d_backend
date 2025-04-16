@@ -2,19 +2,19 @@
 import express from 'express';
 import AccessController from '../controllers/access.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js'
-// import { apiKey, permission } from '../auth/checkAuth.util.js';
-// import { authentication, authenticationV2 } from '../auth/auth.util.js';
+import { apiKey, permission } from '../middlewares/auth.middleware.js';
+import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 
 const router = express.Router();
 
 // check apiKey
-// router.use(apiKey);
+router.use(apiKey);
 
 // check permission
-// router.use(permission('0000'))
+router.use(permission('0000'))
 
 // authetication
-// router.use(authenticationV2)
+router.use(authenticationV2)
 
 // signup
 router.post('/signup', asyncHandler(AccessController.signup));
