@@ -6,7 +6,7 @@ import compression from 'compression';
 
 import pushToDiscordLog from './middlewares/pushToDiscordBot.js';
 import instanceMongodb from './dbs/init.mongodb.js';
-import { checkOverload } from './helpers/check.connect.js';
+// import { checkOverload } from './helpers/check.connect.js';
 
 const app = express();
 

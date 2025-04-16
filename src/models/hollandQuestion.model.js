@@ -1,6 +1,7 @@
 'use strict';
 
 import { Schema, model } from 'mongoose';
+import mongooseDelete from 'mongoose-delete';
 
 const DOCUMENT_NAME = 'HollandQuestion';
 const COLLECTION_NAME = 'HollandQuestions';
@@ -40,6 +41,11 @@ const hollandQuestionSchema = new Schema(
         collection: COLLECTION_NAME,
     },
 );
+
+hollandQuestionSchema.plugin(mongooseDelete, {
+    deletedAt: true,
+    overrideMethods: 'all'
+})
 
 const HollandQuestionModel = model(DOCUMENT_NAME, hollandQuestionSchema);
 export default HollandQuestionModel;

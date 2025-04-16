@@ -2,13 +2,11 @@
 
 import { BadRequestError } from '../../core/error.response.js';
 import jwt from 'jsonwebtoken';
-import KeyTokenService from '../../services/keyToken.service.js';
 
-const HEADER = {
-    CLIENT_ID: 'x-client-id',
+const HEADER = { 
     AUTHORIZATION: 'authorization',
-    REFRESHTOKEN: 'x-rtoken-id',
-};
+    CLIENT_ID: 'x-client-id'
+}
 
 const createTokenPair = async (payload, publicKey, privateKey) => {
     try {
@@ -66,8 +64,8 @@ const authenticationV2 = async (req, res, next) => {
     //         const refreshToken = req.headers[HEADER.REFRESHTOKEN];
     //         const decodeUser = jwt.verify(refreshToken, keyStore.privateKey);
     //         if (userId !== decodeUser.userId) throw new AuthFailureError('Invalid userId');
-    //         req.keyStore = keyStore; // { access, refreshToken }
-    //         req.user = decodeUser; // { userId , name }
+    //         req.keyStore = keyStore;
+    //         req.user = decodeUser; // { userId , email }
     //         req.refreshToken = refreshToken;
     //         return next();
     //     } catch (error) {
