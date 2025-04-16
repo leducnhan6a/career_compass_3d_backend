@@ -4,14 +4,15 @@ import morgan from 'morgan';
 import helmet from 'helmet';
 import compression from 'compression';
 
-// import pushToDiscordLog from './middleware/pushToDiscordBot.js';
-// import instanceMongodb from './dbs/init.mongodb.js';
-import { checkOverload } from './helpers/check.connect.js'
+import pushToDiscordLog from './middlewares/pushToDiscordBot.js';
+import instanceMongodb from './dbs/init.mongodb.js';
+import { checkOverload } from './helpers/check.connect.js';
 
 const app = express();
 
 // implement new Route
-import accessRoutes from './routes/access.route.js'
+import accessRoutes from './routes/access.route.js';
+import surveyRoutes from './routes/survey.route.js';
 
 // init middleware
 app.use(express.json()); // đọc được filejson từ req.body
@@ -26,14 +27,15 @@ app.use(
 dotenv.config();
 
 // init mongoDB database
-// instanceMongodb
+instanceMongodb;
 // checkOverload()
 
 // middleware discord log bot
-// app.use(pushToDiscordLog)
+app.use(pushToDiscordLog);
 
 // init route
-app.use('/api/v1/access', accessRoutes)
+app.use('/api/v1/access', accessRoutes);
+app.use('/api/v1/survey', surveyRoutes);
 
 // handling error ngoài này
 app.use((req, res, next) => {
@@ -51,4 +53,4 @@ app.use((error, req, res, next) => {
     });
 });
 
-export default app
+export default app;
