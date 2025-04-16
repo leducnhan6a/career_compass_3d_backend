@@ -13,7 +13,6 @@ const userSchema = new Schema(
             required: true,
             unique: true,
         },
-
         user_password: {
             // cần thêm phần required hash phía trước
             type: String, 
