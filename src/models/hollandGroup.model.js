@@ -26,12 +26,15 @@ const hollandGroupSchema = new Schema(
             required: true,
             trim: true,
         },
-
         holland_description: {
             type: String, // Nhóm người thích A, Nhóm người thích B, ....
             required: false,
             trim: true,
         },
+        holland_totalQuestions: {
+            type: Number,
+            default: 0,
+        }
     },
     {
         timestamps: true,

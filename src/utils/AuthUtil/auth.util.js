@@ -3,6 +3,11 @@
 import { BadRequestError } from '../../core/error.response.js';
 import jwt from 'jsonwebtoken';
 
+const HEADER = { 
+    AUTHORIZATION: 'authorization',
+    CLIENT_ID: 'x-client-id'
+}
+
 const createTokenPair = async (payload, publicKey, privateKey) => {
     try {
         const accessToken = jwt.sign(payload, publicKey, {
@@ -50,21 +55,21 @@ const authenticationV2 = async (req, res, next) => {
     console.log('key store::: ', keyStore);
 
     // 2.5
-    if (req.headers[HEADER.REFRESHTOKEN]) {
-        try {
-            // accesstoken -> publickey
-            // refresh token -> privateKey
-            const refreshToken = req.headers[HEADER.REFRESHTOKEN];
-            const decodeUser = jwt.verify(refreshToken, keyStore.privateKey);
-            if (userId !== decodeUser.userId) throw new AuthFailureError('Invalid userId');
-            req.keyStore = keyStore;
-            req.user = decodeUser; // { userId , email }
-            req.refreshToken = refreshToken;
-            return next();
-        } catch (error) {
-            throw error;
-        }
-    }
+    // if (req.headers[HEADER.REFRESHTOKEN]) {
+    //     try {
+    //         // accesstoken -> publickey
+    //         // refresh token -> privateKey
+    //         const refreshToken = req.headers[HEADER.REFRESHTOKEN];
+    //         const decodeUser = jwt.verify(refreshToken, keyStore.privateKey);
+    //         if (userId !== decodeUser.userId) throw new AuthFailureError('Invalid userId');
+    //         req.keyStore = keyStore;
+    //         req.user = decodeUser; // { userId , email }
+    //         req.refreshToken = refreshToken;
+    //         return next();
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
     // 3 verify
     const accessToken = req.headers[HEADER.AUTHORIZATION];

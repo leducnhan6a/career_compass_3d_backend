@@ -8,19 +8,19 @@ import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 const router = express.Router();
 
 // check apiKey
-router.use(apiKey);
+// router.use(apiKey);
 
 // check permission
-router.use(permission('0000'))
-
-// authetication
-router.use(authenticationV2)
+// router.use(permission('0000'))
 
 // signup
 router.post('/signup', asyncHandler(AccessController.signup));
 
 // login
 router.post('/login', asyncHandler(AccessController.login));
+
+// authetication
+router.use(authenticationV2)
 
 // logout
 router.post('/logout', asyncHandler(AccessController.logout))
