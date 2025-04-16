@@ -5,7 +5,7 @@ import { CREATED, SuccessResponse } from '../core/success.response.js';
 
 class SurveyController {
     async getQuestionsByGroup(req, res) {
-        const result = await SurveyService.getQuestionsByGroup(req.query.group);
+        const result = await SurveyService.getQuestionsByGroup(req.query);
         new SuccessResponse({
             message: 'Grouped questions',
             metadata: result,

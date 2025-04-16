@@ -8,14 +8,14 @@ import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 
 const router = express.Router();
 
-// check apiKey
-router.use(apiKey);
+// // check apiKey
+// router.use(apiKey);
 
-// check permission
-router.use(permission('0000'));
+// // check permission
+// router.use(permission('0000'));
 
-// authentication
-router.use(authenticationV2);
+// // authentication
+// router.use(authenticationV2);
 
 // get questions by group
 router.get('/questions', asyncHandler(SurveyController.getQuestionsByGroup));

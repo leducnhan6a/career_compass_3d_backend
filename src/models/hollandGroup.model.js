@@ -13,6 +13,7 @@ const hollandGroupSchema = new Schema(
             unique: true,
             trim: true,
             uppercase: true,
+            enum: ['R', 'I', 'A', 'S', 'E', 'C']
         },
         holland_full_code: {
             type: String, // Realistic, Investigative, Artistic...
@@ -25,6 +26,7 @@ const hollandGroupSchema = new Schema(
             required: true,
             trim: true,
         },
+        
         holland_description: {
             type: String, // Nhóm người thích A, Nhóm người thích B, ....
             required: false,
