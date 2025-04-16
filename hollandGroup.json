@@ -1,0 +1,40 @@
+{
+  "hollandGroups": [
+    {
+      "holland_code": "R",
+      "holland_full_code": "Realistic",
+      "holland_name": "Thực tế",
+      "holland_description": "Nhóm người thích hoạt động thực tiễn, kỹ thuật, làm việc với máy móc hoặc thiên nhiên."
+    },
+    {
+      "holland_code": "I",
+      "holland_full_code": "Investigate",
+      "holland_name": "Nghiên cứu",
+      "holland_description": "Nhóm người yêu thích tư duy logic, khoa học, nghiên cứu và phân tích."
+    },
+    {
+      "holland_code": "A",
+      "holland_full_code": "Artistic",
+      "holland_name": "Nghệ thuật",
+      "holland_description": "Nhóm người sáng tạo, thích thể hiện bản thân qua nghệ thuật, ý tưởng và cảm xúc."
+    },
+    {
+      "holland_code": "S",
+      "holland_full_code": "Social",
+      "holland_name": "Xã hội",
+      "holland_description": "Nhóm người hướng ngoại, thích giao tiếp, hỗ trợ và hợp tác với người khác."
+    },
+    {
+      "holland_code": "E",
+      "holland_full_code": "Enterprising",
+      "holland_name": "Kinh doanh",
+      "holland_description": "Nhóm người có khả năng lãnh đạo, thuyết phục, định hướng kết quả và cạnh tranh."
+    },
+    {
+      "holland_code": "C",
+      "holland_full_code": "Conventional",
+      "holland_name": "Nghiệp vụ",
+      "holland_description": "Nhóm người có tính tổ chức cao, cẩn thận, thích làm việc quy củ và rõ ràng."
+    }
+  ]
+}
