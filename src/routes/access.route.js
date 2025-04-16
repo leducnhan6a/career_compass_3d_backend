@@ -8,21 +8,18 @@ import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 const router = express.Router();
 
 // check apiKey
-router.use(apiKey);
+// router.use(apiKey);
 
 // check permission
-router.use(permission('0000'))
+// router.use(permission('0000'))
 
-// authetication
-router.use(authenticationV2)
-
-// signup
 router.post('/signup', asyncHandler(AccessController.signup));
-
-// login
 router.post('/login', asyncHandler(AccessController.login));
 
-// logout
+// authentication middleware
+router.use(authenticationV2)
+
+
 router.post('/logout', asyncHandler(AccessController.logout))
 // router.post('/handleRefreshToken', asyncHandler(AccessController.handleRefreshToken))
 

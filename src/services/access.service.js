@@ -72,8 +72,8 @@ class AccessService {
         const isPasswordValid = await bcryptjs.compare(password, foundUser.user_password);
         if (!isPasswordValid) throw new AuthFailureError('Invalid password');
 
-        const privateKey = crypto.randomBytes(64).toString('hex');
         const publicKey = crypto.randomBytes(64).toString('hex');
+        const privateKey = crypto.randomBytes(64).toString('hex');
 
         const { _id: userId } = foundUser;
         const tokens = await createTokenPair({ userId, name }, publicKey, privateKey);
@@ -86,7 +86,6 @@ class AccessService {
         });
 
         if (!keyStore) throw new BadRequestError('Failed to generate keystore');
-
         return {
             user: getIntoData({ fields: ['_id', 'user_name', 'user_email'], object: foundUser }),
             tokens,
@@ -95,7 +94,7 @@ class AccessService {
 
     static async logOut(keyStore) {
         if (!keyStore?._id) throw new BadRequestError('Invalid keystore');
-        const result = await KeyTokenService.removeKeyTokenById(keyStore._id);
+        const result = await KeyTokenService.removeKeyById(keyStore._id);
         if (!result) throw new BadRequestError('Failed to remove keystore');
         return { message: 'Logged out successfully' };
     }

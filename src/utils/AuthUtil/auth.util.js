@@ -2,6 +2,13 @@
 
 import { BadRequestError } from '../../core/error.response.js';
 import jwt from 'jsonwebtoken';
+import KeyTokenService from '../../services/keyToken.service.js';
+
+const HEADER = {
+    CLIENT_ID: 'x-client-id',
+    AUTHORIZATION: 'authorization',
+    REFRESHTOKEN: 'x-rtoken-id',
+};
 
 const createTokenPair = async (payload, publicKey, privateKey) => {
     try {
@@ -37,6 +44,10 @@ const authenticationV2 = async (req, res, next) => {
         4. check use in database
         5. check keystore with useId
         6. -OK return next
+        headers: { 
+            x-client-id: userId,
+            authorization: accessToken
+        }
     */
 
     const userId = req.headers[HEADER.CLIENT_ID];
@@ -47,24 +58,22 @@ const authenticationV2 = async (req, res, next) => {
     const keyStore = await KeyTokenService.findByUserId(userId);
     if (!keyStore) throw new NotFoundError('Not found key store');
 
-    console.log('key store::: ', keyStore);
-
     // 2.5
-    if (req.headers[HEADER.REFRESHTOKEN]) {
-        try {
-            // accesstoken -> publickey
-            // refresh token -> privateKey
-            const refreshToken = req.headers[HEADER.REFRESHTOKEN];
-            const decodeUser = jwt.verify(refreshToken, keyStore.privateKey);
-            if (userId !== decodeUser.userId) throw new AuthFailureError('Invalid userId');
-            req.keyStore = keyStore;
-            req.user = decodeUser; // { userId , email }
-            req.refreshToken = refreshToken;
-            return next();
-        } catch (error) {
-            throw error;
-        }
-    }
+    // if (req.headers[HEADER.REFRESHTOKEN]) {
+    //     try {
+    //         // accesstoken -> publickey
+    //         // refresh token -> privateKey
+    //         const refreshToken = req.headers[HEADER.REFRESHTOKEN];
+    //         const decodeUser = jwt.verify(refreshToken, keyStore.privateKey);
+    //         if (userId !== decodeUser.userId) throw new AuthFailureError('Invalid userId');
+    //         req.keyStore = keyStore; // { access, refreshToken }
+    //         req.user = decodeUser; // { userId , name }
+    //         req.refreshToken = refreshToken;
+    //         return next();
+    //     } catch (error) {
+    //         throw error;
+    //     }
+    // }
 
     // 3 verify
     const accessToken = req.headers[HEADER.AUTHORIZATION];
@@ -81,8 +90,8 @@ const authenticationV2 = async (req, res, next) => {
     }
 };
 
-const verifyJWT = async (token, keySecret) => {
-    return await jwt.verify(token, keySecret);
-};
+// const verifyJWT = async (token, keySecret) => {
+//     return await jwt.verify(token, keySecret);
+// };
 
-export { createTokenPair, authenticationV2, verifyJWT };
+export { createTokenPair, authenticationV2 };
