@@ -4,7 +4,7 @@ import express from 'express';
 import SurveyController from '../controllers/survey.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js';
 // import { apiKey, permission } from '../middlewares/auth.middleware.js';
-// import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
+import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 
 const router = express.Router();
 
@@ -14,8 +14,8 @@ const router = express.Router();
 // // check permission
 // router.use(permission('0000'));
 
-// // authentication
-// router.use(authenticationV2);
+// authentication
+router.use(authenticationV2);
 
 // get questions by group
 router.get('/questions', asyncHandler(SurveyController.getQuestionsByGroup));
