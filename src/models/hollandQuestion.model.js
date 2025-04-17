@@ -20,20 +20,6 @@ const hollandQuestionSchema = new Schema(
             required: true,
             trim: true,
         }
-
-        // question_options: [
-        //     {
-        //         option_text: {
-        //             type: String,
-        //             required: true,
-        //             trim: true,
-        //         },
-        //         option_value: {
-        //             type: Number,
-        //             required: true,
-        //         },
-        //     },
-        // ],
     },
     {
         timestamps: true,
