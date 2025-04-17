@@ -3,8 +3,8 @@
 import express from 'express';
 import SurveyController from '../controllers/survey.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js';
-import { apiKey, permission } from '../middlewares/auth.middleware.js';
-import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
+// import { apiKey, permission } from '../middlewares/auth.middleware.js';
+// import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 
 const router = express.Router();
 
@@ -34,6 +34,9 @@ router.put('/questions/:questionId', asyncHandler(SurveyController.updateQuestio
 
 // soft delete question
 router.patch('/questions/:questionId/delete', asyncHandler(SurveyController.softDeleteQuestion));
+
+// restore deleted question
+router.patch('/questions/:questionId/restore', asyncHandler(SurveyController.restoreDeletedQuestion));
 
 // permanent delete question
 router.delete('/questions/:questionId', asyncHandler(SurveyController.deleteQuestion));
