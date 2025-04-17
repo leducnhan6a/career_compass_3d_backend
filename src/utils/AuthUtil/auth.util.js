@@ -1,7 +1,8 @@
 'use strict';
 
-import { BadRequestError } from '../../core/error.response.js';
+import { BadRequestError, AuthFailureError, NotFoundError } from '../../core/error.response.js';
 import jwt from 'jsonwebtoken';
+import KeyTokenService from '../../services/keyToken.service.js'
 
 const HEADER = { 
     AUTHORIZATION: 'authorization',
