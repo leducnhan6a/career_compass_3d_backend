@@ -9,8 +9,8 @@ const findGroupByGroupName = async (group) => {
 }
 
 // Tìm question với group
-const getAllQuestionsByGroupName = async (groupName) => { 
-    return await HollandQuestionModel.find({ question_code: groupName[0] }).select('question_code question_text -_id').lean();
+const getAllQuestionsByGroupName = async (groupName) => {
+    return await HollandQuestionModel.find({ question_code: groupName[0] }).select('question_code question_text _id').lean();
 }
 
 // Tìm question với id
@@ -35,7 +35,7 @@ const softDeleteQuestionById = async (questionId) => {
     return question.toObject();
 };
 
-// Khôi phục
+// Khôi phục tin bị xoá mềm
 const restoreQuestionById = async (questionId) => {
     const question = await HollandQuestionModel.findOneWithDeleted({ _id: questionId });
     if (!question) return null;

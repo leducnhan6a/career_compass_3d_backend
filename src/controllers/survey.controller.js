@@ -20,7 +20,6 @@ class SurveyController {
         }).send(res);
     }
 
-    // Cập nhật cơ chế History trong tương lai
     async getAllHistoryResult(req, res) { 
         const result = await SurveyService.getAllHistoryResult(req)
         new SuccessResponse({
@@ -49,6 +48,14 @@ class SurveyController {
         const result = await SurveyService.softDeleteQuestion(req);
         new SuccessResponse({
             message: 'Question soft deleted',
+            metadata: result,
+        }).send(res);
+    }
+
+    async restoreDeletedQuestion(req, res) {
+        const result = await SurveyService.restoreQuestion(req);
+        new SuccessResponse({
+            message: 'Question restored',
             metadata: result,
         }).send(res);
     }
