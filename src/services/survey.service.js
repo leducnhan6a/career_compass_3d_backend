@@ -1,21 +1,17 @@
 'use strict';
 
-import userModel from '../models/user.model.js';
-import HollandGroupModel from '../models/hollandGroup.model.js';
-import HollandQuestionModel from '../models/hollandQuestion.model.js';
-import { findHistoryResultByUserId } from './repositories/user.service.js';
+import { findHistoryResultByUserId, findUserAndUpdate } from './repositories/user.service.js';
 import { BadRequestError, NotFoundError } from '../core/error.response.js';
 import {
     restoreQuestionById,
     findGroupByGroupName,
+    createQuestion,
     getAllQuestionsByGroupName,
     updateQuestionById,
     softDeleteQuestionById,
     deleteQuestionById,
-    findQuestionById,
+    getAllGroups,
 } from './repositories/survey.service.js';
-
-const fakeUserId = '67ff30e04be458b1d0248c86';
 
 class SurveyService {
     // Lấy các câu hỏi cùng nhóm
@@ -32,19 +28,16 @@ class SurveyService {
         const foundGroup = await findGroupByGroupName(group);
         if (!foundGroup) throw new NotFoundError('Group not found');
 
-        const newQuestion = await HollandQuestionModel.create({
-            question_code: group,
-            question_text: question,
-        });
-
-        await HollandGroupModel.updateOne({ holland_code: group }, { $inc: { holland_totalQuestions: 1 } });
+        const newQuestion = await createQuestion({ question_code: group, question_text: question });
         if (!newQuestion) throw new BadRequestError('Cannot create new question');
+
         return newQuestion;
     }
 
-    static async solveSurveyResult({ body: { userId = fakeUserId, answers } }) {
+    // Xử lý kết quả khảo sát
+    static async solveSurveyResult({ body: { userId, answers } }) {
         if (!Array.isArray(answers) || answers.length === 0) throw new BadRequestError('Invalid answer data');
-
+        
         const scoreMap = {};
         let totalScore = 0;
 
@@ -54,7 +47,7 @@ class SurveyService {
             totalScore += value;
         }
 
-        const groups = await HollandGroupModel.find({});
+        const groups = await getAllGroups();
         const totalQuestions = groups.reduce((sum, group) => sum + group.holland_totalQuestions, 0);
         const maxScore = totalQuestions * 5;
 
@@ -66,7 +59,7 @@ class SurveyService {
                 percentage: maxGroupScore ? Math.round((score / maxGroupScore) * 100) : 0,
             };
             return acc;
-        }, {});
+        }, {});  
 
         const top3Traits = Object.entries(groupScores)
             .filter(([, data]) => data.groupScore > 0)
@@ -79,39 +72,29 @@ class SurveyService {
 
         const history = { hollandCode, groupScores, top3Traits, totalScore, maxScore, totalQuestions, createdAt };
 
-        const updated = await userModel.findByIdAndUpdate(userId, {
-            $push: { user_history: { action: 'survey_result', metadata: history } },
-        });
-
+        const updated = await findUserAndUpdate(userId, { $push: { user_history: { action: 'survey_result', metadata: history } }});
         if (!updated) throw new BadRequestError('Update history error');
 
         return history;
     }
 
     // Truy xuất lịch sử người dùng
-    static async getAllHistoryResult({ body }) {
-        return await findHistoryResultByUserId(body.userId);
+    static async getAllHistoryResult({ body: { userId } }) {
+        return await findHistoryResultByUserId(userId);
     }
 
     // Cập nhật lại nội dung câu hỏi
     static async updateQuestion({ params: { questionId }, body: updateData }) {
         const updated = await updateQuestionById(questionId, updateData);
         if (!updated) throw new BadRequestError('Cannot update question');
+
         return updated;
     }
 
     // Xoá mềm, tương tự như cập nhật lại nội dung câu hỏi
-    static async softDeleteQuestion({ params }) {
-        const { questionId } = params;
-        const question = await findQuestionById(questionId);
-
+    static async softDeleteQuestion({ params: { questionId } }) {
         const deleted = await softDeleteQuestionById(questionId);
-
         if (!deleted) throw new BadRequestError('Cannot soft delete question');
-
-        if (question?.question_code) {
-            await HollandGroupModel.updateOne({ group_code: question.question_code }, { $inc: { totalQuestions: -1 } });
-        }
 
         return deleted;
     }
@@ -121,24 +104,13 @@ class SurveyService {
         const restored = await restoreQuestionById(questionId);
         if (!restored) throw new BadRequestError('Cannot restore question');
 
-        if (restored?.question_code) {
-            // Tăng lại số lượng câu hỏi trong group tương ứng
-            await HollandGroupModel.updateOne({ group_code: restored.question_code }, { $inc: { totalQuestions: 1 } });
-        }
-
         return restored;
     }
 
     // Xoá cứng, tương tự như trên
     static async deleteQuestion({ params: { questionId } }) {
-        const question = await findQuestionById(questionId);
         const removed = await deleteQuestionById(questionId);
-
         if (!removed) throw new BadRequestError('Cannot delete question');
-
-        if (question?.question_code) {
-            await HollandGroupModel.updateOne({ group_code: question.question_code }, { $inc: { totalQuestions: -1 } });
-        }
 
         return removed;
     }
