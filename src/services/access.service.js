@@ -87,7 +87,7 @@ class AccessService {
 
         if (!keyStore) throw new BadRequestError('Failed to generate keystore');
         return {
-            user: getIntoData({ fields: ['_id', 'user_name', 'user_email'], object: foundUser }),
+            user: getIntoData({ fields: ['_id', 'user_name', 'user_email', 'user_permission'], object: foundUser }),
             tokens,
         };
     }

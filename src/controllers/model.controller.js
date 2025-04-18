@@ -12,8 +12,8 @@ class ModelController {
         }).send(res);
     }
 
-    async createNew3DModel(req, res) {
-        const result = await ModelService.createNew3DModel(req)
+    async getSignedURLSupabase(req, res) {
+        const result = await ModelService.getSignedURLSupabase(req)
         new CREATED({
             message: 'Create new 3D Model successfully!',
             metadata: result,
@@ -28,7 +28,13 @@ class ModelController {
         }).send(res);
     }
 
-
+    async get3DBufferFile(req, res) {
+        const result = await ModelService.get3DBufferFile(req, res)
+        new SuccessResponse({
+            message: 'Get 3d buffer file successfully!',
+            metadata: result,
+        }).send(res);
+    }
 }
 
 export default new ModelController();
