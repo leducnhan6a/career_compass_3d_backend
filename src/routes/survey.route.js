@@ -17,28 +17,28 @@ const router = express.Router();
 // authentication
 // router.use(authenticationV2);
 
-// get questions by group
+// Lấy các câu hỏi cùng phân loại
 router.get('/questions', asyncHandler(SurveyController.getQuestionsByGroup));
 
-// create new question
+// Tạo mới một câu hỏi
 router.post('/questions', asyncHandler(SurveyController.createQuestion));
 
-// post result data
+// Xử lý kết quả khảo sát
 router.post('/result', asyncHandler(SurveyController.solveSurveyResult));
 
-// get all history result
+// Lấy dữ liệu lịch sử người dùng
 router.get('/history', asyncHandler(SurveyController.getAllHistoryResult));
 
-// update question
+// Cập nhật lại câu hỏi có sẵn
 router.put('/questions/:questionId', asyncHandler(SurveyController.updateQuestion));
 
-// soft delete question
+// Xoá mềm câu hỏi có sẵn
 router.patch('/questions/:questionId/delete', asyncHandler(SurveyController.softDeleteQuestion));
 
-// restore deleted question
+// Khôi phục lại câu hỏi bị xoá mềm
 router.patch('/questions/:questionId/restore', asyncHandler(SurveyController.restoreDeletedQuestion));
 
-// permanent delete question
-router.delete('/questions/:questionId', asyncHandler(SurveyController.deleteQuestion));
+// Xoá vĩnh viễn một câu hỏi
+router.delete('/questions/:questionId', asyncHandler(SurveyController.deleteQuestionPermanently));
 
 export default router;

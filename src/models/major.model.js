@@ -2,17 +2,19 @@
 
 import { Schema, model } from 'mongoose';
 import slugify from 'slugify';
-import validator from 'validator';
+import mongooseDelete from 'mongoose-delete';
+// import validator from 'validator';
 
 const DOCUMENT_NAME = 'Major';
 const COLLECTION_NAME = 'Majors';
 
 const majorSchema = new Schema(
     {
-        major_uni_code: { type: String, required: true, trim: true},
+        uni_code: { type: String, required: true, trim: true},
         major_name: { type: String, required: true, trim: true},
         major_standard_score: { type: Number, required: true, max: 30},
-        major_aptitude_trends: { type: Array, required: true, enum: ['R', 'I', 'A', 'S', 'E', 'C'], index: true}
+        major_aptitude_trends: { type: [String], required: true, enum: ['R', 'I', 'A', 'S', 'E', 'C'], index: true},
+        major_slug: { type: String, lowercase: true }
     },
     {
         timestamps: true,
@@ -21,9 +23,14 @@ const majorSchema = new Schema(
 );
 
 majorSchema.pre('save', function(next) {
-    this.product_slug = slugify(this.product_name, { lower: true });
+    this.major_slug = slugify(this.major_name, { lower: true });
     next();
 });
+
+majorSchema.plugin(mongooseDelete, {
+    deletedAt: true,
+    overrideMethods: 'all', 
+})
 
 // Model3DSchema.pre('save', function (next) {
 //     if (!this.object3d_slug) {
