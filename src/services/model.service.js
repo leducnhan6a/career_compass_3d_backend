@@ -1,11 +1,14 @@
 'use strict';
 
+import { Buffer } from 'buffer';
+
 import { findHistoryResultByUserId } from './repositories/user.service.js';
 import { BadRequestError, NotFoundError } from '../core/error.response.js';
 import Object3DModel from '../models/3DObject.model.js';
-import { unGetSelectData, getSelectData } from '../utils/selectDataOptions.js';
 import userModel from '../models/user.model.js';
-import { convertToObjectIdMongoDB } from '../utils/convertToObjectIdMongoDB.js'
+import { convertToObjectIdMongoDB } from '../utils/convertToObjectIdMongoDB.js';
+import SupabaseService from './supabase.service.js';
+import { findAll3DModels } from './repositories/model.service.js';
 
 class SurveyService {
     // Lấy các câu hỏi cùng nhóm
@@ -13,142 +16,183 @@ class SurveyService {
         const skip = (page - 1) * limit;
         const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 };
 
-        const products = await Object3DModel.find(filter)
-            .sort(sortBy)
-            .skip(skip)
-            .limit(limit)
-            .select(unGetSelectData(unselect))
-            .lean();
-        return products;
+        const models = await findAll3DModels({ limit, sortBy, filter, skip, unselect, page });
+        if (!models) throw new NotFoundError('Not found any model');
+        return models;
     }
 
     // Tạo câu hỏi mới
-    static async createNew3DModel({ body: { name, description, thumbnailUrl, modelUrl } }) {
+    static async getSignedURLSupabase(req) {
+        const {
+            body: { name, description, thumbnailUrl },
+        } = req;
         const { userId } = req.user;
-        const foundUser = await userModel.findById(userId).select('user_permission').lean();
-        const new3DModelDetail = await Object3DModel.create({
-            object3d_name: name,
-            object3d_description: description,
-            object3d_thumbnailUrl: thumbnailUrl,
-            object3d_modelUrl: modelUrl,
-            object3d_author: foundUser,
-        });
+        const { filename, contentType } = req.body;
+        if (!filename || !contentType) throw new BadRequestError('Required body!');
 
-        if (!new3DModelDetail) throw new BadRequestError('Can not create new 3D Model');
+        const foundUser = await userModel.findById(userId).lean();
+        if (!foundUser) throw new NotFoundError('cannot find user');
 
-        return new3DModelDetail;
+        // file path trong supabase
+        const supabaseFilePath = `uploads/${Date.now()}_${filename}.glb`;
+        const signedURL = await SupabaseService.getSignedURL({ supabaseFilePath, contentType });
+
+        // const responseUpload = await fetch(uploadUrl, {
+        //     method: 'PUT',
+        //     headers: {
+        //       'Content-Type': file.type,
+        //     },
+        //     body: file,
+        //   });
+        // { url: signedUrlData, path: supabaseFilePath }
+        return signedURL;
     }
 
     static async getInfoByModelId({ params: { modelId }, query: { unselect } }) {
-        const found3DModel = await Object3DModel
-            .findOne({ _id: convertToObjectIdMongoDB(modelId), isDeleted: false })
+        const found3DModel = await Object3DModel.findOne({ _id: convertToObjectIdMongoDB(modelId), isDeleted: false })
             .select(unGetSelectData(unselect))
             .lean();
         if (!found3DModel) throw new NotFoundError('Model not found');
-
         return found3DModel;
     }
 
-    static async solveSurveyResult({ body: { userId = fakeUserId, answers } }) {
-        if (!Array.isArray(answers) || answers.length === 0) throw new BadRequestError('Invalid answer data');
+    static async get3DBufferFile(req, res) {
+        const {
+            params: { modelId },
+        } = req;
+        // Kiểm tra cache trước
+        // if (glbCache[modelId]) {
+        //     res.setHeader('Content-Type', 'model/gltf-binary');
+        //     res.send(glbCache[modelId]);
+        // }
 
-        const scoreMap = {};
-        let totalScore = 0;
+        const found3DModel = await Object3DModel.findOne({
+            _id: convertToObjectIdMongoDB(modelId),
+            deleted: false,
+        }).lean(); // object)bin
 
-        for (const { group, value } of answers) {
-            if (!group || typeof value !== 'number') throw new BadRequestError('Invalid answer format');
-            scoreMap[group] = (scoreMap[group] || 0) + value;
-            totalScore += value;
+        if (!found3DModel) {
+            throw new NotFoundError('Model URL not found');
         }
 
-        const groups = await HollandGroupModel.find({});
-        const totalQuestions = groups.reduce((sum, group) => sum + group.holland_totalQuestions, 0);
-        const maxScore = totalQuestions * 5;
+        const bufferFile = found3DModel.object3d_bin;
 
-        const groupScores = groups.reduce((acc, { holland_code, holland_totalQuestions }) => {
-            const score = scoreMap[holland_code] || 0;
-            const maxGroupScore = holland_totalQuestions * 5;
-            acc[holland_code] = {
-                groupScore: score,
-                percentage: maxGroupScore ? Math.round((score / maxGroupScore) * 100) : 0,
-            };
-            return acc;
-        }, {});
+        return bufferFile;
 
-        const top3Traits = Object.entries(groupScores)
-            .filter(([, data]) => data.groupScore > 0)
-            .sort((a, b) => b[1].groupScore - a[1].groupScore)
-            .slice(0, 3)
-            .map(([group, data]) => ({ group, score: data.groupScore, percentage: data.percentage }));
+        // // console.log('modelUrl', found3DModel.object3d_modelUrl)
+        // const response = await fetch(found3DModel.object3d_modelUrl);
+        // console.log(response)
+        // if (!response.ok) {
+        //     throw new BadRequestError('Model file fetch failed from storage')
+        // }
 
-        const hollandCode = top3Traits.map((t) => t.group).join('');
-        const createdAt = new Date();
+        // const arrayBuffer = await response.arrayBuffer();
+        // const buffer = Buffer.from(arrayBuffer);
 
-        const history = { hollandCode, groupScores, top3Traits, totalScore, maxScore, totalQuestions, createdAt };
-
-        const updated = await userModel.findByIdAndUpdate(userId, {
-            $push: { user_history: { action: 'survey_result', metadata: history } },
-        });
-
-        if (!updated) throw new BadRequestError('Update history error');
-
-        return history;
+        // res.setHeader('Content-Type', 'model/gltf-binary');
+        // return res.send(buffer); // frontend res.send(arrayByffer)
     }
 
-    // Truy xuất lịch sử người dùng
-    static async getAllHistoryResult({ body }) {
-        return await findHistoryResultByUserId(body.userId);
-    }
+    // static async solveSurveyResult({ body: { userId = fakeUserId, answers } }) {
+    //     if (!Array.isArray(answers) || answers.length === 0) throw new BadRequestError('Invalid answer data');
 
-    // Cập nhật lại nội dung câu hỏi
-    static async updateQuestion({ params: { questionId }, body: updateData }) {
-        const updated = await updateQuestionById(questionId, updateData);
-        if (!updated) throw new BadRequestError('Cannot update question');
-        return updated;
-    }
+    //     const scoreMap = {};
+    //     let totalScore = 0;
 
-    // Xoá mềm, tương tự như cập nhật lại nội dung câu hỏi
-    static async softDeleteQuestion({ params }) {
-        const { questionId } = params;
-        const question = await findQuestionById(questionId);
+    //     for (const { group, value } of answers) {
+    //         if (!group || typeof value !== 'number') throw new BadRequestError('Invalid answer format');
+    //         scoreMap[group] = (scoreMap[group] || 0) + value;
+    //         totalScore += value;
+    //     }
 
-        const deleted = await softDeleteQuestionById(questionId);
+    //     const groups = await HollandGroupModel.find({});
+    //     const totalQuestions = groups.reduce((sum, group) => sum + group.holland_totalQuestions, 0);
+    //     const maxScore = totalQuestions * 5;
 
-        if (!deleted) throw new BadRequestError('Cannot soft delete question');
+    //     const groupScores = groups.reduce((acc, { holland_code, holland_totalQuestions }) => {
+    //         const score = scoreMap[holland_code] || 0;
+    //         const maxGroupScore = holland_totalQuestions * 5;
+    //         acc[holland_code] = {
+    //             groupScore: score,
+    //             percentage: maxGroupScore ? Math.round((score / maxGroupScore) * 100) : 0,
+    //         };
+    //         return acc;
+    //     }, {});
 
-        if (question?.question_code) {
-            await HollandGroupModel.updateOne({ group_code: question.question_code }, { $inc: { totalQuestions: -1 } });
-        }
+    //     const top3Traits = Object.entries(groupScores)
+    //         .filter(([, data]) => data.groupScore > 0)
+    //         .sort((a, b) => b[1].groupScore - a[1].groupScore)
+    //         .slice(0, 3)
+    //         .map(([group, data]) => ({ group, score: data.groupScore, percentage: data.percentage }));
 
-        return deleted;
-    }
+    //     const hollandCode = top3Traits.map((t) => t.group).join('');
+    //     const createdAt = new Date();
 
-    // Khôi phục câu hỏi đã bị xóa mềm
-    static async restoreQuestion({ params: { questionId } }) {
-        const restored = await restoreQuestionById(questionId);
-        if (!restored) throw new BadRequestError('Cannot restore question');
+    //     const history = { hollandCode, groupScores, top3Traits, totalScore, maxScore, totalQuestions, createdAt };
 
-        if (restored?.question_code) {
-            // Tăng lại số lượng câu hỏi trong group tương ứng
-            await HollandGroupModel.updateOne({ group_code: restored.question_code }, { $inc: { totalQuestions: 1 } });
-        }
+    //     const updated = await userModel.findByIdAndUpdate(userId, {
+    //         $push: { user_history: { action: 'survey_result', metadata: history } },
+    //     });
 
-        return restored;
-    }
+    //     if (!updated) throw new BadRequestError('Update history error');
 
-    // Xoá cứng, tương tự như trên
-    static async deleteQuestion({ params: { questionId } }) {
-        const question = await findQuestionById(questionId);
-        const removed = await deleteQuestionById(questionId);
+    //     return history;
+    // }
 
-        if (!removed) throw new BadRequestError('Cannot delete question');
+    // // Truy xuất lịch sử người dùng
+    // static async getAllHistoryResult({ body }) {
+    //     return await findHistoryResultByUserId(body.userId);
+    // }
 
-        if (question?.question_code) {
-            await HollandGroupModel.updateOne({ group_code: question.question_code }, { $inc: { totalQuestions: -1 } });
-        }
+    // // Cập nhật lại nội dung câu hỏi
+    // static async updateQuestion({ params: { questionId }, body: updateData }) {
+    //     const updated = await updateQuestionById(questionId, updateData);
+    //     if (!updated) throw new BadRequestError('Cannot update question');
+    //     return updated;
+    // }
 
-        return removed;
-    }
+    // // Xoá mềm, tương tự như cập nhật lại nội dung câu hỏi
+    // static async softDeleteQuestion({ params }) {
+    //     const { questionId } = params;
+    //     const question = await findQuestionById(questionId);
+
+    //     const deleted = await softDeleteQuestionById(questionId);
+
+    //     if (!deleted) throw new BadRequestError('Cannot soft delete question');
+
+    //     if (question?.question_code) {
+    //         await HollandGroupModel.updateOne({ group_code: question.question_code }, { $inc: { totalQuestions: -1 } });
+    //     }
+
+    //     return deleted;
+    // }
+
+    // // Khôi phục câu hỏi đã bị xóa mềm
+    // static async restoreQuestion({ params: { questionId } }) {
+    //     const restored = await restoreQuestionById(questionId);
+    //     if (!restored) throw new BadRequestError('Cannot restore question');
+
+    //     if (restored?.question_code) {
+    //         // Tăng lại số lượng câu hỏi trong group tương ứng
+    //         await HollandGroupModel.updateOne({ group_code: restored.question_code }, { $inc: { totalQuestions: 1 } });
+    //     }
+
+    //     return restored;
+    // }
+
+    // // Xoá cứng, tương tự như trên
+    // static async deleteQuestion({ params: { questionId } }) {
+    //     const question = await findQuestionById(questionId);
+    //     const removed = await deleteQuestionById(questionId);
+
+    //     if (!removed) throw new BadRequestError('Cannot delete question');
+
+    //     if (question?.question_code) {
+    //         await HollandGroupModel.updateOne({ group_code: question.question_code }, { $inc: { totalQuestions: -1 } });
+    //     }
+
+    //     return removed;
+    // }
 }
 
 export default SurveyService;

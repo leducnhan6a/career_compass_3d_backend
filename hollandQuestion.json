@@ -2,1563 +2,243 @@
   "hollandQuestions": [
     {
       "question_text": "Bạn thích sửa chữa các món đồ trong nhà khi chúng bị hỏng.",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích làm các công việc thủ công (như xếp hình, lego, lắp các đồ mĩ thuật).",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích làm các công việc ngoài trời (như làm vườn, trồng cây, xem xét đất đá xung quanh bạn).",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích lái xe hoặc điều khiển các phương tiện cơ giới (như xe buýt, ô tô, xe tải).",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích chăm sóc cây trồng hoặc vật nuôi.",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích đọc hiểu các sơ đồ mạch điện hoặc các bản vẽ kĩ thuật.",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích tham gia vào các hoạt động đòi hỏi sức mạnh hoặc khéo léo của cơ thể.",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích những công việc tạo ra sản phẩm cụ thể, có thể cầm nắm hoặc nhìn thấy được kết quả rõ ràng.",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Tôi là người suy nghĩ thực tế, thích giải quyết vấn đề bằng cách bắt tay vào làm cụ thể.",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích vận hành các loại máy móc và xem cách chúng hoạt động.",
-      "question_type_code": "R",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "R"
     },
     {
       "question_text": "Bạn thích đọc sách, bài báo về các chủ đề khoa học, kỹ thuật hoặc học thuật.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích giải các bài toán logic, các câu đố trí tuệ hoặc các vấn đề phức tạp.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích tìm hiểu sâu về nguyên nhân, cách thức hoạt động của sự vật, hiện tượng tự nhiên hoặc xã hội.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích thực hiện các thí nghiệm khoa học hoặc các dự án nghiên cứu.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích phân tích các bộ dữ liệu lớn để tìm ra các quy luật, xu hướng hoặc thông tin ẩn.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích làm việc độc lập để tập trung suy nghĩ và nghiên cứu một vấn đề nào đó.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích viết các báo cáo phân tích, bài luận học thuật hoặc tài liệu nghiên cứu.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích các hoạt động điều tra, tìm kiếm thông tin và khám phá sự thật.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích sử dụng máy tính để phân tích, lập mô hình, mô phỏng hoặc xử lý các thông tin phức tạp.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Tôi là người có tính tò mò cao, luôn đặt câu hỏi \"tại sao\" và tìm kiếm câu trả lời dựa trên logic và bằng chứng.",
-      "question_type_code": "I",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "I"
     },
     {
       "question_text": "Bạn thích vẽ, sơn, nặn tượng, thiết kế đồ họa hoặc các hình thức nghệ thuật thị giác khác.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích chơi một loại nhạc cụ, hát, sáng tác hoặc phối khí âm nhạc.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích viết truyện, thơ, kịch bản, blog hoặc các nội dung sáng tạo khác.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích diễn xuất trên sân khấu, đóng phim hoặc tham gia các hoạt động biểu diễn khác.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích chụp ảnh hoặc quay phim với mục đích nghệ thuật, thể hiện góc nhìn riêng.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích thiết kế thời trang, thiết kế nội thất, trang trí không gian hoặc tạo ra các sản phẩm có tính thẩm mỹ cao.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích thường xuyên tham dự các buổi biểu diễn nghệ thuật (hòa nhạc, kịch), triển lãm tranh, bảo tàng.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích thể hiện bản thân, ý tưởng và cảm xúc của mình một cách độc đáo, không theo khuôn mẫu.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích ưa thích làm việc trong môi trường linh hoạt, tự do, ít bị ràng buộc bởi các quy tắc cứng nhắc.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Tôi có trí tưởng tượng phong phú, trực giác tốt và thích tìm tòi những cách thể hiện mới lạ, sáng tạo.",
-      "question_type_code": "A",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "A"
     },
     {
       "question_text": "Bạn thích dạy học, hướng dẫn, đào tạo hoặc chia sẻ kiến thức cho người khác.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích giúp đỡ bạn bè, người thân hoặc người khác khi họ gặp khó khăn hoặc cần hỗ trợ.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích lắng nghe một cách kiên nhẫn và chia sẻ, tâm sự để thấu hiểu vấn đề của người khác.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích chăm sóc sức khỏe hoặc tinh thần cho người bệnh, người già, trẻ em hoặc những người cần giúp đỡ.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích tham gia các hoạt động tình nguyện, gây quỹ hoặc các dự án phục vụ lợi ích cộng đồng.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích làm việc trong các đội nhóm, hợp tác và phối hợp tốt với nhiều người khác nhau.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích tổ chức các hoạt động tập thể, các sự kiện kết nối mọi người hoặc các chương trình xã hội.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích đưa ra lời khuyên, tư vấn hoặc tham vấn cho người khác về các vấn đề cá nhân, học tập hoặc nghề nghiệp.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích giúp hòa giải các mâu thuẫn, xung đột giữa các cá nhân hoặc trong nhóm.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Tôi là người thân thiện, cởi mở, thích giao tiếp và cảm thấy có ý nghĩa khi giúp đỡ người khác.",
-      "question_type_code": "S",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "S"
     },
     {
       "question_text": "Bạn thích thuyết phục, trình bày hoặc bán một ý tưởng, sản phẩm, dịch vụ cho người khác.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích đứng ra lãnh đạo, tổ chức hoặc điều phối hoạt động của một nhóm để đạt được mục tiêu chung.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích phát biểu trước đám đông, tham gia các cuộc tranh luận hoặc trình bày quan điểm một cách tự tin.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích lên kế hoạch, tổ chức và quản lý một dự án, một chiến dịch hoặc một sự kiện.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích khởi xướng một dự án kinh doanh, một câu lạc bộ hoặc một hoạt động mới mẻ, có tính thử thách.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích tham gia đàm phán, thương lượng để đạt được các thỏa thuận hoặc mục tiêu đề ra.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích đặt ra các mục tiêu rõ ràng cho bản thân hoặc cho nhóm và lập kế hoạch hành động để đạt được chúng.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích tham gia các hoạt động có tính cạnh tranh, nơi có thể thể hiện năng lực và giành chiến thắng.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích quan tâm đến việc tìm kiếm các cơ hội kinh doanh, đầu tư hoặc gia tăng lợi ích kinh tế.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Tôi là người năng động, quyết đoán, tự tin, thích thử thách và muốn tạo ra sự ảnh hưởng đến người khác hoặc kết quả công việc.",
-      "question_type_code": "E",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "E"
     },
     {
       "question_text": "Bạn thích làm việc với các con số, dữ liệu, bảng tính, báo cáo tài chính hoặc ngân sách.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Bạn thích sắp xếp hồ sơ, tài liệu, thông tin một cách ngăn nắp, khoa học và có hệ thống.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Bạn thích kiểm tra lại công việc của mình hoặc của người khác một cách cẩn thận để đảm bảo tính chính xác và không có sai sót.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Bạn thích tuân thủ và làm theo các hướng dẫn, quy trình, quy định hoặc tiêu chuẩn đã được đặt ra.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Bạn thích lập kế hoạch chi tiết, lên lịch trình cụ thể cho công việc hoặc các hoạt động cá nhân.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Bạn thích sử dụng thành thạo các phần mềm máy tính phục vụ công việc văn phòng (ví dụ: soạn thảo văn bản, bảng tính, quản lý cơ sở dữ liệu).",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Bạn thích ghi chép thông tin, số liệu một cách cẩn thận, đầy đủ và chính xác.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Bạn thích làm việc trong môi trường có trật tự, ổn định, các nhiệm vụ và kỳ vọng được xác định rõ ràng.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Bạn thích quản lý kho hàng, kiểm kê tài sản hoặc theo dõi các số liệu về hàng tồn kho.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     },
     {
       "question_text": "Tôi là người cẩn thận, tỉ mỉ, có óc tổ chức và thích sự rõ ràng, chính xác, ngăn nắp trong mọi việc.",
-      "question_type_code": "C",
-      "question_options": [
-        {
-          "option_text": "Hoàn toàn không đúng",
-          "option_value": 1
-        },
-        {
-          "option_text": "Không đúng",
-          "option_value": 2
-        },
-        {
-          "option_text": "Bình thường",
-          "option_value": 3
-        },
-        {
-          "option_text": "Đúng",
-          "option_value": 4
-        },
-        {
-          "option_text": "Rất đúng",
-          "option_value": 5
-        }
-      ]
+      "question_type_code": "C"
     }
   ]
 }

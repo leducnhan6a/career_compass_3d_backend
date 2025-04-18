@@ -15,7 +15,7 @@ const router = express.Router();
 // router.use(permission('0000'));
 
 // authentication
-router.use(authenticationV2);
+// router.use(authenticationV2);
 
 // get questions by group
 router.get('/questions', asyncHandler(SurveyController.getQuestionsByGroup));
