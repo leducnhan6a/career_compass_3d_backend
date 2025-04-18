@@ -1,3 +1,4 @@
+
 'use strict';
 
 import { Schema, model } from 'mongoose';
@@ -41,3 +42,4 @@ majorSchema.plugin(mongooseDelete, {
 
 const MajorModel = model(DOCUMENT_NAME, majorSchema);
 export default MajorModel;
+
