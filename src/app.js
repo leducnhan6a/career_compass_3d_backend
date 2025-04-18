@@ -13,6 +13,7 @@ const app = express();
 // implement new Route
 import accessRoutes from './routes/access.route.js';
 import surveyRoutes from './routes/survey.route.js';
+import majorRoutes from './routes/major.route.js';
 // import modelRoutes from './routes/model.route.js';
 
 // init middleware
@@ -37,6 +38,7 @@ app.use(pushToDiscordLog);
 // init route
 app.use('/api/v1/access', accessRoutes);
 app.use('/api/v1/survey', surveyRoutes);
+app.use('/api/v1/major', majorRoutes);
 // app.use('/api/v1/model', modelRoutes);
 
 // handling error ngoài này
