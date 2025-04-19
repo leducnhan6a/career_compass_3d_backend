@@ -14,8 +14,8 @@ const router = express.Router();
 // // check permission
 // router.use(permission('0000'));
 
-// authentication
-// router.use(authenticationV2);
+// authentication loged in
+router.use(authenticationV2);
 
 // get majors by uni_code
 router.get('/unicode', asyncHandler(MajorController.getMajorsByUniCode));

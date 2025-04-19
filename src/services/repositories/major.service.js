@@ -8,8 +8,8 @@ const getAllMajors = async () => {
 }
 
 // Lấy tất cả majors theo uni_code
-const getAllMajorsByUnicode = async (uni_code) => {
-    return await MajorModel.find({ uni_code }).lean();
+const getAllMajorsByUnicode = async (uniCode) => {
+    return await MajorModel.find({ uniCode }).lean();
 }
 
 // Tạo mới major
