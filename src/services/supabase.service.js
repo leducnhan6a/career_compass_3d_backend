@@ -5,8 +5,9 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { createClient } from '@supabase/supabase-js';
 import dotenv from 'dotenv';
-import { BadRequestError } from '../core/error.response.js';
+import { BadRequestError, NotFoundError } from '../core/error.response.js';
 import Object3DModel from '../models/3DObject.model.js';
+import { findModelById } from './repositories/model.service.js';
 
 dotenv.config();
 
@@ -50,7 +51,7 @@ class SupabaseService {
         // return duoc url cua thang 3d
     }
 
-    static async getSignedURL({ supabaseFilePath, contentType }) {
+    static async getSignedURLV2({ supabaseFilePath, contentType }) {
         try {
             const __filename = fileURLToPath(import.meta.url);
             const __dirname = path.dirname(__filename);
@@ -59,24 +60,27 @@ class SupabaseService {
             // const fileBuffer = fs.readFile(localFilePath);
             console.log(localFilePath);
 
-            const { data, error } = await supabase.storage.from('webdev').upload(supabaseFilePath, fileBuffer, {
-                contentType: 'model/gltf+binary',
-                cacheControl: '3600',
-                upsert: true,
-            });
+            const { data, error } = await supabase.storage
+                .from('webdev')
+                .upload('uploads/leducnhan_dev.glb', fileBuffer, {
+                    contentType: 'model/gltf-binary',
+                    cacheControl: '3600',
+                    upsert: true,
+                });
 
-            if (error) throw new BadRequestError(`${error}`);
+            if (error) throw new BadRequestError(`❌ Upload error: ${error}`);
+            console.log('✅ Upload success:', data);
+
+            // if (error) console.error('❌ Upload error:', error);
             const { data: signedUrlData, error: signedUrlError } = await supabase.storage
                 .from(supabaseBucketName)
-                .createSignedUrl(supabaseFilePath, 120, {
+                .createSignedUrl('uploads/leducnhan_dev.glb', 120, {
                     // URL có hiệu lực trong 60 giây
                     upsert: true, // Không ghi đè nếu file đã tồn tại (false)
                     contentType: contentType,
                 });
-            console.log(signedUrlData)
 
             if (signedUrlError) throw new BadRequestError(signedUrlError);
-
 
             return {
                 url: signedUrlData,
@@ -86,6 +90,46 @@ class SupabaseService {
         } catch (error) {
             throw new BadRequestError(`Error processing request: ${error}`);
         }
+    }
+
+    static async getSignedURL(modelId) {
+        const foundModel = await findModelById(modelId);
+        if (!foundModel) throw new NotFoundError('Model not found');
+
+        const { object3d_modelUrl, object3d_name } = foundModel;
+        
+        const ttl = 300;
+
+        const { data: signedUrlData, error: signedUrlError } = await supabase.storage
+            .from(supabaseBucketName)
+            .createSignedUrl(object3d_modelUrl, ttl, {
+                // URL có hiệu lực trong 60 giây
+                upsert: true, // Không ghi đè nếu file đã tồn tại (false)
+                contentType: 'model/gltf-binary',
+            });
+        if (signedUrlError) throw new BadRequestError(`❌ Upload error: ${signedUrlError}`);
+        return {
+            name: object3d_name,
+            ttl,
+            url: signedUrlData.signedUrl
+        };
+    }
+
+    static async upload3DFileV2(file) {
+        const fileBuffer = file.buffer,
+            mimetype = file.mimetype;
+        console.log(fileBuffer);
+        const { data, error } = await supabase.storage
+            .from(supabaseBucketName)
+            .upload(`uploads/${Date.now()}-${file.originalname}`, fileBuffer, {
+                contentType: mimetype || 'model/gltf-binary',
+                cacheControl: '3600',
+                upsert: true,
+            });
+
+        // TODO: upload to database with detail
+        if (error) throw new BadRequestError(`Upload error: ${error} `);
+        return { path: data.path };
     }
 }
 
