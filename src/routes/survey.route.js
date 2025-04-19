@@ -3,19 +3,13 @@
 import express from 'express';
 import SurveyController from '../controllers/survey.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js';
-// import { apiKey, permission } from '../middlewares/auth.middleware.js';
+import { permission } from '../middlewares/auth.middleware.js';
 import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 
 const router = express.Router();
 
-// // check apiKey
-// router.use(apiKey);
-
-// // check permission
-// router.use(permission('0000'));
-
 // authentication
-// router.use(authenticationV2);
+router.use(authenticationV2);
 
 // Lấy các câu hỏi cùng phân loại
 router.get('/questions', asyncHandler(SurveyController.getQuestionsByGroup));

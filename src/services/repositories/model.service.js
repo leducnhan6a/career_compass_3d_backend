@@ -28,6 +28,8 @@ const findAllDeleted3DModels = async ({ limit, sortBy, filter, skip, unselect, p
 const findModelById = async (modelId) => await Object3DModel.findOne(convertToObjectIdMongoDB(modelId)).lean();
 
 const findModelAndUpdateById = async ({ modelId, updateSet }) => {
+    const foundModel = await findModelById(modelId)
+    if (!foundModel) throw new NotFoundError('Model not found')
     const updatedModel = await Object3DModel.findByIdAndUpdate(modelId, updateSet, {
         upsert: true,
         new: true,

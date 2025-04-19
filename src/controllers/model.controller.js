@@ -47,7 +47,7 @@ class ModelController {
     async forceDeleteModelById(req, res) {
         const result = await ModelService.forceDeleteModelById(req)
         new SuccessResponse({
-            message: 'Soft delete model use modelId successfully!',
+            message: 'Force delete model use modelId successfully!',
             metadata: result,
         }).send(res);
     }
@@ -68,21 +68,6 @@ class ModelController {
         }).send(res);
     }
 
-    // async upload3DFile(req, res) {
-    //     const result = await ModelService.upload3DFile(req)
-    //     new CREATED({
-    //         message: 'Create new 3D Model successfully!',
-    //         metadata: result,
-    //     }).send(res);
-    // }
-
-    // async get3DBufferFile(req, res) {
-    //     const result = await ModelService.get3DBufferFile(req, res)
-    //     new SuccessResponse({
-    //         message: 'Get 3d buffer file successfully!',
-    //         metadata: result,
-    //     }).send(res);
-    // }
 }
 
 export default new ModelController();

@@ -1,21 +1,17 @@
 'use strict';
 
 import express from 'express';
-import MajorController from '../controllers/major.controller.js'
+import MajorController from '../controllers/major.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js';
-// import { apiKey, permission } from '../middlewares/auth.middleware.js';
+import { permission } from '../middlewares/auth.middleware.js';
 import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
-
 const router = express.Router();
 
-// // check apiKey
-// router.use(apiKey);
-
-// // check permission
+// check permission
 // router.use(permission('0000'));
 
 // authentication
-// router.use(authenticationV2);
+router.use(authenticationV2);
 
 // get majors by uni_code
 router.get('/unicode', asyncHandler(MajorController.getMajorsByUniCode));

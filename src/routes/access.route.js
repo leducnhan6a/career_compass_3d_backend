@@ -2,17 +2,10 @@
 import express from 'express';
 import AccessController from '../controllers/access.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js'
-// import { apiKey, permission } from '../middlewares/auth.middleware.js';
 import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
-import { permission } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-// check apiKey
-// router.use(apiKey);
-
-// check permission
-// router.use(permission('0000'))
 
 // signup
 router.post('/signup', asyncHandler(AccessController.signup));
@@ -20,13 +13,9 @@ router.post('/signup', asyncHandler(AccessController.signup));
 // login
 router.post('/login', asyncHandler(AccessController.login));
 
-// authetication
+// authentication middleware
 router.use(authenticationV2)
-router.use(permission('user'))
 
-
-// logout
 router.post('/logout', asyncHandler(AccessController.logout))
-// router.post('/handleRefreshToken', asyncHandler(AccessController.handleRefreshToken))
 
 export default router;
