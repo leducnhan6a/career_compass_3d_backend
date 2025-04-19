@@ -1,7 +1,6 @@
 'use strict';
 
-import userModel from "../models/user.model.js";
-
+import userModel from '../models/user.model.js';
 
 const HEADER = {
     API_KEY: 'x-api-key',
@@ -16,10 +15,9 @@ const apiKey = async (req, res, next) => {
                 message: 'Forbidden error!!',
             });
         }
-        // check objKey is exist in apikeymodel ?? 
+        // check objKey is exist in apikeymodel ??
         // const objKey = await KeyTokenService(key);
 
-        
         // if not have this key then return
         if (!objKey) {
             return res.status(403).json({
@@ -37,22 +35,25 @@ const apiKey = async (req, res, next) => {
 
 const permission = (permission) => {
     return async (req, res, next) => {
-
         // check permission user
-        const foundUser = await userModel.findById(req.user.userId).select('user_permission').lean()
+        const foundUser = await userModel.findById(req.user.userId).select('user_permission').lean();
         if (!foundUser) {
             return res.status(403).json({
                 message: 'Permission denied',
             });
         }
 
-        const validPermission = foundUser.user_permission === permission;
-        if (!validPermission) {
+        const user_permission = foundUser.user_permission;
+        if (permission === 'user') {
+            if (['admin', 'user'].includes(permission)) return next();
             return res.status(403).json({
                 message: 'Permission denied',
             });
+        } else if (user_permission !== permission) {
+            return res.status(403).json({
+                message: 'Permission denied 2',
+            });
         }
-
         return next();
     };
 };
