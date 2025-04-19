@@ -78,6 +78,7 @@ const authenticationV2 = async (req, res, next) => {
     const accessToken = req.headers[HEADER.AUTHORIZATION];
     if (!accessToken) throw new AuthFailureError('Invalid request');
 
+    
     try {
         const decodeUser = jwt.verify(accessToken, keyStore.publicKey);
         if (userId !== decodeUser.userId) throw new AuthFailureError('Invalid userId');
@@ -88,9 +89,5 @@ const authenticationV2 = async (req, res, next) => {
         throw error;
     }
 };
-
-// const verifyJWT = async (token, keySecret) => {
-//     return await jwt.verify(token, keySecret);
-// };
 
 export { createTokenPair, authenticationV2 };

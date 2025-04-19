@@ -60,7 +60,7 @@ class AccessService {
 
             return {
                 user: getIntoData({ fields: ['_id', 'user_name', 'user_email'], object: newUser }),
-                tokens,
+                tokens: tokens.accessToken,
             };
         }
     }
@@ -88,7 +88,7 @@ class AccessService {
         if (!keyStore) throw new BadRequestError('Failed to generate keystore');
         return {
             user: getIntoData({ fields: ['_id', 'user_name', 'user_email', 'user_permission'], object: foundUser }),
-            tokens,
+            tokens: tokens.accessToken,
         };
     }
 
