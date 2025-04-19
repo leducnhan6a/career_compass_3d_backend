@@ -24,8 +24,8 @@ const findHistoryResultByUserId = async (userId) => {
 }
 
 // Cập nhật thông tin user
-const findUserAndUpdate = async (userId, update_data) => {
-    return await userModel.findByIdAndUpdate(userId, update_data);
+const findUserAndUpdate = async (userId, updateData) => {
+    return await userModel.findByIdAndUpdate(userId, updateData);
 }
 
 export { findUserByName, findHistoryResultByUserId, findUserAndUpdate };

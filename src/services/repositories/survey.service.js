@@ -25,7 +25,7 @@ const findGroupByGroupName = async (group) => {
 
 // Tìm question với group
 const getAllQuestionsByGroupName = async (groupName) => {
-    return await HollandQuestionModel.find({ question_code: groupName[0] }).select('question_code question_text _id').lean();
+    return await HollandQuestionModel.find({ question_code: { $in: groupName } }).select('question_code question_text _id').lean();
 }
 
 // Tìm question với id
@@ -34,9 +34,9 @@ const findQuestionById = async (questionId) => {
 };
 
 // Tạo question mới
-const createQuestion = async (question_data) => {
-    const newQuestion = new HollandQuestionModel(question_data);
-    increaseTotalQuestion(question_data.question_code);
+const createQuestion = async (questionData) => {
+    const newQuestion = new HollandQuestionModel(questionData);
+    increaseTotalQuestion(questionData.question_code);
     return await newQuestion.save();
 }
 

@@ -1,6 +1,8 @@
 # Survey's logic
 
-Base URL: &nbsp; `/api/v1/survey`
+> **Required**: &nbsp; `authorization` and `x-client-id`
+
+> **Base URL**: &nbsp; `/api/v1/survey`
 
 ---
 
