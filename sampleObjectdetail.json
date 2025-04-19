@@ -1,0 +1,38 @@
+[
+    {
+        "object3d_name": "chemistry_lab",
+        "object3d_description": "low_poly_chemistry_lab",
+        "object3d_thumbnailUrl": "https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/low_poly_chemistry_lab.png",
+        "object3d_modelUrl": "uploads/low_poly_chemistry_lab.glb"
+    },
+    {
+        "object3d_name": "classroom",
+        "object3d_description": "morning_class",
+        "object3d_thumbnailUrl": "https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/classroom.png",
+        "object3d_modelUrl": "uploads/classroom.glb"
+    },
+    {
+        "object3d_name": "office",
+        "object3d_description": "morden_office",
+        "object3d_thumbnailUrl": "https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/mersus_office.png",
+        "object3d_modelUrl": "uploads/mersus_office.glb"
+    },
+    {
+        "object3d_name": "office2",
+        "object3d_description": "classical_office",
+        "object3d_thumbnailUrl": "https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/isometric_office.png",
+        "object3d_modelUrl": "uploads/isometric_office.glb"
+    },
+    {
+        "object3d_name": "hospital",
+        "object3d_description": "hospital_room",
+        "object3d_thumbnailUrl": "https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/charite_university_hospital_-_operating_room.png",
+        "object3d_modelUrl": "uploads/charite_university_hospital_-_operating_room.glb"
+    },
+    {
+        "object3d_name": "laboratory",
+        "object3d_description": "electronic_lab",
+        "object3d_thumbnailUrl": "https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/low-poly_laboratory.png",
+        "object3d_modelUrl": "uploads/low-poly_laboratory.glb"
+    }
+]
