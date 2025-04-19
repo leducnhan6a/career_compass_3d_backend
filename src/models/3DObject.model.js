@@ -24,9 +24,9 @@ const object3DSchema = new Schema(
         },
         object3d_thumbnailUrl: {
             type: String,
-            // required: true,
+            required: true,
             trim: true,
-            // validate: validator.isURL,
+            validate: validator.isURL,
         },
         // object3d_bin: { 
         //     type: Buffer,
@@ -37,12 +37,12 @@ const object3DSchema = new Schema(
             required: true,
             trim: true,
             validate: validator.isURL,
-        },
-        object3d_author: {
-            type: String,
-            trim: true,
-            maxlength: 100
-        }        
+        }
+        // object3d_author: {
+        //     type: String,
+        //     trim: true,
+        //     maxlength: 100
+        // }        
     },
     {
         timestamps: true,
@@ -57,7 +57,7 @@ object3DSchema.pre('save', function(next) {
 
 object3DSchema.plugin(mongooseDelete, {
     deletedAt: true,
-    overrideMethods: 'all'
+    overrideMethods: true,
 })
 
 // Model3DSchema.pre('save', function (next) {

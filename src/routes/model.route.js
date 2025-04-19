@@ -5,7 +5,8 @@ import ModelController from '../controllers/model.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js';
 // import { apiKey, permission } from '../middlewares/auth.middleware.js';
 import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
-import { permission } from '../middlewares/auth.middleware.js'
+import { permission } from '../middlewares/auth.middleware.js';
+import multer from 'multer';
 
 const router = express.Router();
 
@@ -17,33 +18,20 @@ const router = express.Router();
 // authentication
 router.use(authenticationV2);
 
+// permission user
+router.use(permission('user'))
 router.get('', asyncHandler(ModelController.getAll3DModels));
-router.get('/:modelId/info', asyncHandler(ModelController.getInfoByModelId));
+router.get('/:modelId/detail', asyncHandler(ModelController.getModelDetailById));
+
+
+router.use(permission('admin'))
+// permission admin
+router.get('/deleted', asyncHandler(ModelController.getAllDeleted3DModels));
+router.put('/:modelId/detail', asyncHandler(ModelController.updateModelDetailById));
+router.patch('/:modelId/delete', asyncHandler(ModelController.softDeleteModelById));
+router.delete('/:modelId/delete', asyncHandler(ModelController.forceDeleteModelById));
+router.patch('/:modelId/restore', asyncHandler(ModelController.restoreModelById));
+router.get('/:modelId', asyncHandler(ModelController.getSignedURLById));
 router.get('/:modelId/model', asyncHandler(ModelController.get3DBufferFile));
-
-// get questions by group
-router.use(permission('admin'));
-
-// create new question
-router.post('', asyncHandler(ModelController.getSignedURLSupabase));
-
-// post result data
-
-// post result data
-
-// // get all history result
-// router.get('/history', asyncHandler(SurveyController.getAllHistoryResult));
-
-// // update question
-// router.put('/questions/:questionId', asyncHandler(SurveyController.updateQuestion));
-
-// // soft delete question
-// router.patch('/questions/:questionId/delete', asyncHandler(SurveyController.softDeleteQuestion));
-
-// // restore deleted question
-// router.patch('/questions/:questionId/restore', asyncHandler(SurveyController.restoreDeletedQuestion));
-
-// // permanent delete question
-// router.delete('/questions/:questionId', asyncHandler(SurveyController.deleteQuestion));
 
 export default router;

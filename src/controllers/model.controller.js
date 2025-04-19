@@ -12,29 +12,77 @@ class ModelController {
         }).send(res);
     }
 
-    async getSignedURLSupabase(req, res) {
-        const result = await ModelService.getSignedURLSupabase(req)
-        new CREATED({
-            message: 'Create new 3D Model successfully!',
+    async getAllDeleted3DModels(req, res) {
+        const result = await ModelService.getAllDeleted3DModels(req)
+        new SuccessResponse({
+            message: 'Get all 3d models successfully!',
             metadata: result,
         }).send(res);
     }
-
-    async getInfoByModelId(req, res) {
-        const result = await ModelService.getInfoByModelId(req)
+    
+    async getModelDetailById(req, res) {
+        const result = await ModelService.getModelDetailById(req)
         new SuccessResponse({
             message: 'Get detail of model use modelId successfully!',
             metadata: result,
         }).send(res);
     }
 
-    async get3DBufferFile(req, res) {
-        const result = await ModelService.get3DBufferFile(req, res)
+    async updateModelDetailById(req, res) {
+        const result = await ModelService.updateModelDetailById(req)
         new SuccessResponse({
-            message: 'Get 3d buffer file successfully!',
+            message: 'Update detail of model use modelId successfully!',
             metadata: result,
         }).send(res);
     }
+
+    async softDeleteModelById(req, res) {
+        const result = await ModelService.softDeleteModelById(req)
+        new SuccessResponse({
+            message: 'Soft delete model use modelId successfully!',
+            metadata: result,
+        }).send(res);
+    }
+
+    async forceDeleteModelById(req, res) {
+        const result = await ModelService.forceDeleteModelById(req)
+        new SuccessResponse({
+            message: 'Soft delete model use modelId successfully!',
+            metadata: result,
+        }).send(res);
+    }
+
+    async restoreModelById(req, res) {
+        const result = await ModelService.restoreModelById(req)
+        new SuccessResponse({
+            message: 'Restore deleted model use modelId successfully!',
+            metadata: result,
+        }).send(res);
+    }
+
+    async getSignedURLById(req, res) {
+        const result = await ModelService.getSignedURLById(req)
+        new SuccessResponse({
+            message: 'Restore deleted model use modelId successfully!',
+            metadata: result,
+        }).send(res);
+    }
+
+    // async upload3DFile(req, res) {
+    //     const result = await ModelService.upload3DFile(req)
+    //     new CREATED({
+    //         message: 'Create new 3D Model successfully!',
+    //         metadata: result,
+    //     }).send(res);
+    // }
+
+    // async get3DBufferFile(req, res) {
+    //     const result = await ModelService.get3DBufferFile(req, res)
+    //     new SuccessResponse({
+    //         message: 'Get 3d buffer file successfully!',
+    //         metadata: result,
+    //     }).send(res);
+    // }
 }
 
 export default new ModelController();
