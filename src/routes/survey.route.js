@@ -11,17 +11,23 @@ const router = express.Router();
 // authentication
 router.use(authenticationV2);
 
+// permisison user + admin
+router.use(permission('user'));
+
 // Lấy các câu hỏi cùng phân loại
 router.get('/questions', asyncHandler(SurveyController.getQuestionsByGroup));
-
-// Tạo mới một câu hỏi
-router.post('/questions', asyncHandler(SurveyController.createQuestion));
 
 // Xử lý kết quả khảo sát
 router.post('/result', asyncHandler(SurveyController.solveSurveyResult));
 
 // Lấy dữ liệu lịch sử người dùng
 router.get('/history', asyncHandler(SurveyController.getAllHistoryResult));
+
+// permisison admin
+router.use(permission('admin'));
+
+// Tạo mới một câu hỏi
+router.post('/questions', asyncHandler(SurveyController.createQuestion));
 
 // Cập nhật lại câu hỏi có sẵn
 router.put('/questions/:questionId', asyncHandler(SurveyController.updateQuestion));

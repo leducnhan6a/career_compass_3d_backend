@@ -1,12 +1,19 @@
 # Survey's logic
 
-> **Required**: &nbsp; `authorization` and `x-client-id`
+> **Required header:**: &nbsp; `authorization` and `x-client-id`
+
+```json
+{
+    "x-client-id": <userID của user>,
+    "authorization": <tokens của user>
+}
+```
 
 > **Base URL**: &nbsp; `/api/v1/survey`
 
 ---
 
-## 1. \[GET] Get all questions with the same type
+## 1. \[GET] Get all questions with the same type [admin / user]
 
 **Method:** &nbsp; `GET /questions`  
 **Description:** &nbsp; Query questions by key: `groupName` and a string value is one of `R` | `I` | `A` | `S` | `E` | `C`
@@ -36,7 +43,7 @@ GET /api/v1/survey/questions?groupName=R
 
 ---
 
-## 2. \[POST] Create new question
+## 2. \[POST] Create new question [ admin ]
 
 **Method:** &nbsp; `POST /questions`  
 **Description:** &nbsp; Create a new Holland question by define question code and question text.
@@ -71,7 +78,7 @@ GET /api/v1/survey/questions?groupName=R
 
 ---
 
-## 3. \[POST] Process survey result
+## 3. \[POST] Process survey result [user]
 
 **Method:** &nbsp; `POST /result`  
 **Description:** &nbsp; Submit answers to calculate Holland Code (WIP)
@@ -146,7 +153,7 @@ GET /api/v1/survey/questions?groupName=R
 
 ---
 
-## 4. \[GET] Get user's history results
+## 4. \[GET] Get user's history results [admin / user]
 
 **Method:** &nbsp; `GET /history`  
 **Description:** &nbsp; Fetch all result history for a given user ID (Note: using body in GET request is non-standard)
@@ -227,7 +234,7 @@ GET /api/v1/survey/questions?groupName=R
 
 ---
 
-## 5. \[PUT] Update an available question
+## 5. \[PUT] Update an available question [admin]
 
 **Method:** &nbsp; `PUT /questions/:questionId`  
 **Description:** &nbsp; Update question text by its ID
@@ -267,7 +274,7 @@ PUT /api/v1/survey/questions/6800efae57d4b086a061e1aa
 
 ---
 
-## 6. \[PATCH] Soft delete a question
+## 6. \[PATCH] Soft delete a question [ admin ]
 
 **Method:** &nbsp; `PATCH /questions/:questionId/delete`  
 **Description:** &nbsp; Soft delete a question (won’t appear in list but not fully deleted)
@@ -299,7 +306,7 @@ PATCH /api/v1/survey/questions/6800efae57d4b086a061e1aa/delete
 
 ---
 
-## 7. \[PATCH] Restore a deleted question
+## 7. \[PATCH] Restore a deleted question [admin]
 
 **Method:** &nbsp; `PATCH /questions/:questionId/restore`  
 **Description:** &nbsp; Restore a soft-deleted question
@@ -330,7 +337,7 @@ PATCH /api/v1/survey/questions/6800efae57d4b086a061e1aa/restore
 
 ---
 
-## 8. \[DELETE] Permanently delete question
+## 8. \[DELETE] Permanently delete question [admin]
 
 **Method:** &nbsp; `DELETE /questions/:questionId`  
 **Description:** &nbsp; Permanently delete a question by ID

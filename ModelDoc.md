@@ -14,6 +14,14 @@
     "authorization": <tokens của user>
 }
 ```
+**Query parameters:**
+
+```json
+{
+    sort: <mặt định là theo thời gian tạo gần nhất>, 
+    unselect: ['field1', 'field2'] // những trường không muốn lấy trong dữ liệu
+}
+```
 
 **Request:**
 
@@ -90,7 +98,7 @@ GET /api/v1/model/:modelId/detail
 
 ---
 
-## 3. \[GET] Get deleted model [ admin ]
+## 3. \[GET] Get all deleted model [ admin ]
 
 **Method:** &nbsp; `GET /deleted`  
 **Description:** &nbsp; lấy thông tin tất cả model 3D đã bị xóa mềm (chưa vĩnh viễn).
@@ -102,6 +110,16 @@ GET /api/v1/model/:modelId/detail
     "authorization": <tokens của user>
 }
 ```
+
+**Query parameters:**
+
+```json
+{
+    sort: <mặt định là theo thời gian tạo gần nhất>, 
+    unselect: ['field1', 'field2'] // những trường không muốn lấy trong dữ liệu
+}
+```
+
 
 **Request:**
 
@@ -146,6 +164,13 @@ GET /api/v1/model/deleted
     "authorization": <tokens của user>
 }
 ```
+
+**Req paramas:**
+
+```json
+modelId: <modelId của model đó>
+```
+
 
 **Body:**
 
