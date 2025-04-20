@@ -13,6 +13,11 @@ const userSchema = new Schema(
             required: true,
             unique: true,
         },
+        user_displayname: {
+            trim: true, // xoá khoảng trắng thừa
+            type: String,
+            required: true,
+        },
         user_password: {
             // cần thêm phần required hash phía trước
             type: String, 
@@ -34,11 +39,6 @@ const userSchema = new Schema(
             type: String, // Đường dẫn đến file ảnh avatar
             default: '../../public/img/defaultAvt.jpg', // Giá trị mặc định là ảnh default avt
             required: false,
-        },
-
-        user_api_key: {
-            type: String,
-            required: true,
         },
 
         user_permission: {

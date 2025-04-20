@@ -5,15 +5,16 @@ import userModel from '../../models/user.model.js';
 
 // Tìm thông tin người dùng theo tên (username)
 const findUserByName = async ({
-    name,
+    username,
     select = {
         user_name: 1,
+        user_displayname: 1,
         user_email: 1,
         user_password: 1,
         user_permission: 1,
     },
 }) => {
-    return await userModel.findOne({ user_name: name }).select(select).lean();
+    return await userModel.findOne({ user_name: username }).select(select).lean();
 };
 
 // Tìm thông tin người dùng theo email tài khoản
