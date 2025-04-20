@@ -11,7 +11,9 @@ const router = express.Router();
 // authentication
 router.use(authenticationV2);
 
-// permisison user + admin
+// -----------------------------------------------------------------------
+
+// Check user permission
 router.use(permission('user'));
 
 // Lấy các câu hỏi cùng phân loại
@@ -23,7 +25,9 @@ router.post('/result', asyncHandler(SurveyController.solveSurveyResult));
 // Lấy dữ liệu lịch sử người dùng
 router.get('/history', asyncHandler(SurveyController.getAllHistoryResult));
 
-// permisison admin
+// -----------------------------------------------------------------------
+
+// check admin permission
 router.use(permission('admin'));
 
 // Tạo mới một câu hỏi
