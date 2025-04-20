@@ -16,9 +16,12 @@ import {
 class SurveyService {
     // Lấy các câu hỏi cùng nhóm
     static async getQuestionsByGroup({ query: { groupName } }) {
-        const groupArray = Array.isArray(groupName) ? groupName : [groupName];
+        if (!groupName) throw new BadRequestError('Group name is required');
+
+        const groupArray = Array.isArray(groupName) ? groupName : groupName.split('');
+
         const questionsGroup = await getAllQuestionsByGroupName(groupArray);
-        if (!questionsGroup || questionsGroup.length === 0) throw new NotFoundError('Group not found');
+        if (!questionsGroup || questionsGroup.length === 0) throw new NotFoundError('Group(s) not found');
 
         return questionsGroup;
     }

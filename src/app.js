@@ -6,6 +6,7 @@ import compression from 'compression';
 
 import pushToDiscordLog from './middlewares/pushToDiscordBot.js';
 import instanceMongodb from './dbs/init.mongodb.js';
+import cronSchedule from './cron/scrape.cron.js';
 // import { checkOverload } from './helpers/check.connect.js';
 
 const app = express();
@@ -14,7 +15,8 @@ const app = express();
 import accessRoutes from './routes/access.route.js';
 import surveyRoutes from './routes/survey.route.js';
 import majorRoutes from './routes/major.route.js';
-import modelRoutes from './routes/model.route.js';
+import scraperRoutes from './routes/scraper.route.js';
+// import modelRoutes from './routes/model.route.js';
 
 // init middleware
 app.use(express.json()); // đọc được filejson từ req.body
@@ -39,7 +41,8 @@ app.use(pushToDiscordLog);
 app.use('/api/v1/access', accessRoutes);
 app.use('/api/v1/survey', surveyRoutes);
 app.use('/api/v1/major', majorRoutes);
-app.use('/api/v1/model', modelRoutes);
+app.use('/anpi/v1/scraper', scraperRoutes);
+// app.use('/api/v1/model', modelRoutes);
 
 // handling error ngoài này
 app.use((req, res, next) => {
@@ -56,5 +59,8 @@ app.use((error, req, res, next) => {
         message: error.message || 'Internal server error',
     });
 });
+
+// Tự động crawl data từ các web
+cronSchedule()
 
 export default app;
