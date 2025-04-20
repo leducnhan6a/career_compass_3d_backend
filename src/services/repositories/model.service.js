@@ -5,31 +5,19 @@ import Object3DModel from '../../models/3DObject.model.js';
 import { convertToObjectIdMongoDB } from '../../utils/convertToObjectIdMongoDB.js';
 import { BadRequestError, NotFoundError } from '../../core/error.response.js';
 
-const findAll3DModels = async ({ limit, sortBy, filter, skip, unselect, page }) => {
-    // return await Object3DModel.find(filter)
-    //     .sort(sortBy)
-    //     .skip(skip)
-    //     .limit(limit)
-    //     .select(unGetSelectData(unselect))
-    //     .lean();
-    return await Object3DModel.find().select(unGetSelectData(unselect));
+const findAll3DModels = async ({ unselect, sortBy }) => {
+    return await Object3DModel.find().sort(sortBy).select(unGetSelectData(unselect));
 };
 
-const findAllDeleted3DModels = async ({ limit, sortBy, filter, skip, unselect, page }) => {
-    // return await Object3DModel.find(filter)
-    //     .sort(sortBy)
-    //     .skip(skip)
-    //     .limit(limit)
-    //     .select(unGetSelectData(unselect))
-    //     .lean();
-    return await Object3DModel.findDeleted().select(unGetSelectData(unselect)).lean();
+const findAllDeleted3DModels = async ({ unselect, sortBy }) => {
+    return await Object3DModel.findDeleted().sort(sortBy).select(unGetSelectData(unselect)).lean();
 };
 
 const findModelById = async (modelId) => await Object3DModel.findOne(convertToObjectIdMongoDB(modelId)).lean();
 
 const findModelAndUpdateById = async ({ modelId, updateSet }) => {
-    const foundModel = await findModelById(modelId)
-    if (!foundModel) throw new NotFoundError('Model not found')
+    const foundModel = await findModelById(modelId);
+    if (!foundModel) throw new NotFoundError('Model not found');
     const updatedModel = await Object3DModel.findByIdAndUpdate(modelId, updateSet, {
         upsert: true,
         new: true,
@@ -46,9 +34,7 @@ const findModelAndSoftDeleteById = async (modelId) => {
     return deletedModel;
 };
 
-const findModelAndForceDeleteById = async (modelId) => {
-    return await Object3DModel.findByIdAndDelete(modelId);
-};
+const findModelAndForceDeleteById = async (modelId) => await Object3DModel.findByIdAndDelete(modelId);
 
 const findModelAndRestoreById = async (modelId) => {
     const foundModel = await Object3DModel.findDeleted(convertToObjectIdMongoDB(modelId));
@@ -65,5 +51,5 @@ export {
     findModelById,
     findModelAndUpdateById,
     findModelAndSoftDeleteById,
-    findModelAndForceDeleteById
+    findModelAndForceDeleteById,
 };

@@ -1,6 +1,5 @@
 'use strict';
 
-
 import { BadRequestError, NotFoundError } from '../core/error.response.js';
 import { convertToObjectIdMongoDB } from '../utils/convertToObjectIdMongoDB.js';
 import Object3DModel from '../models/3DObject.model.js';
@@ -13,29 +12,24 @@ import {
     findModelAndSoftDeleteById,
     findModelAndRestoreById,
     findAllDeleted3DModels,
-    findModelAndForceDeleteById
+    findModelAndForceDeleteById,
 } from './repositories/model.service.js';
 
 class SurveyService {
     // Lấy các model chưa xóa (non - deleted) [user / admin]
-    static async getAll3DModels({ query: { limit = 50, sort = 'ctime', filter, unselect = ['deleted'], page = 1 } }) {
-        const skip = (page - 1) * limit;
+    static async getAll3DModels({ query: { sort = 'ctime', unselect = ['deleted'] } }) {
         const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 };
 
-        const models = await findAll3DModels({ limit, sortBy, filter, skip, unselect, page });
-        if (!models) throw new NotFoundError('Not found any model');
+        const models = await findAll3DModels({ unselect, sortBy });
+        if (!models) throw new NotFoundError('Not found any non - deleted model');
         return models;
     }
 
     // [admin]
-    static async getAllDeleted3DModels({
-        query: { limit = 50, sort = 'ctime', filter, unselect = ['deleted'], page = 1 },
-    }) {
-        const skip = (page - 1) * limit;
+    static async getAllDeleted3DModels({ query: { sort = 'ctime', unselect = ['deleted'] } }) {
         const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 };
-
-        const models = await findAllDeleted3DModels({ limit, sortBy, filter, skip, unselect, page });
-        if (!models) throw new NotFoundError('Not found any model');
+        const models = await findAllDeleted3DModels({ unselect, sortBy });
+        if (!models) throw new NotFoundError('Not found any deleted model');
         return models;
     }
 
@@ -73,7 +67,7 @@ class SurveyService {
 
     // [user]
     static async getSignedURLById({ params: { modelId } }) {
-        return await SupabaseService.getSignedURL(modelId)
+        return await SupabaseService.getSignedURL(modelId);
     }
 
     static async get3DBufferFile(req, res) {
@@ -143,7 +137,6 @@ class SurveyService {
         // { url: signedUrlData, path: supabaseFilePath }
         return signedURL;
     }
-
 }
 
 export default SurveyService;

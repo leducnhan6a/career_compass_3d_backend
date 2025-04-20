@@ -3,13 +3,10 @@
 import express from 'express';
 import ModelController from '../controllers/model.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js';
-// import { apiKey, permission } from '../middlewares/auth.middleware.js';
 import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 import { permission } from '../middlewares/auth.middleware.js';
-// import multer from 'multer';
 
 const router = express.Router();
-
 
 // authentication
 router.use(authenticationV2);
