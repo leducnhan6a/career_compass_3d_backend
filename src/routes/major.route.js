@@ -26,10 +26,10 @@ router.get('/aptitude', asyncHandler(MajorController.getMajorsIncludeAptitude));
 // check admin permission
 router.use(permission('admin'));
 
-// create new question
+// create new major
 router.post('/create', asyncHandler(MajorController.createMajor));
 
-// update question
+// update major
 router.put('/update/:majorId', asyncHandler(MajorController.updateMajor));
 
 // soft delete major
