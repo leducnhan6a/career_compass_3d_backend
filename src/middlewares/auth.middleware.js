@@ -45,16 +45,13 @@ const permission = (permission) => {
 
         const user_permission = foundUser.user_permission;
         if (permission === 'user') {
-            if (['admin', 'user'].includes(permission)) return next();
-            return res.status(403).json({
-                message: 'Permission denied',
-            });
-        } else if (user_permission !== permission) {
-            return res.status(403).json({
-                message: 'Permission denied 2',
-            });
+            if (['admin', 'user'].includes(user_permission)) return next();
+        } else if (permission === 'admin') {
+            if (user_permission === 'admin') return next();
         }
-        return next();
+        return res.status(403).json({
+            message: 'Permission denied',
+        });
     };
 };
 
