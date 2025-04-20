@@ -25,7 +25,7 @@ class AccessController {
 
     // Đăng xuất
     async logout (req, res) {
-        const result = await AccessService.logOut(req.keyStore);
+        const result = await AccessService.logOut(req);
         new SuccessResponse({
             message: 'Logged out',
             metadata: result,
