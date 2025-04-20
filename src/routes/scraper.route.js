@@ -4,11 +4,13 @@ import express from 'express';
 import ScraperController from '../controllers/scraper.controller.js';
 import asyncHandler from '../helpers/asyncHandler.js';
 import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
+import { permission } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
 // Xác thực đã đăng nhập
 router.use(authenticationV2);
+router.use(permission('admin'))
 
 // Lấy tất cả bài viết đã crawl
 router.get('/', asyncHandler(ScraperController.getAllArticles));
