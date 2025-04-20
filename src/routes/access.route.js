@@ -6,7 +6,6 @@ import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 
 const router = express.Router();
 
-
 // signup
 router.post('/signup', asyncHandler(AccessController.signup));
 

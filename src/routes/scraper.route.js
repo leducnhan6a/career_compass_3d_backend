@@ -10,21 +10,30 @@ const router = express.Router();
 
 // Xác thực đã đăng nhập
 router.use(authenticationV2);
-router.use(permission('admin'))
+
+// -----------------------------------------------------------------------
+
+// Check user permission
+router.use(permission('user'));
 
 // Lấy tất cả bài viết đã crawl
 router.get('/', asyncHandler(ScraperController.getAllArticles));
 
-// Tạo mới bài viết thủ công (nếu muốn test)
+// -----------------------------------------------------------------------
+
+// check admin permission
+router.use(permission('admin'));
+
+// Tạo mới bài viết thủ công
 router.post('/create', asyncHandler(ScraperController.createArticle));
 
 // Xoá mềm
-router.patch('/sdel/:scraperId', asyncHandler(ScraperController.softDelete));
+router.patch('/:scraperId/delete', asyncHandler(ScraperController.softDelete));
 
 // Khôi phục item bị xoá mềm
-router.patch('/restore/:scraperId', asyncHandler(ScraperController.restore));
+router.patch('/:scraperId/restore', asyncHandler(ScraperController.restore));
 
 // Xoá vĩnh viễn
-router.delete('/del/:scraperId', asyncHandler(ScraperController.deletePermanently));
+router.delete('/:scraperId/delete', asyncHandler(ScraperController.deletePermanently));
 
 export default router;
