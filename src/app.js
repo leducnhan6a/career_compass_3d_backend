@@ -14,7 +14,7 @@ const app = express();
 import accessRoutes from './routes/access.route.js';
 import surveyRoutes from './routes/survey.route.js';
 import majorRoutes from './routes/major.route.js';
-// import modelRoutes from './routes/model.route.js';
+import modelRoutes from './routes/model.route.js';
 
 // init middleware
 app.use(express.json()); // đọc được filejson từ req.body
@@ -39,7 +39,7 @@ app.use(pushToDiscordLog);
 app.use('/api/v1/access', accessRoutes);
 app.use('/api/v1/survey', surveyRoutes);
 app.use('/api/v1/major', majorRoutes);
-// app.use('/api/v1/model', modelRoutes);
+app.use('/api/v1/model', modelRoutes);
 
 // handling error ngoài này
 app.use((req, res, next) => {
