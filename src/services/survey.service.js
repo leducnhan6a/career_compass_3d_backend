@@ -17,8 +17,8 @@ import {
 
 class SurveyService {
     // Lấy các câu hỏi sử dụng limit, skip
-    static async getAllQuestions({ body: { limit = 10, sort = 'ctime', page = 1, select } }) {
-        const allQuestions = await getAllQuestions({ limit, sort, page, select });
+    static async getAllQuestions({ query: { limit = 10, sort = 'ctime', page = 1 } }) {
+        const allQuestions = await getAllQuestions({ limit, sort, page });
         const shuffledQuestions = allQuestions.sort(() => Math.random() - 0.5);
         return shuffledQuestions;
     }
