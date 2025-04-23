@@ -12,13 +12,15 @@ import {
     deleteQuestionById,
     getAllGroups,
     getAllQuestions,
+    findAllDeletedQuestions
 } from './repositories/survey.service.js';
 
 class SurveyService {
     // Lấy các câu hỏi sử dụng limit, skip
     static async getAllQuestions({ body: { limit = 10, sort = 'ctime', page = 1, select } }) {
-        const allQuestions = await getAllQuestions({ limit, sort, page, select })
-        return allQuestions
+        const allQuestions = await getAllQuestions({ limit, sort, page, select });
+        const shuffledQuestions = allQuestions.sort(() => Math.random() - 0.5);
+        return shuffledQuestions;
     }
 
     // Lấy các câu hỏi cùng nhóm
@@ -93,6 +95,12 @@ class SurveyService {
     // Truy xuất lịch sử người dùng
     static async getAllHistoryResult({ body: { userId } }) {
         return await findHistoryResultByUserId(userId);
+    }
+
+    static async getTrashQuestions({ body: { sort = 'ctime', unselect = ['deleted'] } }) {
+        const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 };
+        const deletedQuestions = await findAllDeletedQuestions({ unselect, sortBy });
+        return deletedQuestions;
     }
 
     // Cập nhật lại nội dung câu hỏi

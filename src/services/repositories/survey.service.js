@@ -1,47 +1,57 @@
-'use strict'
+'use strict';
 
-import HollandGroupModel from "../../models/hollandGroup.model.js";
-import HollandQuestionModel from '../../models/hollandQuestion.model.js'
-import { getSelectData } from '../../utils/selectDataOptions.js';
+import HollandGroupModel from '../../models/hollandGroup.model.js';
+import HollandQuestionModel from '../../models/hollandQuestion.model.js';
+import { getSelectData, unGetSelectData } from '../../utils/selectDataOptions.js';
 
 // Tăng số totalQuestion
 const increaseTotalQuestion = async (group) => {
     return await HollandGroupModel.updateOne({ holland_code: group }, { $inc: { holland_totalQuestions: 1 } });
-}
+};
 
 // Giảm số totalQuestion
 const decreaseTotalQuestion = async (group) => {
     return await HollandGroupModel.updateOne({ holland_code: group }, { $inc: { holland_totalQuestions: -1 } });
-}
+};
 
 const getAllQuestions = async ({ limit, sort, page, select }) => {
     const skip = (page - 1) * limit;
     const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 };
 
-    const questions = await HollandQuestionModel
-        .find()
+    const questions = await HollandQuestionModel.find()
         .sort(sortBy)
         .skip(skip)
         .limit(limit)
         .select(getSelectData(select))
         .lean();
     return questions;
-}
+};
+
+const findAllDeletedQuestions = async ({ sort = 'ctime', unselect = ['deleted'] }) => {
+    const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 };
+    const foundDeletedQuestions = await HollandQuestionModel.findDeleted()
+        .sort(sortBy)
+        .select(unGetSelectData(unselect))
+        .lean();
+    return foundDeletedQuestions;
+};
 
 // Lấy tất cả group trong holland group
 const getAllGroups = async () => {
     return await HollandGroupModel.find({});
-}
+};
 
 // Tìm group với holland code (tên group)
-const findGroupByGroupName = async (group) => { 
+const findGroupByGroupName = async (group) => {
     return await HollandGroupModel.findOne({ holland_code: group }).lean();
-}
+};
 
 // Tìm question với group
 const getAllQuestionsByGroupName = async (groupName) => {
-    return await HollandQuestionModel.find({ question_code: { $in: groupName } }).select('question_code question_text _id').lean();
-}
+    return await HollandQuestionModel.find({ question_code: { $in: groupName } })
+        .select('question_code question_text _id')
+        .lean();
+};
 
 // Tìm question với id
 const findQuestionById = async (questionId) => {
@@ -53,7 +63,7 @@ const createQuestion = async (questionData) => {
     const newQuestion = new HollandQuestionModel(questionData);
     increaseTotalQuestion(questionData.question_code);
     return await newQuestion.save();
-}
+};
 
 // Cập nhật lại question
 const updateQuestionById = async (questionId, updateData) => {
@@ -69,11 +79,7 @@ const updateQuestionById = async (questionId, updateData) => {
         await increaseTotalQuestion(newCode);
     }
 
-    return await HollandQuestionModel.findByIdAndUpdate(
-        questionId,
-        { $set: updateData },
-        { new: true }
-    ).lean();
+    return await HollandQuestionModel.findByIdAndUpdate(questionId, { $set: updateData }, { new: true }).lean();
 };
 
 // Xoá mềm
@@ -115,7 +121,7 @@ const deleteQuestionById = async (questionId) => {
     return await HollandQuestionModel.findByIdAndDelete(questionId).lean();
 };
 
-export { 
+export {
     getAllQuestions,
     getAllGroups,
     findQuestionById,
@@ -127,4 +133,6 @@ export {
     findGroupByGroupName,
     getAllQuestionsByGroupName,
     increaseTotalQuestion,
-    decreaseTotalQuestion }
+    decreaseTotalQuestion,
+    findAllDeletedQuestions,
+};
