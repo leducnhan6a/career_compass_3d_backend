@@ -1,5 +1,49 @@
 # Survey's logic
 
+## \* \[GET] Get all questions with limit, skip [no authentication]
+
+**Method:** &nbsp; `GET /questionsSurvey`
+
+**Description:** &nbsp; lấy tất cả question trong database chưa bị xóa mềm (deleted), giới hạn được số lượng, random phần frontend
+
+**Query (optional: limit, sort, page -> truyền y chang ví dụ body):**
+
+```json
+{
+    "limit": 2,
+    "page": 2,
+}
+```
+
+**Request:**
+
+```http
+GET /api/v1/survey/questionsSurvey
+```
+
+**Response:**
+
+```json
+{
+    "message": "Get all questions successfully!",
+    "statusCode": 200,
+    "metadata": [
+        {
+            "_id": "67ff79cdda05b1d3bb725fb1",
+            "question_code": "A",
+            "question_text": "cau hoi 3 (R)"
+        },
+        {
+            "_id": "67ff79c7da05b1d3bb725fae",
+            "question_code": "R",
+            "question_text": "cau hoi 3 (R)"
+        }
+    ]
+}
+```
+
+---
+
 > **Required header:**: &nbsp; `authorization` and `x-client-id`
 
 ```json
@@ -87,8 +131,14 @@ GET /api/v1/survey/questions?groupName=R
 
 ```json
 {
-    "userId": "67ffd670ec9b781c1af01a16", 
-    "answers": [{"group": "R", "value": 3}, {"group": "R", "value": 5}, {"group": "I", "value": 3}, {"group": "A", "value": 1}, {"group": "E", "value": 3}]
+    "userId": "67ffd670ec9b781c1af01a16",
+    "answers": [
+        { "group": "R", "value": 3 },
+        { "group": "R", "value": 5 },
+        { "group": "I", "value": 3 },
+        { "group": "A", "value": 1 },
+        { "group": "E", "value": 3 }
+    ]
 }
 ```
 
