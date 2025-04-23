@@ -8,9 +8,11 @@ import { authenticationV2 } from '../utils/AuthUtil/auth.util.js';
 
 const router = express.Router();
 
+// get all questions with skip and limit 
+router.get('/questionsSurvey', asyncHandler(SurveyController.getAllQuestions));
+
 // authentication
 router.use(authenticationV2);
-
 // -----------------------------------------------------------------------
 
 // Check user permission

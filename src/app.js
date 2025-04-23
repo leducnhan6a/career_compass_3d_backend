@@ -41,7 +41,7 @@ app.use(pushToDiscordLog);
 app.use('/api/v1/access', accessRoutes);
 app.use('/api/v1/survey', surveyRoutes);
 app.use('/api/v1/major', majorRoutes);
-app.use('/api/v1/scraper', scraperRoutes);
+app.use('/api/v1/event', scraperRoutes);
 app.use('/api/v1/model', modelRoutes);
 
 // handling error ngoài này

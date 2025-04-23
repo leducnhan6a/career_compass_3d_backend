@@ -15,7 +15,7 @@ class ScraperService {
         return await getAllArticles();
     }
 
-    static async createArticle({ body: { source, title, url, publishedAt, thumbnail } }) {
+    static async createArticle({ body: { source, title, url, publishedAt = Date.now(), thumbnail } }) {
         const result = await createArticle({ source, title, url, publishedAt, thumbnail });
         if (!result) throw new BadRequestError('Failed to create article');
 

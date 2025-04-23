@@ -5,6 +5,15 @@ import SurveyService from '../services/survey.service.js'
 
 class SurveyController {
 
+    // Lấy toàn bộ câu hỏi
+    async getAllQuestions(req, res) { 
+        const result = await SurveyService.getAllQuestions(req)
+        new SuccessResponse({
+            message: 'Get all questions successfully!',
+            metadata: result,
+        }).send(res);
+    }
+
     // Lấy câu hỏi theo nhóm
     async getQuestionsByGroup(req, res) {
         const result = await SurveyService.getQuestionsByGroup(req)
