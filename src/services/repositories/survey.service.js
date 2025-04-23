@@ -14,7 +14,7 @@ const decreaseTotalQuestion = async (group) => {
     return await HollandGroupModel.updateOne({ holland_code: group }, { $inc: { holland_totalQuestions: -1 } });
 };
 
-const getAllQuestions = async ({ limit, sort, page, select }) => {
+const getAllQuestions = async ({ limit, sort, page }) => {
     const skip = (page - 1) * limit;
     const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 };
 
@@ -22,7 +22,7 @@ const getAllQuestions = async ({ limit, sort, page, select }) => {
         .sort(sortBy)
         .skip(skip)
         .limit(limit)
-        .select(getSelectData(select))
+        .select('-_id question_code question_text')
         .lean();
     return questions;
 };
