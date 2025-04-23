@@ -2,6 +2,7 @@
 
 import HollandGroupModel from "../../models/hollandGroup.model.js";
 import HollandQuestionModel from '../../models/hollandQuestion.model.js'
+import { getSelectData } from '../../utils/selectDataOptions.js';
 
 // Tăng số totalQuestion
 const increaseTotalQuestion = async (group) => {
@@ -11,6 +12,20 @@ const increaseTotalQuestion = async (group) => {
 // Giảm số totalQuestion
 const decreaseTotalQuestion = async (group) => {
     return await HollandGroupModel.updateOne({ holland_code: group }, { $inc: { holland_totalQuestions: -1 } });
+}
+
+const getAllQuestions = async ({ limit, sort, page, select }) => {
+    const skip = (page - 1) * limit;
+    const sortBy = sort === 'ctime' ? { _id: -1 } : { _id: 1 };
+
+    const questions = await HollandQuestionModel
+        .find()
+        .sort(sortBy)
+        .skip(skip)
+        .limit(limit)
+        .select(getSelectData(select))
+        .lean();
+    return questions;
 }
 
 // Lấy tất cả group trong holland group
@@ -101,6 +116,7 @@ const deleteQuestionById = async (questionId) => {
 };
 
 export { 
+    getAllQuestions,
     getAllGroups,
     findQuestionById,
     createQuestion,

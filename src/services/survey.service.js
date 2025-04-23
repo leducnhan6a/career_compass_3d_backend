@@ -11,9 +11,16 @@ import {
     softDeleteQuestionById,
     deleteQuestionById,
     getAllGroups,
+    getAllQuestions,
 } from './repositories/survey.service.js';
 
 class SurveyService {
+    // Lấy các câu hỏi sử dụng limit, skip
+    static async getAllQuestions({ body: { limit = 10, sort = 'ctime', page = 1, select } }) {
+        const allQuestions = await getAllQuestions({ limit, sort, page, select })
+        return allQuestions
+    }
+
     // Lấy các câu hỏi cùng nhóm
     static async getQuestionsByGroup({ query: { groupName } }) {
         if (!groupName) throw new BadRequestError('Group name is required');
@@ -40,7 +47,7 @@ class SurveyService {
     // Xử lý kết quả khảo sát
     static async solveSurveyResult({ body: { userId, answers } }) {
         if (!Array.isArray(answers) || answers.length === 0) throw new BadRequestError('Invalid answer data');
-        
+
         const scoreMap = {};
         let totalScore = 0;
 
@@ -62,7 +69,7 @@ class SurveyService {
                 percentage: maxGroupScore ? Math.round((score / maxGroupScore) * 100) : 0,
             };
             return acc;
-        }, {});  
+        }, {});
 
         const top3Traits = Object.entries(groupScores)
             .filter(([, data]) => data.groupScore > 0)
@@ -75,7 +82,9 @@ class SurveyService {
 
         const history = { hollandCode, groupScores, top3Traits, totalScore, maxScore, totalQuestions, createdAt };
 
-        const updated = await findUserAndUpdate(userId, { $push: { user_history: { action: 'survey_result', metadata: history } }});
+        const updated = await findUserAndUpdate(userId, {
+            $push: { user_history: { action: 'survey_result', metadata: history } },
+        });
         if (!updated) throw new BadRequestError('Update history error');
 
         return history;
