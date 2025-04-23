@@ -32,6 +32,9 @@ router.get('/history', asyncHandler(SurveyController.getAllHistoryResult));
 // check admin permission
 router.use(permission('admin'));
 
+// lấy all câu hỏi bị xóa mềm
+router.get('/trash', asyncHandler(SurveyController.getTrashQuestions));
+
 // Tạo mới một câu hỏi
 router.post('/questions', asyncHandler(SurveyController.createQuestion));
 

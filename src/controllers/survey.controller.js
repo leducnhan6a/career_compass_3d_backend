@@ -41,6 +41,14 @@ class SurveyController {
         }).send(res);
     }
 
+    async getTrashQuestions(req, res) { 
+        const result = await SurveyService.getTrashQuestions(req)
+        new SuccessResponse({
+            message: 'Get deleted questions successfully',
+            metadata: result,
+        }).send(res);
+    }
+
     // Tạo mới câu hỏi
     async createQuestion(req, res) {
         const result = await SurveyService.createQuestion(req);
