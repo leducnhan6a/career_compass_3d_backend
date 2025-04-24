@@ -2,14 +2,23 @@ import dotenv from 'dotenv';
 import express from 'express';
 import morgan from 'morgan';
 import helmet from 'helmet';
+import cors from 'cors';
 import compression from 'compression';
+import YAML from 'yaml';
+import fs from 'fs';
+import path from 'path';
+import swaggerUi from 'swagger-ui-express';
 
 import pushToDiscordLog from './middlewares/pushToDiscordBot.js';
 import instanceMongodb from './dbs/init.mongodb.js';
 import cronSchedule from './utils/cron/scrape.cron.js';
+// import { swaggerUi, swaggerSpec } from './configs/swagger.config.js';
 // import { checkOverload } from './helpers/check.connect.js';
 
 const app = express();
+const file = fs.readFileSync(path.resolve('src', 'career_compass_3d.yaml'), 'utf8');
+const swaggerDocument = YAML.parse(file);
+const environment = process.env.NODE_ENV || 'development';
 
 // implement new Route
 import accessRoutes from './routes/access.route.js';
@@ -28,11 +37,18 @@ app.use(
         extended: true,
     }),
 ); // cho req.body
+app.use(cors());
 dotenv.config();
 
 // init mongoDB database
 instanceMongodb;
 // checkOverload()
+
+
+// API documentation
+if (environment === 'development') {
+    app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
 
 // middleware discord log bot
 app.use(pushToDiscordLog);

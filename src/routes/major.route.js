@@ -26,6 +26,9 @@ router.get('/aptitude', asyncHandler(MajorController.getMajorsIncludeAptitude));
 // check admin permission
 router.use(permission('admin'));
 
+// get majors by uni_code
+router.get('/trash', asyncHandler(MajorController.getTrashMajors));
+
 // create new major
 router.post('/create', asyncHandler(MajorController.createMajor));
 

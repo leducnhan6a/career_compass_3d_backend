@@ -6,6 +6,7 @@ import {
     softDeleteById,
     restoreById,
     deleteById,
+    getTrashArticle
 } from './repositories/scraper.service.js';
 
 import { BadRequestError, NotFoundError } from '../core/error.response.js';
@@ -13,6 +14,12 @@ import { BadRequestError, NotFoundError } from '../core/error.response.js';
 class ScraperService {
     static async getAllArticles() {
         return await getAllArticles();
+    }
+
+    static async getTrashArticles() { 
+        const result = await getTrashArticle()
+        if (!result) throw new BadRequestError('Get trash articles failed');
+        return result
     }
 
     static async createArticle({ body: { source, title, url, publishedAt = Date.now(), thumbnail } }) {

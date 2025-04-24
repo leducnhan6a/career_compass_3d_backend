@@ -14,6 +14,14 @@ class MajorController {
         }).send(res);
     }
 
+    async getTrashMajors(req, res) {
+        const result = await MajorService.getTrashMajors(req);
+        new SuccessResponse({
+            message: 'Get deleted majors successfully',
+            metadata: result,
+        }).send(res);
+    }
+
     // Tạo mới một ngành
     async createMajor(req, res) {
         const result = await MajorService.createMajor(req);

@@ -12,6 +12,14 @@ class ScraperController {
         }).send(res);
     }
 
+    async getTrashArticles(req, res) {
+        const result = await ScraperService.getTrashArticles();
+        new SuccessResponse({
+            message: 'Get trash articles successfully',
+            metadata: result,
+        }).send(res);
+    }
+
     async createArticle(req, res) {
         const result = await ScraperService.createArticle(req);
         new CREATED({
