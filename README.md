@@ -18,7 +18,7 @@
 **Request:**
 
 ```http
-GET /api/v1/survey/questionsSurvey
+GET /api/v1/survey/questionsSurvey?limit=2&page=1
 ```
 
 **Response:**
