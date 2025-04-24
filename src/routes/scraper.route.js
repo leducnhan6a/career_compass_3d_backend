@@ -24,6 +24,9 @@ router.get('/', asyncHandler(ScraperController.getAllArticles));
 // check admin permission
 router.use(permission('admin'));
 
+// lấy trash articles
+router.get('/trash', asyncHandler(ScraperController.getTrashArticles));
+
 // Tạo mới bài viết thủ công
 router.post('/create', asyncHandler(ScraperController.createArticle));
 
