@@ -8,7 +8,8 @@ import {
     updateMajorById,
     softDeleteMajorById,
     restoreMajorById,
-    deleteMajorById
+    deleteMajorById,
+    findAllDeletedmajors
 } from './repositories/major.service.js';
 
 class MajorService {
@@ -18,6 +19,13 @@ class MajorService {
         const majorList = await getAllMajorsByUnicode(uni_code);
         if (!majorList || majorList.length === 0) throw new NotFoundError('No majors found for this university');
         return majorList;
+    }
+
+    static async getTrashMajors({ query: { sort = 'ctime' } }) {
+        const unselect = ['deleted']
+        const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 };
+        const deletedMajors = await findAllDeletedmajors({ unselect, sortBy });
+        return deletedMajors;
     }
 
     // Thêm ngành mới
