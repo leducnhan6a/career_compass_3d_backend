@@ -1,0 +1,2632 @@
+openapi: 3.0.4
+info:
+    title: Career Compass 3D
+    description: |-
+
+    version: 1.0.0
+servers:
+    - url: http://localhost:5000/api/v1
+tags:
+    - name: users
+      description: API about access and authentication.
+    - name: surveys
+      description: API about survey and question.
+    - name: majors
+      description: API about majors in university.
+    - name: events
+      description: API about education events.
+    - name: models
+      description: API about 3D Models.
+
+paths:
+    /access/signup:
+        post:
+            tags:
+                - users
+            summary: Đăng ký tài khoản người dùng mới
+            description: API endpoint cho phép người dùng đăng ký tài khoản mới.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    format: email
+                                    description: Địa chỉ email của người dùng.
+                                    example: counterstriker@gmail.com
+                                username:
+                                    type: string
+                                    description: Tên người dùng (username) duy nhất.
+                                    example: counterstriker
+                                displayname:
+                                    type: string
+                                    description: Tên hiển thị của người dùng.
+                                    example: Le Duc Nhan
+                                password:
+                                    type: string
+                                    format: password
+                                    description: Mật khẩu của người dùng.
+                                    example: 123456
+                                gender:
+                                    type: string
+                                    enum: [male, female, other]
+                                    description: Giới tính của người dùng.
+                                    example: male
+                            required:
+                                - email
+                                - username
+                                - password
+            responses:
+                '201':
+                    description: Đăng ký thành công.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        description: Thông báo kết quả.
+                                        example: Registered successfully!
+                                    statusCode:
+                                        type: integer
+                                        description: Mã trạng thái HTTP.
+                                        example: 201
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            user:
+                                                type: object
+                                                properties:
+                                                    _id:
+                                                        type: string
+                                                        description: ID của người dùng.
+                                                        example: '680496bdebb6f6f9fc3699a3'
+                                                    user_name:
+                                                        type: string
+                                                        description: Tên người dùng.
+                                                        example: counterstriker
+                                                    user_email:
+                                                        type: string
+                                                        format: email
+                                                        description: Địa chỉ email của người dùng.
+                                                        example: counterstriker@gmail.com
+                                                    user_permission:
+                                                        type: string
+                                                        description: Quyền của người dùng.
+                                                        example: user
+                                                    user_displayname:
+                                                        type: string
+                                                        description: Tên hiển thị của người dùng.
+                                                        example: Le Duc Nhan
+                                                    tokens:
+                                                        type: string
+                                                        description: JWT token.
+                                                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA0OTZiZGViYjZmNmY5ZmMzNjk5YTMiLCJpYXQiOjE3NDUxMzExOTcsImV4cCI6MTc0NTMwMzk5N30.fQJsX2z8kOx8OwyxdMWEuZz1Ql7VsPRwowQeBMBRaH4
+                '401':
+                    description: Tài khoản đã tồn tại
+                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 403
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 403
+                                    message:
+                                        type: string
+                                        example: User already exists
+    /access/login:
+        post:
+            tags:
+                - users
+            summary: Đăng nhập tài khoản
+            description: API endpoint cho phép người dùng đăng nhập vào hệ thống.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/LoginBody'
+
+            responses:
+                '200':
+                    description: Login successfully!.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        description: Thông báo kết quả.
+                                        example: Login successfully!
+                                    statusCode:
+                                        type: integer
+                                        description: Mã trạng thái HTTP.
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            user:
+                                                type: object
+                                                properties:
+                                                    _id:
+                                                        type: string
+                                                        description: ID của người dùng.
+                                                        example: '68049ac13a535436e4b29dda'
+                                                    user_displayname:
+                                                        type: string
+                                                        description: Tên hiển thị của người dùng.
+                                                        example: Le Duc Nhan
+                                                    user_permission:
+                                                        type: string
+                                                        description: Quyền của người dùng.
+                                                        example: user
+                                                    tokens:
+                                                        type: string
+                                                        description: JWT token.
+                                                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA0OWFjMTNhNTM1NDM2ZTRiMjlkZGEiLCJ1c2VybmFtZSI6ImNvdW50ZXJzdHJpa2VyIiwiaWF0IjoxNzQ1MTMyNzcwLCJleHAiOjE3NDUzMDU1NzB9.SboM7MGnvEDM-mQ6ms2YCt2-SYNxL-ap-WlVLYYMbUY
+                '404':
+                    description: User not found
+                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 404
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 404
+                                    message:
+                                        type: string
+                                        example: Not Found
+    /access/logout:
+        post:
+            tags:
+                - users
+            summary: Đăng xuất tài khoản
+            description: API endpoint cho phép người dùng đăng xuất khỏi hệ thống.
+            security:
+                - JWTAuth: [] # Giả định bạn đang sử dụng Bearer token cho xác thực
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                  example: '6804a004d2aabc5d7156fcf3'
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA0OWFjMTNhNTM1NDM2ZTRiMjlkZGEiLCJ1c2VybmFtZSI6ImNvdW50ZXJzdHJpa2VyIiwiaWF0IjoxNzQ1MTMyNzcwLCJleHAiOjE3NDUzMDU1NzB9.SboM7MGnvEDM-mQ6ms2YCt2-SYNxL-ap-WlVLYYMbUY'
+            responses:
+                '200':
+                    description: Đăng xuất thành công.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        description: Thông báo kết quả.
+                                        example: Logged out
+                                    statusCode:
+                                        type: integer
+                                        description: Mã trạng thái HTTP.
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            message:
+                                                type: string
+                                                description: Thông báo chi tiết.
+                                                example: Logged out successfully
+                '404':
+                    description: User not found
+                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 404
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 404
+                                    message:
+                                        type: string
+                                        example: Not Found
+    /survey/questionsSurvey:
+        get:
+            tags:
+                - surveys
+            summary: Lấy danh sách câu hỏi khảo sát
+            parameters:
+                - in: query
+                  name: limit
+                  schema:
+                      type: integer
+                  description: Số lượng câu hỏi trên một trang
+                  example: 2
+                - in: query
+                  name: page
+                  schema:
+                      type: integer
+                  description: Số trang
+                  example: 1
+            responses:
+                '200':
+                    description: Thành công - Lấy danh sách câu hỏi thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get all questions successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            type: object
+                                            properties:
+                                                _id:
+                                                    type: string
+                                                    example: '67ff79cdda05b1d3bb725fb1'
+                                                question_code:
+                                                    type: string
+                                                    example: 'A'
+                                                question_text:
+                                                    type: string
+                                                    example: 'cau hoi 3 (R)'
+    /survey/trash:
+        get:
+            summary: Lấy tất cả các câu hỏi đã bị xóa mềm
+            description: Lấy thông tin của tất cả các câu hỏi đã bị xóa mềm (chưa xóa vĩnh viễn).
+            tags:
+                - surveys
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+                  description: Sắp xếp (mặc định theo thời gian tạo).
+            responses:
+                '200':
+                    description: Thành công - Lấy các câu hỏi đã xóa thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get deleted questions successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/DeletedQuestion'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+    /survey/questions:
+        get:
+            tags:
+                - surveys
+            summary: Lấy danh sách câu hỏi theo loại
+            description: Truy vấn câu hỏi theo khóa `groupName` với giá trị là một trong các ký tự `R` | `I` | `A` | `S` | `E` | `C`
+            security:
+                - JWTAuth: [] # Áp dụng lược đồ bảo mật JWTAuth cho endpoint này
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+                - in: query
+                  name: groupName
+                  schema:
+                      type: string
+                      enum:
+                          - R
+                          - I
+                          - A
+                          - S
+                          - E
+                          - C
+                  description: Loại câu hỏi cần truy vấn (R, I, A, S, E, C)
+                  required: true
+            responses:
+                '200':
+                    description: Thành công - Lấy danh sách câu hỏi theo loại thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get questions by group name successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            type: object
+                                            properties:
+                                                _id:
+                                                    type: string
+                                                    example: '67ffe70bbebc649b24d6bc78'
+                                                question_text:
+                                                    type: string
+                                                    example: 'Bạn thích sửa chữa các món đồ trong nhà khi chúng bị hỏng.'
+                                                question_code:
+                                                    type: string
+                                                    example: 'R'
+                '404':
+                    description: User not found
+                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 404
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 404
+                                    message:
+                                        type: string
+                                        example: Not Found
+        post:
+            tags:
+                - surveys
+            summary: Tạo câu hỏi mới
+            description: Tạo một câu hỏi Holland mới bằng cách định nghĩa mã câu hỏi và nội dung câu hỏi.
+            security:
+                - JWTAuth: [] # Áp dụng lược đồ bảo mật JWTAuth cho endpoint này
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                group:
+                                    type: string
+                                    example: 'R'
+                                    description: Mã nhóm câu hỏi (R, I, A, S, E, C)
+                                question:
+                                    type: string
+                                    example: 'Một con gà xoè ra mấy cái cánh'
+                                    description: Nội dung câu hỏi
+            responses:
+                '201':
+                    description: Thành công - Câu hỏi đã được tạo thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Question created successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 201
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            question_code:
+                                                type: string
+                                                example: 'R'
+                                            question_text:
+                                                type: string
+                                                example: 'Một con gà xoè ra mấy cái cánh'
+                                            _id:
+                                                type: string
+                                                example: '6800efae57d4b086a061e1aa'
+                                            deleted:
+                                                type: boolean
+                                                example: false
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T11:25:15.660Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T11:25:15.660Z'
+                                            __v:
+                                                type: integer
+                                                example: 0
+                                    options:
+                                        type: object
+                                        example: {}
+                '404':
+                    description: User not found
+                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 404
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 404
+                                    message:
+                                        type: string
+                                        example: Not Found
+    /survey/result:
+        post:
+            summary: Xử lý kết quả khảo sát
+            description: Gửi câu trả lời để tính toán mã Holland (WIP)
+            tags:
+                - surveys
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                userId:
+                                    type: string
+                                    example: '67ffd670ec9b781c1af01a16'
+                                    description: ID của người dùng thực hiện khảo sát
+                                answers:
+                                    type: array
+                                    items:
+                                        type: object
+                                        properties:
+                                            group:
+                                                type: string
+                                                example: 'R'
+                                                description: Mã nhóm câu hỏi (R, I, A, S, E, C)
+                                            value:
+                                                type: integer
+                                                example: 3
+                                                description: Giá trị câu trả lời (thường là số điểm)
+            responses:
+                '200':
+                    description: Thành công - Xử lý kết quả khảo sát thành công
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Solve survey result successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            hollandCode:
+                                                type: string
+                                                example: 'RIE'
+                                                description: Mã Holland được tính toán
+                                            groupScores:
+                                                type: object
+                                                properties:
+                                                    R:
+                                                        type: object
+                                                        properties:
+                                                            groupScore:
+                                                                type: integer
+                                                                example: 8
+                                                            percentage:
+                                                                type: integer
+                                                                example: 80
+                                                    I:
+                                                        type: object
+                                                        properties:
+                                                            groupScore:
+                                                                type: integer
+                                                                example: 3
+                                                            percentage:
+                                                                type: integer
+                                                                example: 60
+                                                    A:
+                                                        type: object
+                                                        properties:
+                                                            groupScore:
+                                                                type: integer
+                                                                example: 1
+                                                            percentage:
+                                                                type: integer
+                                                                example: 20
+                                                    S:
+                                                        type: object
+                                                        properties:
+                                                            groupScore:
+                                                                type: integer
+                                                                example: 0
+                                                            percentage:
+                                                                type: integer
+                                                                example: 0
+                                                    E:
+                                                        type: object
+                                                        properties:
+                                                            groupScore:
+                                                                type: integer
+                                                                example: 3
+                                                            percentage:
+                                                                type: integer
+                                                                example: 60
+                                                    C:
+                                                        type: object
+                                                        properties:
+                                                            groupScore:
+                                                                type: integer
+                                                                example: 0
+                                                            percentage:
+                                                                type: integer
+                                                                example: 0
+                                            top3Traits:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        group:
+                                                            type: string
+                                                            example: 'R'
+                                                        score:
+                                                            type: integer
+                                                            example: 8
+                                                        percentage:
+                                                            type: integer
+                                                            example: 80
+                                            totalScore:
+                                                type: integer
+                                                example: 15
+                                            maxScore:
+                                                type: integer
+                                                example: 25
+                                            totalQuestions:
+                                                type: integer
+                                                example: 5
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T12:02:25.006Z'
+                '403':
+                    description: Lỗi - Không có quyền thực hiện hành động này
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 403
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 403
+                                    message:
+                                        type: string
+                                        example: 'Update history error'
+    /survey/history:
+        get:
+            summary: Lấy lịch sử kết quả của người dùng
+            description: Lấy tất cả lịch sử kết quả cho một ID người dùng cụ thể
+            tags:
+                - surveys
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+                - in: query # Mặc dù description nói dùng body, nhưng để tuân theo chuẩn RESTful và Swagger, nên dùng query parameter cho GET
+                  name: userId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng cần lấy lịch sử kết quả
+                  example: '67ffd670ec9b781c1af01a16'
+            responses:
+                '200':
+                    description: Thành công - Lấy lịch sử kết quả người dùng thành công
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get user history result successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            type: object
+                                            properties:
+                                                action:
+                                                    type: string
+                                                    example: 'survey_result'
+                                                timestamp:
+                                                    type: string
+                                                    format: date-time
+                                                    example: '2025-04-16T17:07:46.140Z'
+                                                metadata:
+                                                    type: object
+                                                    properties:
+                                                        hollandCode:
+                                                            type: string
+                                                            example: 'RIE'
+                                                        groupScores:
+                                                            type: object
+                                                            properties:
+                                                                R:
+                                                                    type: object
+                                                                    properties:
+                                                                        groupScore:
+                                                                            type: integer
+                                                                            example: 8
+                                                                        percentage:
+                                                                            type: integer
+                                                                            example: 80
+                                                                I:
+                                                                    type: object
+                                                                    properties:
+                                                                        groupScore:
+                                                                            type: integer
+                                                                            example: 3
+                                                                        percentage:
+                                                                            type: integer
+                                                                            example: 60
+                                                                A:
+                                                                    type: object
+                                                                    properties:
+                                                                        groupScore:
+                                                                            type: integer
+                                                                            example: 1
+                                                                        percentage:
+                                                                            type: integer
+                                                                            example: 20
+                                                                S:
+                                                                    type: object
+                                                                    properties:
+                                                                        groupScore:
+                                                                            type: integer
+                                                                            example: 0
+                                                                        percentage:
+                                                                            type: integer
+                                                                            example: 0
+                                                                E:
+                                                                    type: object
+                                                                    properties:
+                                                                        groupScore:
+                                                                            type: integer
+                                                                            example: 3
+                                                                        percentage:
+                                                                            type: integer
+                                                                            example: 60
+                                                                C:
+                                                                    type: object
+                                                                    properties:
+                                                                        groupScore:
+                                                                            type: integer
+                                                                            example: 0
+                                                                        percentage:
+                                                                            type: integer
+                                                                            example: 0
+                                                        top3Traits:
+                                                            type: array
+                                                            items:
+                                                                type: object
+                                                                properties:
+                                                                    group:
+                                                                        type: string
+                                                                        example: 'R'
+                                                                    score:
+                                                                        type: integer
+                                                                        example: 8
+                                                                    percentage:
+                                                                        type: integer
+                                                                        example: 80
+                                                        totalScore:
+                                                            type: integer
+                                                            example: 15
+                                                        maxScore:
+                                                            type: integer
+                                                            example: 25
+                                                        totalQuestions:
+                                                            type: integer
+                                                            example: 5
+                                                        createdAt:
+                                                            type: string
+                                                            format: date-time
+                                                            example: '2025-04-17T12:02:25.006Z'
+                                                _id:
+                                                    type: string
+                                                    example: '67ffe4465371cc0e5003fdc5'
+                '401':
+                    description: Lỗi - Chưa được xác thực
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 401
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 401
+                                    message:
+                                        type: string
+                                        example: 'Unauthorized'
+    /survey/questions/{questionId}:
+        delete:
+            summary: Xóa vĩnh viễn một câu hỏi
+            description: Xóa vĩnh viễn một câu hỏi theo ID.
+            tags:
+                - surveys
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+                - in: path
+                  name: questionId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của câu hỏi cần xóa
+                  example: '6800efae57d4b086a061e1aa'
+            responses:
+                '200':
+                    description: Thành công - Câu hỏi đã được xóa
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Question deleted'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '6800efae57d4b086a061e1aa'
+                                            question_code:
+                                                type: string
+                                                example: 'S'
+                                            question_text:
+                                                type: string
+                                                example: 'Bạn thường cảm năng một ai đó'
+                                            deleted:
+                                                type: boolean
+                                                example: false
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T12:10:22.662Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T12:12:57.282Z'
+                                            __v:
+                                                type: integer
+                                                example: 0
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+        put:
+            summary: Cập nhật một câu hỏi có sẵn
+            description: Cập nhật nội dung câu hỏi theo ID
+            tags:
+                - surveys
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+                - in: path
+                  name: questionId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của câu hỏi cần cập nhật
+                  example: '6800efae57d4b086a061e1aa'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                question_text:
+                                    type: string
+                                    example: 'Bạn thường cảm năng một ai đó'
+                                    description: Nội dung mới của câu hỏi
+                                question_code:
+                                    type: string
+                                    example: 'S'
+                                    description: Mã mới của câu hỏi
+            responses:
+                '200':
+                    description: Thành công - Câu hỏi đã được cập nhật thành công
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Question updated successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '6800efae57d4b086a061e1aa'
+                                            question_code:
+                                                type: string
+                                                example: 'S'
+                                            question_text:
+                                                type: string
+                                                example: 'Bạn thường cảm năng một ai đó'
+                                            deleted:
+                                                type: boolean
+                                                example: false
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T12:10:22.662Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T12:10:35.422Z'
+                                            __v:
+                                                type: integer
+                                                example: 0
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /survey/questions/{questionId}/delete:
+        patch:
+            summary: Ẩn một câu hỏi (soft delete)
+            description: Ẩn một câu hỏi, câu hỏi sẽ không xuất hiện trong danh sách nhưng chưa bị xóa hoàn toàn.
+            tags:
+                - surveys
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+                - in: path
+                  name: questionId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của câu hỏi cần ẩn
+                  example: '6800efae57d4b086a061e1aa'
+            responses:
+                '200':
+                    description: Thành công - Câu hỏi đã được ẩn thành công
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Question soft deleted'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '6800efae57d4b086a061e1aa'
+                                            question_code:
+                                                type: string
+                                                example: 'S'
+                                            question_text:
+                                                type: string
+                                                example: 'Bạn thường cảm năng một ai đó'
+                                            deleted:
+                                                type: boolean
+                                                example: true
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T12:10:22.662Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T12:12:05.422Z'
+                                            __v:
+                                                type: integer
+                                                example: 0
+                                            deletedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-17T12:12:05.421Z'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /survey/questions/{questionId}/restore:
+        patch:
+            summary: Khôi phục một câu hỏi đã ẩn
+            description: Khôi phục một câu hỏi đã bị ẩn (soft delete).
+            tags:
+                - surveys
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+                - in: path
+                  name: questionId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của câu hỏi cần khôi phục
+                  example: '6800efae57d4b086a061e1aa'
+            responses:
+                '200':
+                    description: Thành công - Câu hỏi đã được khôi phục
+                    # (Phần response sẽ được bạn thêm vào)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /major/unicode:
+        get:
+            summary: Lấy các ngành học theo mã trường
+            description: Lấy danh sách các ngành học dựa trên mã trường (uni code).
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: query
+                  name: uni_code
+                  required: true
+                  schema:
+                      type: string
+                  description: Mã trường (ví dụ UIT)
+                  example: 'UIT'
+            responses:
+                '200':
+                    description: Thành công - Lấy danh sách ngành học theo mã trường thành công
+                    # (Bạn sẽ thêm schema response tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /major/aptitude:
+        get:
+            summary: Lấy các ngành học theo khuynh hướng nghề nghiệp
+            description: Lấy danh sách các ngành học dựa trên các khuynh hướng nghề nghiệp.
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: query
+                  name: traits
+                  required: true
+                  schema:
+                      type: string
+                  description: Các khuynh hướng nghề nghiệp (ví dụ RIC)
+                  example: 'RIC'
+            responses:
+                '200':
+                    description: Thành công - Lấy danh sách ngành học theo khuynh hướng thành công
+                    # (Bạn sẽ thêm schema response tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /major/trash:
+        get:
+            summary: Lấy tất cả các ngành học đã bị xóa mềm
+            description: Lấy thông tin của tất cả các ngành học đã bị xóa mềm (chưa xóa vĩnh viễn).
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+                  description: Sắp xếp (mặc định theo thời gian tạo).
+            responses:
+                '200':
+                    description: Thành công - Lấy các ngành học đã xóa thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: "Get deleted majors successfully"
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/DeletedMajor'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+    /major/create:
+        post:
+            summary: Tạo ngành học mới
+            description: Tạo một ngành học mới.
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                uni_code:
+                                    type: string
+                                    example: 'UIT'
+                                    description: Mã trường
+                                major_name:
+                                    type: string
+                                    example: 'Data Science'
+                                    description: Tên ngành học
+                                major_standard_score:
+                                    type: number
+                                    example: 27.5
+                                    description: Điểm chuẩn của ngành
+                                major_aptitude_trends:
+                                    type: array
+                                    items:
+                                        type: string
+                                        enum:
+                                            - R
+                                            - I
+                                            - A
+                                            - S
+                                            - E
+                                            - C
+                                    example: ['I', 'C', 'R']
+                                    description: Danh sách các khuynh hướng nghề nghiệp
+            responses:
+                '201':
+                    description: Thành công - Ngành học đã được tạo thành công
+                    # (Bạn sẽ thêm schema response tại đây)
+                '400':
+                    description: Lỗi - Dữ liệu không hợp lệ
+                    # (Bạn sẽ thêm schema response lỗi tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /major/update/{majorId}:
+        put:
+            summary: Cập nhật ngành học
+            description: Cập nhật thông tin của một ngành học đã có theo ID.
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: majorId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của ngành học cần cập nhật
+                  example: '6804aae07c44d379ae8249f9'
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                uni_code:
+                                    type: string
+                                    example: 'UIT'
+                                    description: Mã trường
+                                major_name:
+                                    type: string
+                                    example: 'Data Science'
+                                    description: Tên ngành học
+                                major_standard_score:
+                                    type: number
+                                    example: 27.5
+                                    description: Điểm chuẩn của ngành
+                                major_aptitude_trends:
+                                    type: array
+                                    items:
+                                        type: string
+                                        enum:
+                                            - R
+                                            - I
+                                            - A
+                                            - S
+                                            - E
+                                            - C
+                                    example: ['E', 'A', 'R']
+                                    description: Danh sách các khuynh hướng nghề nghiệp
+            responses:
+                '200':
+                    description: Thành công - Ngành học đã được cập nhật thành công
+                    # (Bạn sẽ thêm schema response tại đây)
+                '400':
+                    description: Lỗi - Dữ liệu không hợp lệ
+                    # (Bạn sẽ thêm schema response lỗi tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /major/{majorId}/delete:
+        patch:
+            summary: Xóa mềm ngành học
+            description: Xóa mềm một ngành học theo ID. Ngành học sẽ không hiển thị nhưng chưa bị xóa hoàn toàn.
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: majorId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của ngành học cần xóa mềm
+                  example: '6804aae07c44d379ae8249f9'
+            responses:
+                '200':
+                    description: Thành công - Ngành học đã được xóa mềm
+                    # (Bạn sẽ thêm schema response tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /major/{majorId}/restore:
+        patch:
+            summary: Khôi phục ngành học đã xóa mềm
+            description: Khôi phục một ngành học đã bị xóa mềm theo ID.
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: majorId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của ngành học cần khôi phục
+                  example: '6804aae07c44d379ae8249f9'
+            responses:
+                '200':
+                    description: Thành công - Ngành học đã được khôi phục
+                    # (Bạn sẽ thêm schema response tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /major/{majorId}:
+        delete:
+            summary: Xóa vĩnh viễn ngành học
+            description: Xóa vĩnh viễn một ngành học theo ID.
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: majorId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của ngành học cần xóa vĩnh viễn
+                  example: '6804aae07c44d379ae8249f9'
+            responses:
+                '200':
+                    description: Thành công - Ngành học đã được xóa vĩnh viễn
+                    # (Bạn sẽ thêm schema response tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+    /event:
+        get:
+            summary: Lấy tất cả các bài viết
+            description: Lấy tất cả các bài viết hiện có trong cơ sở dữ liệu.
+            tags:
+                - events
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+            responses:
+                '200':
+                    description: Thành công - Lấy tất cả các bài viết thành công
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get all articles successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Event'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin | user
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin | user
+    /event/trash:
+        get:
+            summary: Lấy tất cả các bài viết đã bị xóa mềm
+            description: Lấy thông tin của tất cả các bài viết đã bị xóa mềm (chưa xóa vĩnh viễn).
+            tags:
+                - events
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+            responses:
+                '200':
+                    description: Thành công - Lấy các bài viết đã xóa thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: "Get trash articles successfully"
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/DeletedEvent'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+    /event/create:
+        post:
+            summary: Tạo sự kiện mới
+            description: Tạo một sự kiện mới và lưu vào cơ sở dữ liệu.
+            tags:
+                - events
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                source:
+                                    type: string
+                                    example: 'tuoitre'
+                                    description: Nguồn của bài viết
+                                title:
+                                    type: string
+                                    example: 'Webdev Adventure thong bao'
+                                    description: Tiêu đề của bài viết
+                                url:
+                                    type: string
+                                    example: 'https://www.webdevstudios.org/'
+                                    description: URL của bài viết
+                                thumbnail:
+                                    type: string
+                                    example: 'https://cdn2.tuoitre.vn/zoom/260_163/471584752817336320/2025/3/17/170325trang-14anh-nho2-read-only-1742172129007763324057-54-0-1654-2560-crop-1742172309580426565128.jpg'
+                                    description: URL của ảnh thumbnail
+                                publishedAt:
+                                    type: string
+                                    format: date
+                                    example: '2024-02-25'
+                                    description: Thời gian xuất bản (tùy chọn)
+            responses:
+                '201':
+                    description: Thành công - Bài viết đã được tạo thủ công
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Article created manually'
+                                    statusCode:
+                                        type: integer
+                                        example: 201
+                                    metadata:
+                                        $ref: '#/components/schemas/Event'
+                                    options:
+                                        type: object
+                                        example: {}
+                '400':
+                    description: Lỗi - Dữ liệu không hợp lệ
+                    # (Bạn sẽ thêm schema response lỗi tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+    /event/{scraperId}/delete:
+        patch:
+            summary: Xóa mềm sự kiện
+            description: Xóa mềm một sự kiện theo ID (scraperId). Sự kiện sẽ không hiển thị nhưng chưa bị xóa hoàn toàn.
+            tags:
+                - events
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: scraperId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của sự kiện cần xóa mềm
+                  example: '6808a0d1d5f6e41821bde414'
+            responses:
+                '200':
+                    description: Thành công - Bài viết đã được xóa mềm
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Article soft deleted'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        $ref: '#/components/schemas/EventWithDelete'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+    /event/{scraperId}/restore:
+        patch:
+            summary: Khôi phục sự kiện đã xóa mềm
+            description: Khôi phục một sự kiện đã bị xóa mềm theo ID (scraperId).
+            tags:
+                - events
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: scraperId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của sự kiện cần khôi phục
+                  example: '6808a0d1d5f6e41821bde414'
+            responses:
+                '200':
+                    description: Thành công - Bài viết đã được khôi phục
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Article restored'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        $ref: '#/components/schemas/Event'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+    /event/{scraperId}:
+        delete:
+            summary: Xóa vĩnh viễn sự kiện
+            description: Xóa vĩnh viễn một sự kiện theo ID (scraperId).
+            tags:
+                - events
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: scraperId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của sự kiện cần xóa vĩnh viễn
+                  example: '6808a0d1d5f6e41821bde414'
+            responses:
+                '200':
+                    description: Thành công - Bài viết đã được xóa vĩnh viễn
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Article permanently deleted'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        $ref: '#/components/schemas/Event'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+    /model:
+        get:
+            summary: Lấy tất cả 3D Models chưa bị xóa mềm
+            description: Lấy thông tin tất cả các file 3D model hiện có trong database mà chưa bị xóa mềm.
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+                  description: Sắp xếp (mặc định theo thời gian tạo gần nhất).
+                - in: query
+                  name: unselect
+                  style: form
+                  explode: false
+                  schema:
+                      type: array
+                      items:
+                          type: string
+                  description: Các trường không muốn lấy trong dữ liệu (ví dụ ['field1', 'field2']).
+            responses:
+                '200':
+                    description: Thành công - Lấy tất cả 3D Models thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get all 3d models successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Model'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: user | admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: user | admin
+    /model/{modelId}/detail:
+        get:
+            summary: Lấy chi tiết 3D Model theo modelId
+            description: Lấy thông tin chi tiết của model 3D qua modelId của nó.
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: modelId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của model 3D.
+            responses:
+                '200':
+                    description: Thành công - Lấy chi tiết model theo modelId thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get detail of model use modelId successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        $ref: '#/components/schemas/ModelDetail'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: user | admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: user | admin
+        put:
+            summary: Cập nhật chi tiết 3D Model theo modelId
+            description: Cập nhật thông tin của model qua modelId. Chỉ cập nhật được thông tin của model chưa xóa mềm.
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: modelId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của model 3D.
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                object3d_name:
+                                    type: string
+                                    example: 'chemistry_lab'
+                                    description: Tên của 3D model.
+                                object3d_description:
+                                    type: string
+                                    example: 'webdev lam trong mua thi giua ki'
+                                    description: Mô tả của 3D model.
+            responses:
+                '200':
+                    description: Thành công - Cập nhật thông tin model thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get all 3d models successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/ModelDetail'
+                '400':
+                    description: Lỗi - Dữ liệu không hợp lệ hoặc model đã bị xóa mềm.
+                    # (Bạn sẽ thêm schema response lỗi tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+    /model/deleted:
+        get:
+            summary: Lấy tất cả 3D Models đã bị xóa mềm
+            description: Lấy thông tin tất cả model 3D đã bị xóa mềm (chưa vĩnh viễn).
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: query
+                  name: sort
+                  schema:
+                      type: string
+                  description: Sắp xếp (mặc định theo thời gian tạo gần nhất).
+                - in: query
+                  name: unselect
+                  style: form
+                  explode: false
+                  schema:
+                      type: array
+                      items:
+                          type: string
+                  description: Các trường không muốn lấy trong dữ liệu (ví dụ ['field1', 'field2']).
+            responses:
+                '200':
+                    description: Thành công - Lấy tất cả 3D Models đã xóa mềm thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get all deleted 3d models successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/DeletedModelInfo'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+    /model/{modelId}/delete:
+        patch:
+            summary: Xóa mềm 3D Model theo modelId
+            description: Cập nhật trạng thái xóa mềm của model theo modelId.
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: modelId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của model 3D.
+            responses:
+                '200':
+                    description: Thành công - Xóa mềm model thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Soft delete model use modelId successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            acknowledged:
+                                                type: boolean
+                                                example: true
+                                            modifiedCount:
+                                                type: integer
+                                                example: 1
+                                            upsertedId:
+                                                type: string
+                                                nullable: true
+                                                example: null
+                                            upsertedCount:
+                                                type: integer
+                                                example: 0
+                                            matchedCount:
+                                                type: integer
+                                                example: 1
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+        delete:
+            summary: Xóa vĩnh viễn 3D Model theo modelId
+            description: Xóa vĩnh viễn model qua modelId. Xóa luôn khỏi database.
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: modelId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của model 3D.
+            responses:
+                '200':
+                    description: Thành công - Xóa vĩnh viễn model thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Force delete model use modelId successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        $ref: '#/components/schemas/DeletedModel'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+    /model/{modelId}/restore:
+        patch:
+            summary: Khôi phục 3D Model theo modelId
+            description: Khôi phục model đã bị xóa mềm theo modelId.
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: modelId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của model 3D.
+            responses:
+                '200':
+                    description: Thành công - Khôi phục model thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Restore deleted model use modelId successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            acknowledged:
+                                                type: boolean
+                                                example: true
+                                            modifiedCount:
+                                                type: integer
+                                                example: 1
+                                            upsertedId:
+                                                type: string
+                                                nullable: true
+                                                example: null
+                                            upsertedCount:
+                                                type: integer
+                                                example: 0
+                                            matchedCount:
+                                                type: integer
+                                                example: 1
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
+    /model/{modelId}:
+        get:
+            summary: Lấy signed URL của 3D Model theo modelId
+            description: Lấy signed URL từ Supabase của model qua modelId.
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+            parameters:
+                - in: header
+                  name: x-client-id
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng đã đăng nhập.
+                - in: header
+                  name: authorization
+                  required: true
+                  schema:
+                      type: string
+                  description: Access token của người dùng đã đăng nhập.
+                - in: path
+                  name: modelId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của model 3D.
+            responses:
+                '200':
+                    description: Thành công - Lấy signed URL thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Restore deleted model use modelId successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            name:
+                                                type: string
+                                                example: 'chemistry_lab'
+                                            ttl:
+                                                type: integer
+                                                example: 300
+                                            url:
+                                                type: string
+                                                example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/sign/webdev/uploads/low_poly_chemistry_lab.glb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzUyYzc5NWEyLWNiMTAtNDllYS04NThjLWFhYmFjNGQ1ZWYwNiJ9.eyJ1cmwiOiJ3ZWJkZXYvdXBsb2Fkcy9sb3dfcG9seV9jaGVtaXN0cnlfbGFiLmdsYiIsImlhdCI6MTc0NTA1MTQ2MiwiZXhwIjoxNzQ1MDUxNzYyfQ.ndJbXqJuu2erOaR2YpPZpcRiJG8noSqqjYbb2tB3mEs'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
+
+components: # <--- Phần định nghĩa components ở cấp độ root
+    securitySchemes: # <--- Định nghĩa các lược đồ bảo mật
+        JWTAuth: # Bạn có thể đặt tên khác tùy ý
+            type: apiKey
+            in: header
+            name: authorization
+    responses:
+        UnauthorizedError:
+            description: Lỗi - Chưa được xác thực
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            statusCode:
+                                type: integer
+                                example: 401
+                            statusError:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 401
+                            message:
+                                type: string
+                                example: 'Unauthorized'
+        ForbiddenError:
+            description: Lỗi - Không có quyền thực hiện hành động này
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            statusCode:
+                                type: integer
+                                example: 403
+                            statusError:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 403
+                            message:
+                                type: string
+                                example: 'Forbidden'
+    schemas:
+        Event: # Định nghĩa schema cho một sự kiện (dựa trên các response mẫu)
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: '6808a0d1d5f6e41821bde414'
+                source:
+                    type: string
+                    example: 'vnexpress'
+                title:
+                    type: string
+                    example: 'Đại học Khoa học Tự nhiên TP HCM xét tuyển bằng 17 tổ hợp'
+                url:
+                    type: string
+                    example: 'https://vnexpress.net/17-to-hop-xet-tuyen-truong-dai-hoc-khoa-hoc-tu-nhien-nam-2025-4877064.html'
+                publishedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-22T11:20:00.000Z'
+                thumbnail:
+                    type: string
+                    example: 'https://i1-vnexpress.vnecdn.net/2025/04/22/487506855-1059448586216270-325-5468-3762-1745289571.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=qCP1rLslAl0EX2s-gA5zUQ'
+                deleted:
+                    type: boolean
+                    example: false
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-23T08:12:01.729Z'
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-23T08:12:01.729Z'
+                __v:
+                    type: integer
+                    example: 0
+        EventWithDelete: # Schema cho response của soft delete (có thêm deletedAt)
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: '6808a0d1d5f6e41821bde414'
+                source:
+                    type: string
+                    example: 'vnexpress'
+                title:
+                    type: string
+                    example: 'Đại học Khoa học Tự nhiên TP HCM xét tuyển bằng 17 tổ hợp'
+                url:
+                    type: string
+                    example: 'https://vnexpress.net/17-to-hop-xet-tuyen-truong-dai-hoc-khoa-hoc-tu-nhien-nam-2025-4877064.html'
+                publishedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-22T11:20:00.000Z'
+                thumbnail:
+                    type: string
+                    example: 'https://i1-vnexpress.vnecdn.net/2025/04/22/487506855-1059448586216270-325-5468-3762-1745289571.jpg?w=680&h=0&q=100&dpr=1&fit=crop&s=qCP1rLslAl0EX2s-gA5zUQ'
+                deleted:
+                    type: boolean
+                    example: true
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-23T08:12:01.729Z'
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-23T08:47:09.949Z'
+                __v:
+                    type: integer
+                    example: 0
+                deletedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-23T08:47:09.948Z'
+        LoginBody:
+            type: object
+            properties:
+                username:
+                    type: string
+                    description: Tên người dùng.
+                    example: counterstriker
+                password:
+                    type: string
+                    format: password
+                    description: Mật khẩu của người dùng.
+                    example: 123456
+            required:
+                - username
+                - password
+        Model:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: '6802903306d308f789f0e16d'
+                object3d_name:
+                    type: string
+                    example: 'chemistry_lab'
+                object3d_description:
+                    type: string
+                    example: 'low_poly_chemistry_lab'
+                object3d_thumbnailUrl:
+                    type: string
+                    example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/low_poly_chemistry_lab.png'
+                object3d_modelUrl:
+                    type: string
+                    example: 'uploads/low_poly_chemistry_lab.glb'
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-19T02:21:39.511Z'
+                object3d_bucket:
+                    type: string
+                    example: 'webdev'
+                deleted:
+                    type: boolean
+                    example: false
+        ModelDetail:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: '6802903306d308f789f0e16d'
+                object3d_name:
+                    type: string
+                    example: 'chemistry_lab'
+                object3d_description:
+                    type: string
+                    example: 'low_poly_chemistry_lab'
+                object3d_thumbnailUrl:
+                    type: string
+                    example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/low_poly_chemistry_lab.png'
+                object3d_modelUrl:
+                    type: string
+                    example: 'uploads/low_poly_chemistry_lab.glb'
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-19T02:21:39.511Z'
+                deleted:
+                    type: boolean
+                    example: false
+                object3d_bucket:
+                    type: string
+                    example: 'webdev'
+        DeletedQuestion:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: '67ff79c4da05b1d3bb725fab'
+                question_code:
+                    type: string
+                    example: 'R'
+                question_text:
+                    type: string
+                    example: 'cau hoi 2 (R)'
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-16T09:35:00.994Z'
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-16T09:35:00.994Z'
+                __v:
+                    type: integer
+                    example: 0
+        DeletedMajor:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: "6804a3b3389ab87a9eed485d"
+                uni_code:
+                    type: string
+                    example: "UIT"
+                major_name:
+                    type: string
+                    example: "Electronic Commerce"
+                major_standard_score:
+                    type: number
+                    format: float
+                    example: 26.12
+                major_aptitude_trends:
+                    type: array
+                    items:
+                        type: string
+                    example:
+                        - "E"
+                        - "C"
+                        - "I"
+        DeletedEvent:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: "6804573c725760eab5f3b4ce"
+                source:
+                    type: string
+                    example: "tuoitre"
+                title:
+                    type: string
+                    example: "Trải nghiệm xe chữa cháy, check-in robot Bumblebee khổng lồ tại ngày hội tư vấn tuyển sinh"
+                url:
+                    type: string
+                    example: "https://tuoitre.vn/trai-nghiem-xe-chua-chay-check-in-robot-bumblebee-khong-lo-tai-ngay-hoi-tu-van-tuyen-sinh-20250316111215454.htm#isreadmore=1"
+                publishedAt:
+                    type: string
+                    format: date-time
+                    example: "2025-03-16T11:50:30.000Z"
+                thumbnail:
+                    type: string
+                    example: "https://cdn2.tuoitre.vn/zoom/260_163/471584752817336320/2025/3/16/ngay-hoi-tu-van-tuyen-sinh-ha-noi-bach-khoa-17420989468731014860367-54-0-1654-2560-crop-17420990652911513087482.jpg"
+                createdAt:
+                    type: string
+                    format: date-time
+                    example: "2025-04-20T02:09:00.537Z"
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: "2025-04-20T02:09:00.537Z"
+                __v:
+                    type: integer
+                    example: 0
+        DeletedModel: # Schema cho response của /deleted
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: '6802903306d308f789f0e16d'
+                object3d_name:
+                    type: string
+                    example: 'chemistry_lab'
+                object3d_description:
+                    type: string
+                    example: 'low_poly_chemistry_lab'
+                object3d_thumbnailUrl:
+                    type: string
+                    example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/low_poly_chemistry_lab.png'
+                object3d_modelUrl:
+                    type: string
+                    example: 'uploads/low_poly_chemistry_lab.glb'
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-19T07:49:13.050Z'
+                object3d_bucket:
+                    type: string
+                    example: 'webdev'
+                deletedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-19T07:49:13.048Z'
+        DeletedModelInfo: # Schema mới cho response của /deleted
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: '6802903306d308f789f0e16d'
+                object3d_name:
+                    type: string
+                    example: 'chemistry_lab'
+                object3d_description:
+                    type: string
+                    example: 'low_poly_chemistry_lab'
+                object3d_thumbnailUrl:
+                    type: string
+                    example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/public/webdevpublic/uploads/low_poly_chemistry_lab.png'
+                object3d_modelUrl:
+                    type: string
+                    example: 'uploads/low_poly_chemistry_lab.glb'
+                updatedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-19T07:49:13.050Z'
+                object3d_bucket:
+                    type: string
+                    example: 'webdev'
+                deletedAt:
+                    type: string
+                    format: date-time
+                    example: '2025-04-19T07:49:13.048Z'
+        SignedUrlResponse:
+            type: object
+            properties:
+                name:
+                    type: string
+                    example: 'chemistry_lab'
+                ttl:
+                    type: integer
+                    example: 300
+                url:
+                    type: string
+                    example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/sign/webdev/uploads/low_poly_chemistry_lab.glb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzUyYzc5NWEyLWNiMTAtNDllYS04NThjLWFhYmFjNGQ1ZWYwNiJ9.eyJ1cmwiOiJ3ZWJkZXYvdXBsb2Fkcy9sb3dfcG9seV9jaGVtaXN0cnlfbGFiLmdsYiIsImlhdCI6MTc0NTA1MTQ2MiwiZXhwIjoxNzQ1MDUxNzYyfQ.ndJbXqJuu2erOaR2YpPZpcRiJG8noSqqjYbb2tB3mEs'
