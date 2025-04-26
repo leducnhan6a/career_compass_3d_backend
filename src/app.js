@@ -26,6 +26,7 @@ import surveyRoutes from './routes/survey.route.js';
 import majorRoutes from './routes/major.route.js';
 import scraperRoutes from './routes/scraper.route.js';
 import modelRoutes from './routes/model.route.js';
+import gpaRoutes from './routes/gpa.route.js';
 
 // init middleware
 app.use(express.json()); // đọc được filejson từ req.body
@@ -59,6 +60,7 @@ app.use('/api/v1/survey', surveyRoutes);
 app.use('/api/v1/major', majorRoutes);
 app.use('/api/v1/event', scraperRoutes);
 app.use('/api/v1/model', modelRoutes);
+app.use('/api/v1/gpa', gpaRoutes);
 
 // handling error ngoài này
 app.use((req, res, next) => {
