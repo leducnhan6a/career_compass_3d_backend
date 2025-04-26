@@ -122,6 +122,14 @@ class AccessService {
         if (!result) throw new BadRequestError('Failed to remove keystore');
         return { message: 'Logged out successfully' };
     }
+
+    static async permanentDeleteUser({ user }) {
+        const { userId } = user;
+        if (!userId) throw new NotFoundError('User not found');
+        console.log('userId::: ', userId)
+        const deletedUser = await findUserAndDelete({ userId });
+        return deletedUser;
+    }
 }
 
 export default AccessService;

@@ -31,6 +31,15 @@ class AccessController {
             metadata: result,
         }).send(res);
     };
+
+    // Xóa vĩnh viễn user
+    async permanentDeleteUser(req, res) {
+        const result = await AccessService.permanentDeleteUser(req);
+        new SuccessResponse({
+            message: 'Permanantly delete this user successfully!',
+            metadata: result,
+        }).send(res);
+    };
 }
 
 export default new AccessController();
