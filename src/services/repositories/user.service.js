@@ -17,6 +17,27 @@ const findUserByName = async ({
     return await userModel.findOne({ user_name: username }).select(select).lean();
 };
 
+// Tìm thông tin người dùng theo email
+const findUserByEmail = async ({
+    email,
+    select = {
+        user_name: 1,
+        user_displayname: 1,
+        user_email: 1,
+        user_password: 1,
+        user_permission: 1,
+    },
+}) => {
+    return await userModel.findOne({ user_email: email }).select(select).lean();
+};
+
+// Tạo mới một user
+const createUser = async (userData) => {
+    // userData phải bao gồm: user_name, user_email, user_password, user_displayname, user_gender
+    const newUser = await userModel.create(userData);
+    return newUser.toObject();
+};
+
 const findUserByUserIdDelete = async ({
     userId,
     select = {
@@ -49,4 +70,5 @@ const findUserAndDelete = async ({ userId }) => {
     return foundUserAndDelete;
 };
 
-export { findUserByName, findHistoryResultByUserId, findUserAndUpdate, findUserAndDelete };
+export { findUserByName, findHistoryResultByUserId, findUserAndUpdate, findUserAndDelete, findUserByEmail,
+    createUser };
