@@ -59,6 +59,7 @@ paths:
                                 - email
                                 - username
                                 - password
+                                - gender
             responses:
                 '201':
                     description: Đăng ký thành công.
@@ -106,26 +107,34 @@ paths:
                                                         type: string
                                                         description: JWT token.
                                                         example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA0OTZiZGViYjZmNmY5ZmMzNjk5YTMiLCJpYXQiOjE3NDUxMzExOTcsImV4cCI6MTc0NTMwMzk5N30.fQJsX2z8kOx8OwyxdMWEuZz1Ql7VsPRwowQeBMBRaH4
-                '401':
-                    description: Tài khoản đã tồn tại
-                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
+                '403':
+                    description: Bad Request – yêu cầu thiếu hoặc không hợp lệ.
                     content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    statusCode:
-                                        type: integer
-                                        example: 403
-                                    statusError:
-                                        type: object
-                                        properties:
-                                            status:
-                                                type: integer
-                                                example: 403
-                                    message:
-                                        type: string
-                                        example: User already exists
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            statusCode:
+                              type: integer
+                              example: 403
+                            message:
+                              type: string"
+                              description: "Chi tiết lỗi (ví dụ định dạng email không hợp lệ, thiếu trường bắt buộc)."
+                              example: Invalid email format
+                '409':
+                    description: Conflict – email hoặc username đã tồn tại.
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            statusCode:
+                              type: integer
+                              example: 409
+                            message:
+                              type: string
+                              description: "Chi tiết xung đột (ví dụ: Email is already registered hoặc Username is already registered)."
+                              example: Email is already registered  /  Username is already registered
     /access/login:
         post:
             tags:
@@ -137,8 +146,20 @@ paths:
                 content:
                     application/json:
                         schema:
-                            $ref: '#/components/schemas/LoginBody'
-
+                            oneOf:
+                                - $ref: '#/components/schemas/LoginWithEmail'
+                                - $ref: '#/components/schemas/LoginWithUsername'
+                        examples:
+                            loginWithEmail:
+                                summary: Login với email
+                                value:
+                                    email: counterstriker@example.com
+                                    password: 123456
+                            loginWithUsername:
+                                summary: Login với username
+                                value:
+                                    username: counterstriker
+                                    password: 123456
             responses:
                 '200':
                     description: Login successfully!.
@@ -165,6 +186,15 @@ paths:
                                                         type: string
                                                         description: ID của người dùng.
                                                         example: '68049ac13a535436e4b29dda'
+                                                    user_name:
+                                                        type: string
+                                                        description: Username của người dùng.
+                                                        example: counterstriker
+                                                    user_email:
+                                                        type: string
+                                                        format: email
+                                                        description: Email của người dùng.
+                                                        example: counterstriker@gmail.com
                                                     user_displayname:
                                                         type: string
                                                         description: Tên hiển thị của người dùng.
@@ -173,30 +203,54 @@ paths:
                                                         type: string
                                                         description: Quyền của người dùng.
                                                         example: user
-                                                    tokens:
-                                                        type: string
-                                                        description: JWT token.
-                                                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA0OWFjMTNhNTM1NDM2ZTRiMjlkZGEiLCJ1c2VybmFtZSI6ImNvdW50ZXJzdHJpa2VyIiwiaWF0IjoxNzQ1MTMyNzcwLCJleHAiOjE3NDUzMDU1NzB9.SboM7MGnvEDM-mQ6ms2YCt2-SYNxL-ap-WlVLYYMbUY
-                '404':
-                    description: User not found
-                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
+                                                tokens:
+                                                    type: string
+                                                    description: JWT token.
+                                                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA0OWFjMTNhNTM1NDM2ZTRiMjlkZGEiLCJ1c2VybmFtZSI6ImNvdW50ZXJzdHJpa2VyIiwiaWF0IjoxNzQ1MTMyNzcwLCJleHAiOjE3NDUzMDU1NzB9.SboM7MGnvEDM-mQ6ms2YCt2-SYNxL-ap-WlVLYYMbUY
+                '401':
+                    description: Unauthorized – email/username tồn tại nhưng password không hợp lệ.
                     content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    statusCode:
-                                        type: integer
-                                        example: 404
-                                    statusError:
-                                        type: object
-                                        properties:
-                                            status:
-                                                type: integer
-                                                example: 404
-                                    message:
-                                        type: string
-                                        example: Not Found
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            statusCode:
+                              type: integer
+                              example: 401
+                            message:
+                              type: string
+                              example: Invalid password
+                '403':
+                    description: Bad Request – thiếu hoặc sai định dạng email/username/password.
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            statusCode:
+                              type: integer
+                              example: 403
+                            message:
+                              type: string
+                              description: Chi tiết lỗi đầu vào.
+                              oneOf:
+                                - example: Invalid email
+                                - example: Username or email is required
+                                - example: Password is required
+                                - example: Failed to generate keystore (lỗi phát sinh khi tạo keystore hoặc token)
+                '404':
+                    description: Not Found – không tìm thấy user với email/username đã cho.
+                    content:
+                      application/json:
+                        schema:
+                          type: object
+                          properties:
+                            statusCode:
+                              type: integer
+                              example: 404
+                            message:
+                              type: string
+                              example: User not found
     /access/logout:
         post:
             tags:
@@ -2409,21 +2463,37 @@ components: # <--- Phần định nghĩa components ở cấp độ root
                     type: string
                     format: date-time
                     example: '2025-04-23T08:47:09.948Z'
-        LoginBody:
-            type: object
-            properties:
-                username:
-                    type: string
-                    description: Tên người dùng.
-                    example: counterstriker
-                password:
-                    type: string
-                    format: password
-                    description: Mật khẩu của người dùng.
-                    example: 123456
-            required:
-                - username
-                - password
+        LoginWithEmail:
+          type: object
+          required:
+            - email
+            - password
+          properties:
+            email:
+              type: string
+              format: email
+              description: Email của người dùng.
+              example: counterstriker@example.com
+            password:
+              type: string
+              format: password
+              description: Mật khẩu của người dùng.
+              example: 123456
+        LoginWithUsername:
+          type: object
+          required:
+            - username
+            - password
+          properties:
+            username:
+              type: string
+              description: Username của người dùng.
+              example: counterstriker
+            password:
+              type: string
+              format: password
+              description: Mật khẩu của người dùng.
+              example: 123456
         Model:
             type: object
             properties:

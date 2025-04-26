@@ -2,37 +2,44 @@
 
 import crypto from 'crypto';
 import bcryptjs from 'bcryptjs';
+import validator from 'validator';
 
-import { findUserByName } from './repositories/user.service.js';
-import APIKeyService from './apiKey.service.js';
-import userModel from '../models/user.model.js';
 import KeyTokenService from './keyToken.service.js';
+import { findUserByName, findUserByEmail, createUser } from './repositories/user.service.js';
 import { createTokenPair } from '../utils/AuthUtil/auth.util.js';
 import { getIntoData } from '../utils/getIntoData.util.js';
-import { BadRequestError, AuthFailureError, NotFoundError } from '../core/error.response.js';
-import validator from 'validator';
+import { BadRequestError, AuthFailureError, NotFoundError, ConflictRequestError } from '../core/error.response.js';
 
 class AccessService {
     static async signUp({ email, displayname, username, password, gender }) {
         // find user
-        const foundUser = await userModel.findOne({ user_email: email });
-        // if have user then return error
-        if (foundUser) throw new BadRequestError('User already exists');
-
-        // validate email, name, oasspassword (su dung thu vien nao do de validate)
+        if (!validator.isEmail(email)) throw new BadRequestError('Invalid email format');
+        if (await findUserByName(username)) throw new ConflictRequestError('Username is already registered');
+        if (await findUserByEmail(email)) throw new ConflictRequestError('Email is already registered');
 
         // hashpassword
         const salt = await bcryptjs.genSalt(10);
         const hashedPassword = await bcryptjs.hash(password, salt);
 
-        // tao moi user trong userModel
-        const newUser = await userModel.create({
-            user_gender: gender,
-            user_email: email,
-            user_displayname: displayname,
-            user_name: username,
-            user_password: hashedPassword,
-        });
+        // create new user in userModel
+        let newUser;
+        try {
+            newUser = await createUser({
+                user_email: email,
+                user_name: username,
+                user_displayname: displayname,
+                user_gender: gender,
+                user_password: hashedPassword,
+            });
+        } catch (error) {
+            if (error.code === 11000) {
+                const rawField = Object.keys(error.keyPattern)[0];
+                const fieldMap = { user_email: 'Email', user_name: 'Username' };
+                const label = fieldMap[rawField] || rawField;
+                throw new ConflictRequestError(`${label} is already registered`);
+            }
+            throw error;
+        }
 
         // neu tao duoc user moi thi bat dau
         if (newUser) {
@@ -69,10 +76,20 @@ class AccessService {
         }
     }
 
-    static async logIn({ username, password }) {
-        const foundUser = await findUserByName({ username });
-        if (!foundUser) throw new NotFoundError('Invalid input');
+    static async logIn({ username, email, password }) {
+        let foundUser;
+        if (email) {
+            if (!validator.isEmail(email)) throw new BadRequestError('Invalid email');
+            foundUser = await findUserByEmail({ email });
+        } else if (username) {
+            foundUser = await findUserByName({ username });
+        } else {
+            throw new BadRequestError('Username or email is required');
+        }
 
+        if (!foundUser) throw new NotFoundError('User not found');
+
+        // Check password
         const isPasswordValid = await bcryptjs.compare(password, foundUser.user_password);
         if (!isPasswordValid) throw new AuthFailureError('Invalid password');
 
@@ -91,7 +108,10 @@ class AccessService {
 
         if (!keyStore) throw new BadRequestError('Failed to generate keystore');
         return {
-            user: getIntoData({ fields: ['_id', 'user_displayname', 'user_permission'], object: foundUser }),
+            user: getIntoData({
+                fields: ['_id', 'user_name', 'user_email', 'user_displayname', 'user_permission'],
+                object: foundUser,
+            }),
             tokens: tokens.accessToken,
         };
     }
