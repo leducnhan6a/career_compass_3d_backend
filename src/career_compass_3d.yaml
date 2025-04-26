@@ -2,7 +2,11 @@ openapi: 3.0.4
 info:
     title: Career Compass 3D
     description: |-
-
+        Trong môi trường giáo dục hiện nay, đối với những học sinh cuối cấp, ngoài những bạn đã xác định được định hướng
+        nghề nghiệp, ngành học trong tương lai thì bên cạnh đó vẫn còn những em học sinh vẫn lựa chọn ngành theo sở thích
+        của gia đình....
+        Đây là API Documentations của dự án Career Compass 3D, chỉ được sử dụng khi bạn là developer (hay nói đúng hơn thì NODE_ENV = development)
+        Vui lòng sử dụng docs này với mục đích cho vui =)) Bạn hãy đọc nó với tinh thần vui vẻ nhé =)) )
     version: 1.0.0
 servers:
     - url: http://localhost:5000/api/v1
@@ -204,22 +208,8 @@ paths:
             summary: Đăng xuất tài khoản
             description: API endpoint cho phép người dùng đăng xuất khỏi hệ thống.
             security:
-                - JWTAuth: [] # Giả định bạn đang sử dụng Bearer token cho xác thực
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
-                  example: '6804a004d2aabc5d7156fcf3'
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
-                  example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA0OWFjMTNhNTM1NDM2ZTRiMjlkZGEiLCJ1c2VybmFtZSI6ImNvdW50ZXJzdHJpa2VyIiwiaWF0IjoxNzQ1MTMyNzcwLCJleHAiOjE3NDUzMDU1NzB9.SboM7MGnvEDM-mQ6ms2YCt2-SYNxL-ap-WlVLYYMbUY'
+                - JWTAuth: []
+                - ClientIdHeader: [] # Giả định bạn đang sử dụng Bearer token cho xác thực
             responses:
                 '200':
                     description: Đăng xuất thành công.
@@ -263,6 +253,40 @@ paths:
                                     message:
                                         type: string
                                         example: Not Found
+    /access:
+        delete:
+            tags: 
+                - users
+            summary: Xóa vĩnh viễn tài khoản của người dùng
+            description: Xóa vĩnh viễn tài khoản của người dùng, sau đó đăng xuất ra ngoài.
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: []
+            responses:
+                '200':
+                    description: Thành công - xóa tài khoản thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: "Delete this account successfully"
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    # Bạn có thể thêm các thuộc tính khác vào metadata nếu cần, ví dụ: {}
+                                    metadata:
+                                        $ref: '#/components/schemas/DeletedUser'
+                '404':
+                    description: User not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/responses/NotFoundError'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
     /survey/questionsSurvey:
         get:
             tags:
@@ -317,19 +341,8 @@ paths:
                 - surveys
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: query
                   name: sort
                   schema:
@@ -362,20 +375,9 @@ paths:
             summary: Lấy danh sách câu hỏi theo loại
             description: Truy vấn câu hỏi theo khóa `groupName` với giá trị là một trong các ký tự `R` | `I` | `A` | `S` | `E` | `C`
             security:
-                - JWTAuth: [] # Áp dụng lược đồ bảo mật JWTAuth cho endpoint này
+                - JWTAuth: []
+                - ClientIdHeader: [] # Áp dụng lược đồ bảo mật JWTAuth cho endpoint này
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
                 - in: query
                   name: groupName
                   schema:
@@ -443,7 +445,8 @@ paths:
             summary: Tạo câu hỏi mới
             description: Tạo một câu hỏi Holland mới bằng cách định nghĩa mã câu hỏi và nội dung câu hỏi.
             security:
-                - JWTAuth: [] # Áp dụng lược đồ bảo mật JWTAuth cho endpoint này
+                - JWTAuth: []
+                - ClientIdHeader: [] # Áp dụng lược đồ bảo mật JWTAuth cho endpoint này
             parameters:
                 - in: header
                   name: x-client-id
@@ -543,19 +546,7 @@ paths:
                 - surveys
             security:
                 - JWTAuth: []
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
+                - ClientIdHeader: []
             requestBody:
                 required: true
                 content:
@@ -712,19 +703,8 @@ paths:
                 - surveys
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
                 - in: query # Mặc dù description nói dùng body, nhưng để tuân theo chuẩn RESTful và Swagger, nên dùng query parameter cho GET
                   name: userId
                   required: true
@@ -878,19 +858,8 @@ paths:
                 - surveys
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
                 - in: path
                   name: questionId
                   required: true
@@ -949,6 +918,7 @@ paths:
                 - surveys
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
                 - in: header
                   name: x-client-id
@@ -1036,19 +1006,8 @@ paths:
                 - surveys
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
                 - in: path
                   name: questionId
                   required: true
@@ -1112,19 +1071,8 @@ paths:
                 - surveys
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập. Giá trị này thường được nhận sau khi đăng ký hoặc đăng nhập thành công.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập. Token này được cấp sau khi đăng ký hoặc đăng nhập thành công. Thường có định dạng "Bearer <token>".
                 - in: path
                   name: questionId
                   required: true
@@ -1148,19 +1096,8 @@ paths:
                 - majors
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: query
                   name: uni_code
                   required: true
@@ -1184,19 +1121,8 @@ paths:
                 - majors
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: query
                   name: traits
                   required: true
@@ -1220,19 +1146,8 @@ paths:
                 - majors
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: query
                   name: sort
                   schema:
@@ -1248,7 +1163,7 @@ paths:
                                 properties:
                                     message:
                                         type: string
-                                        example: "Get deleted majors successfully"
+                                        example: 'Get deleted majors successfully'
                                     statusCode:
                                         type: integer
                                         example: 200
@@ -1266,19 +1181,7 @@ paths:
                 - majors
             security:
                 - JWTAuth: []
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
+                - ClientIdHeader: []
             requestBody:
                 required: true
                 content:
@@ -1330,19 +1233,8 @@ paths:
                 - majors
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: majorId
                   required: true
@@ -1394,6 +1286,30 @@ paths:
                 '403':
                     $ref: '#/components/responses/ForbiddenError'
     /major/{majorId}/delete:
+        delete:
+            summary: Xóa vĩnh viễn ngành học
+            description: Xóa vĩnh viễn một ngành học theo ID.
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: []
+            parameters:
+                - in: path
+                  name: majorId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của ngành học cần xóa vĩnh viễn
+                  example: '6804aae07c44d379ae8249f9'
+            responses:
+                '200':
+                    description: Thành công - Ngành học đã được xóa vĩnh viễn
+                    # (Bạn sẽ thêm schema response tại đây)
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
         patch:
             summary: Xóa mềm ngành học
             description: Xóa mềm một ngành học theo ID. Ngành học sẽ không hiển thị nhưng chưa bị xóa hoàn toàn.
@@ -1401,19 +1317,8 @@ paths:
                 - majors
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: majorId
                   required: true
@@ -1437,19 +1342,8 @@ paths:
                 - majors
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: majorId
                   required: true
@@ -1465,42 +1359,6 @@ paths:
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
                     $ref: '#/components/responses/ForbiddenError'
-    /major/{majorId}:
-        delete:
-            summary: Xóa vĩnh viễn ngành học
-            description: Xóa vĩnh viễn một ngành học theo ID.
-            tags:
-                - majors
-            security:
-                - JWTAuth: []
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
-                - in: path
-                  name: majorId
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của ngành học cần xóa vĩnh viễn
-                  example: '6804aae07c44d379ae8249f9'
-            responses:
-                '200':
-                    description: Thành công - Ngành học đã được xóa vĩnh viễn
-                    # (Bạn sẽ thêm schema response tại đây)
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    $ref: '#/components/responses/ForbiddenError'
     /event:
         get:
             summary: Lấy tất cả các bài viết
@@ -1509,19 +1367,7 @@ paths:
                 - events
             security:
                 - JWTAuth: []
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
+                - ClientIdHeader: []
             responses:
                 '200':
                     description: Thành công - Lấy tất cả các bài viết thành công
@@ -1554,19 +1400,7 @@ paths:
                 - events
             security:
                 - JWTAuth: []
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
+                - ClientIdHeader: []
             responses:
                 '200':
                     description: Thành công - Lấy các bài viết đã xóa thành công!
@@ -1577,7 +1411,7 @@ paths:
                                 properties:
                                     message:
                                         type: string
-                                        example: "Get trash articles successfully"
+                                        example: 'Get trash articles successfully'
                                     statusCode:
                                         type: integer
                                         example: 200
@@ -1595,19 +1429,7 @@ paths:
                 - events
             security:
                 - JWTAuth: []
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
+                - ClientIdHeader: []
             requestBody:
                 required: true
                 content:
@@ -1665,6 +1487,44 @@ paths:
                     $ref: '#/components/responses/ForbiddenError'
             # Quyền truy cập: admin
     /event/{scraperId}/delete:
+        delete:
+            summary: Xóa vĩnh viễn sự kiện
+            description: Xóa vĩnh viễn một sự kiện theo ID (scraperId).
+            tags:
+                - events
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: []
+            parameters:
+                - in: path
+                  name: scraperId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của sự kiện cần xóa vĩnh viễn
+                  example: '6808a0d1d5f6e41821bde414'
+            responses:
+                '200':
+                    description: Thành công - Bài viết đã được xóa vĩnh viễn
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Article permanently deleted'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        $ref: '#/components/schemas/Event'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Không có quyền truy cập # Quyền: admin
+                    $ref: '#/components/responses/ForbiddenError'
+            # Quyền truy cập: admin
         patch:
             summary: Xóa mềm sự kiện
             description: Xóa mềm một sự kiện theo ID (scraperId). Sự kiện sẽ không hiển thị nhưng chưa bị xóa hoàn toàn.
@@ -1672,19 +1532,8 @@ paths:
                 - events
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: scraperId
                   required: true
@@ -1722,19 +1571,8 @@ paths:
                 - events
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: scraperId
                   required: true
@@ -1764,56 +1602,6 @@ paths:
                     description: Không có quyền truy cập # Quyền: admin
                     $ref: '#/components/responses/ForbiddenError'
             # Quyền truy cập: admin
-    /event/{scraperId}:
-        delete:
-            summary: Xóa vĩnh viễn sự kiện
-            description: Xóa vĩnh viễn một sự kiện theo ID (scraperId).
-            tags:
-                - events
-            security:
-                - JWTAuth: []
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
-                - in: path
-                  name: scraperId
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của sự kiện cần xóa vĩnh viễn
-                  example: '6808a0d1d5f6e41821bde414'
-            responses:
-                '200':
-                    description: Thành công - Bài viết đã được xóa vĩnh viễn
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    message:
-                                        type: string
-                                        example: 'Article permanently deleted'
-                                    statusCode:
-                                        type: integer
-                                        example: 200
-                                    metadata:
-                                        $ref: '#/components/schemas/Event'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    description: Không có quyền truy cập # Quyền: admin
-                    $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
     /model:
         get:
             summary: Lấy tất cả 3D Models chưa bị xóa mềm
@@ -1822,19 +1610,8 @@ paths:
                 - models
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: query
                   name: sort
                   schema:
@@ -1873,6 +1650,52 @@ paths:
                     description: Không có quyền truy cập # Quyền: user | admin
                     $ref: '#/components/responses/ForbiddenError'
             # Quyền truy cập: user | admin
+    /model/{modelId}:
+        get:
+            summary: Lấy signed URL của 3D Model theo modelId
+            description: Lấy signed URL từ Supabase của model qua modelId.
+            tags:
+                - models
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: []
+            parameters:
+                - in: path
+                  name: modelId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của model 3D.
+            responses:
+                '200':
+                    description: Thành công - Lấy signed URL thành công!
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Restore deleted model use modelId successfully!'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            name:
+                                                type: string
+                                                example: 'chemistry_lab'
+                                            ttl:
+                                                type: integer
+                                                example: 300
+                                            url:
+                                                type: string
+                                                example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/sign/webdev/uploads/low_poly_chemistry_lab.glb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzUyYzc5NWEyLWNiMTAtNDllYS04NThjLWFhYmFjNGQ1ZWYwNiJ9.eyJ1cmwiOiJ3ZWJkZXYvdXBsb2Fkcy9sb3dfcG9seV9jaGVtaXN0cnlfbGFiLmdsYiIsImlhdCI6MTc0NTA1MTQ2MiwiZXhwIjoxNzQ1MDUxNzYyfQ.ndJbXqJuu2erOaR2YpPZpcRiJG8noSqqjYbb2tB3mEs'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
     /model/{modelId}/detail:
         get:
             summary: Lấy chi tiết 3D Model theo modelId
@@ -1881,19 +1704,8 @@ paths:
                 - models
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: modelId
                   required: true
@@ -1929,19 +1741,8 @@ paths:
                 - models
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: modelId
                   required: true
@@ -1998,19 +1799,8 @@ paths:
                 - models
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: query
                   name: sort
                   schema:
@@ -2057,19 +1847,8 @@ paths:
                 - models
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: modelId
                   required: true
@@ -2122,19 +1901,8 @@ paths:
                 - models
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: modelId
                   required: true
@@ -2171,19 +1939,8 @@ paths:
                 - models
             security:
                 - JWTAuth: []
+                - ClientIdHeader: []
             parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
                 - in: path
                   name: modelId
                   required: true
@@ -2229,71 +1986,37 @@ paths:
                     description: Không có quyền truy cập # Quyền: admin
                     $ref: '#/components/responses/ForbiddenError'
             # Quyền truy cập: admin
-    /model/{modelId}:
-        get:
-            summary: Lấy signed URL của 3D Model theo modelId
-            description: Lấy signed URL từ Supabase của model qua modelId.
-            tags:
-                - models
-            security:
-                - JWTAuth: []
-            parameters:
-                - in: header
-                  name: x-client-id
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của người dùng đã đăng nhập.
-                - in: header
-                  name: authorization
-                  required: true
-                  schema:
-                      type: string
-                  description: Access token của người dùng đã đăng nhập.
-                - in: path
-                  name: modelId
-                  required: true
-                  schema:
-                      type: string
-                  description: ID của model 3D.
-            responses:
-                '200':
-                    description: Thành công - Lấy signed URL thành công!
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    message:
-                                        type: string
-                                        example: 'Restore deleted model use modelId successfully!'
-                                    statusCode:
-                                        type: integer
-                                        example: 200
-                                    metadata:
-                                        type: object
-                                        properties:
-                                            name:
-                                                type: string
-                                                example: 'chemistry_lab'
-                                            ttl:
-                                                type: integer
-                                                example: 300
-                                            url:
-                                                type: string
-                                                example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/sign/webdev/uploads/low_poly_chemistry_lab.glb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzUyYzc5NWEyLWNiMTAtNDllYS04NThjLWFhYmFjNGQ1ZWYwNiJ9.eyJ1cmwiOiJ3ZWJkZXYvdXBsb2Fkcy9sb3dfcG9seV9jaGVtaXN0cnlfbGFiLmdsYiIsImlhdCI6MTc0NTA1MTQ2MiwiZXhwIjoxNzQ1MDUxNzYyfQ.ndJbXqJuu2erOaR2YpPZpcRiJG8noSqqjYbb2tB3mEs'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    $ref: '#/components/responses/ForbiddenError'
-
+    
 components: # <--- Phần định nghĩa components ở cấp độ root
     securitySchemes: # <--- Định nghĩa các lược đồ bảo mật
         JWTAuth: # Bạn có thể đặt tên khác tùy ý
             type: apiKey
             in: header
             name: authorization
+        ClientIdHeader: 
+            type: apiKey
+            in: header
+            name: x-client-id
     responses:
+        NotFoundError:
+            description: Not found error
+            content:
+                application/json:
+                    schema:
+                        type: object
+                        properties:
+                            statusCode:
+                                type: integer
+                                example: 404
+                            statusError:
+                                type: object
+                                properties:
+                                    status:
+                                        type: integer
+                                        example: 404
+                            message:
+                                type: string
+                                example: "Not Found"
         UnauthorizedError:
             description: Lỗi - Chưa được xác thực
             content:
@@ -2480,6 +2203,27 @@ components: # <--- Phần định nghĩa components ở cấp độ root
                 object3d_bucket:
                     type: string
                     example: 'webdev'
+        DeletedUser:
+            type: object
+            properties:
+                _id:
+                    type: string
+                    example: "680bae95e76d0235911bccc2"
+                user_name:
+                    type: string
+                    example: "counterstriker"
+                user_displayname:
+                    type: string
+                    example: "Le Duc Nhan"
+                user_password:
+                    type: string
+                    example: "$2b$10$tJyvO3LrnsGbeHxXcj0WDul3aVwRqOJCMsJHaO2Xj7tRMUu30v50a"
+                user_email:
+                    type: string
+                    example: "counterstriker@gmail.com"
+                user_permission:
+                    type: string
+                    example: "user"
         DeletedQuestion:
             type: object
             properties:
@@ -2508,13 +2252,13 @@ components: # <--- Phần định nghĩa components ở cấp độ root
             properties:
                 _id:
                     type: string
-                    example: "6804a3b3389ab87a9eed485d"
+                    example: '6804a3b3389ab87a9eed485d'
                 uni_code:
                     type: string
-                    example: "UIT"
+                    example: 'UIT'
                 major_name:
                     type: string
-                    example: "Electronic Commerce"
+                    example: 'Electronic Commerce'
                 major_standard_score:
                     type: number
                     format: float
@@ -2524,39 +2268,39 @@ components: # <--- Phần định nghĩa components ở cấp độ root
                     items:
                         type: string
                     example:
-                        - "E"
-                        - "C"
-                        - "I"
+                        - 'E'
+                        - 'C'
+                        - 'I'
         DeletedEvent:
             type: object
             properties:
                 _id:
                     type: string
-                    example: "6804573c725760eab5f3b4ce"
+                    example: '6804573c725760eab5f3b4ce'
                 source:
                     type: string
-                    example: "tuoitre"
+                    example: 'tuoitre'
                 title:
                     type: string
-                    example: "Trải nghiệm xe chữa cháy, check-in robot Bumblebee khổng lồ tại ngày hội tư vấn tuyển sinh"
+                    example: 'Trải nghiệm xe chữa cháy, check-in robot Bumblebee khổng lồ tại ngày hội tư vấn tuyển sinh'
                 url:
                     type: string
-                    example: "https://tuoitre.vn/trai-nghiem-xe-chua-chay-check-in-robot-bumblebee-khong-lo-tai-ngay-hoi-tu-van-tuyen-sinh-20250316111215454.htm#isreadmore=1"
+                    example: 'https://tuoitre.vn/trai-nghiem-xe-chua-chay-check-in-robot-bumblebee-khong-lo-tai-ngay-hoi-tu-van-tuyen-sinh-20250316111215454.htm#isreadmore=1'
                 publishedAt:
                     type: string
                     format: date-time
-                    example: "2025-03-16T11:50:30.000Z"
+                    example: '2025-03-16T11:50:30.000Z'
                 thumbnail:
                     type: string
-                    example: "https://cdn2.tuoitre.vn/zoom/260_163/471584752817336320/2025/3/16/ngay-hoi-tu-van-tuyen-sinh-ha-noi-bach-khoa-17420989468731014860367-54-0-1654-2560-crop-17420990652911513087482.jpg"
+                    example: 'https://cdn2.tuoitre.vn/zoom/260_163/471584752817336320/2025/3/16/ngay-hoi-tu-van-tuyen-sinh-ha-noi-bach-khoa-17420989468731014860367-54-0-1654-2560-crop-17420990652911513087482.jpg'
                 createdAt:
                     type: string
                     format: date-time
-                    example: "2025-04-20T02:09:00.537Z"
+                    example: '2025-04-20T02:09:00.537Z'
                 updatedAt:
                     type: string
                     format: date-time
-                    example: "2025-04-20T02:09:00.537Z"
+                    example: '2025-04-20T02:09:00.537Z'
                 __v:
                     type: integer
                     example: 0

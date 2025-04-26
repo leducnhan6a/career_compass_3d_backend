@@ -15,6 +15,7 @@ router.post('/login', asyncHandler(AccessController.login));
 // authentication middleware
 router.use(authenticationV2)
 
+router.delete('', asyncHandler(AccessController.permanentDeleteUser))
 router.post('/logout', asyncHandler(AccessController.logout))
 
 export default router;
