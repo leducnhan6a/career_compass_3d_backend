@@ -3,7 +3,7 @@
 import crypto from 'crypto';
 import bcryptjs from 'bcryptjs';
 
-import { findUserByName } from './repositories/user.service.js';
+import { findUserAndDelete, findUserByName } from './repositories/user.service.js';
 import APIKeyService from './apiKey.service.js';
 import userModel from '../models/user.model.js';
 import KeyTokenService from './keyToken.service.js';
@@ -101,6 +101,14 @@ class AccessService {
         const result = await KeyTokenService.removeKeyById(keyStore._id);
         if (!result) throw new BadRequestError('Failed to remove keystore');
         return { message: 'Logged out successfully' };
+    }
+
+    static async permanentDeleteUser({ user }) {
+        const { userId } = user;
+        if (!userId) throw new NotFoundError('User not found');
+        console.log('userId::: ', userId)
+        const deletedUser = await findUserAndDelete({ userId });
+        return deletedUser;
     }
 }
 

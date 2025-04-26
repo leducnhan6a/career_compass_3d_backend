@@ -17,7 +17,7 @@ router.use(authenticationV2);
 router.use(permission('user'));
 
 // Lấy tất cả bài viết đã crawl
-router.get('/', asyncHandler(ScraperController.getAllArticles));
+router.get('', asyncHandler(ScraperController.getAllArticles));
 
 // -----------------------------------------------------------------------
 
