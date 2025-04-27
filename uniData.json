@@ -1,0 +1,908 @@
+[
+    {
+        "uni_code": "UIT",
+        "major_name": "Electronic Commerce",
+        "major_standard_score": 26.12,
+        "major_aptitude_trends": ["E", "C", "I"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Data Science",
+        "major_standard_score": 27.5,
+        "major_aptitude_trends": ["I", "C", "R"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Computer Science",
+        "major_standard_score": 27.3,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Computer Networks and Data Communication",
+        "major_standard_score": 25.7,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Software Engineering",
+        "major_standard_score": 26.85,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Information Systems",
+        "major_standard_score": 26.25,
+        "major_aptitude_trends": ["C", "I", "E"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Computer Engineering",
+        "major_standard_score": 26.25,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Artificial Intelligence",
+        "major_standard_score": 28.3,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Information Technology",
+        "major_standard_score": 27.1,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Information Security",
+        "major_standard_score": 26.77,
+        "major_aptitude_trends": ["R", "C", "I"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Microelectronic Design",
+        "major_standard_score": 26.5,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "UIT",
+        "major_name": "Multimedia Communication",
+        "major_standard_score": null,
+        "major_aptitude_trends": ["A", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Biology",
+        "major_standard_score": 23.5,
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Biotechnology",
+        "major_standard_score": 24.9,
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Physics (English Advanced Program)",
+        "major_standard_score": 23,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Physics, Electronic Physics and Informatics Technology, Semiconductor Technology (Group)",
+        "major_standard_score": 25.1,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Chemistry",
+        "major_standard_score": "24.65 – 25.42",
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Material Science",
+        "major_standard_score": 22.3,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Geology",
+        "major_standard_score": 19.5,
+        "major_aptitude_trends": ["I", "R", "S"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Oceanography",
+        "major_standard_score": 20,
+        "major_aptitude_trends": ["I", "S", "R"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Environmental Science",
+        "major_standard_score": "18.5 – 19",
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Mathematics, Informatics, Applied Mathematics (Group)",
+        "major_standard_score": 25.55,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Data Science",
+        "major_standard_score": 26.85,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Computer Science (Advanced Program)",
+        "major_standard_score": 28.5,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Artificial Intelligence",
+        "major_standard_score": 27.7,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Computer Science and Information Technology (Group)",
+        "major_standard_score": "26 – 26.75",
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Chemical Engineering Technology (English Advanced Program)",
+        "major_standard_score": 25,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Material Technology",
+        "major_standard_score": 24,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Environmental Engineering Technology",
+        "major_standard_score": 19,
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Electronics - Telecommunications Engineering, Microelectronic Design (Group)",
+        "major_standard_score": "25.4 – 25.9",
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Nuclear Engineering",
+        "major_standard_score": 23.6,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Medical Physics",
+        "major_standard_score": 24.6,
+        "major_aptitude_trends": ["I", "S", "R"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Geological Engineering",
+        "major_standard_score": 19.5,
+        "major_aptitude_trends": ["I", "R", "S"]
+    },
+    {
+        "uni_code": "HCMUS",
+        "major_name": "Natural Resources and Environmental Management",
+        "major_standard_score": 22,
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Computer Science",
+        "major_standard_score": "79.63 – 84.16",
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Computer Engineering",
+        "major_standard_score": "80.41 – 82.87",
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Electrical - Electronics - Telecommunications - Automation - Microelectronic Design (Group)",
+        "major_standard_score": "76.71 – 80.03",
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Mechanical Engineering",
+        "major_standard_score": "65.77 – 73.89",
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Mechatronics Engineering",
+        "major_standard_score": "78 – 81.33",
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Textile - Garment (Group)",
+        "major_standard_score": 55.51,
+        "major_aptitude_trends": ["R", "A", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Chemical - Food - Biotechnology (Group)",
+        "major_standard_score": 77.36,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Construction and Construction Project Management (Group)",
+        "major_standard_score": 62.01,
+        "major_aptitude_trends": ["E", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Architecture",
+        "major_standard_score": 70.85,
+        "major_aptitude_trends": ["A", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Petroleum - Geology (Group)",
+        "major_standard_score": 66.11,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Industrial Management",
+        "major_standard_score": "65.03 – 77.28",
+        "major_aptitude_trends": ["E", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Natural Resources and Environment",
+        "major_standard_score": "61.59 – 61.98",
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Logistics and Industrial Systems",
+        "major_standard_score": "74.47 – 80.1",
+        "major_aptitude_trends": ["E", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Materials Engineering",
+        "major_standard_score": 68.5,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Engineering Physics",
+        "major_standard_score": 73.86,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Engineering Mechanics",
+        "major_standard_score": "68.75 – 74.7",
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Thermal Engineering",
+        "major_standard_score": 72.01,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Industrial Maintenance",
+        "major_standard_score": 65.44,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Automotive Engineering",
+        "major_standard_score": 78.22,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "(Dual Major) Naval Architecture - Aviation",
+        "major_standard_score": 75.38,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Data Science",
+        "major_standard_score": 82.14,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Construction Geotechnics",
+        "major_standard_score": 55.38,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Construction Economics",
+        "major_standard_score": 58.59,
+        "major_aptitude_trends": ["E", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Robotics Engineering (English Program)",
+        "major_standard_score": 73.1,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Chemical Engineering (English Program)",
+        "major_standard_score": 64.68,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Construction Project Management and Civil Engineering (English Program)",
+        "major_standard_score": 58.59,
+        "major_aptitude_trends": ["E", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Landscape Architecture (English Program)",
+        "major_standard_score": 61.08,
+        "major_aptitude_trends": ["A", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Biotechnology (English Program)",
+        "major_standard_score": 70.91,
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Food Technology (English Program)",
+        "major_standard_score": 60.11,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Petroleum Engineering (English Program)",
+        "major_standard_score": 57.88,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "High-Tech Materials Engineering (English Program)",
+        "major_standard_score": 57.96,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Biomedical Engineering (English Program)",
+        "major_standard_score": 57.23,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Automotive Engineering (English Program)",
+        "major_standard_score": 65.87,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "HCMUT",
+        "major_name": "Aeronautical Engineering (English Program)",
+        "major_standard_score": 73.5,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Economics",
+        "major_standard_score": "25.64 – 25.89",
+        "major_aptitude_trends": ["E", "C", "S"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "International Economics (Specialization in Foreign Trade Economics)",
+        "major_standard_score": 26.55,
+        "major_aptitude_trends": ["E", "C", "S"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Mathematical Economics (Specialization in Applied Mathematics in Economics, Management and Finance)",
+        "major_standard_score": "25.61 – 26.22",
+        "major_aptitude_trends": ["I", "E", "C"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Mathematical Economics (Specialization in Data Analysis)",
+        "major_standard_score": 26.4,
+        "major_aptitude_trends": ["I", "E", "C"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Business Administration",
+        "major_standard_score": "25.33 – 26.33",
+        "major_aptitude_trends": ["E", "C", "S"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Marketing",
+        "major_standard_score": "25.75 – 27.1",
+        "major_aptitude_trends": ["E", "C", "A"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "International Business",
+        "major_standard_score": "25.75 – 26.71",
+        "major_aptitude_trends": ["E", "C", "S"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "E-commerce",
+        "major_standard_score": "25.89 – 27.44",
+        "major_aptitude_trends": ["E", "C", "I"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Finance - Banking",
+        "major_standard_score": "25.2 – 26.17",
+        "major_aptitude_trends": ["E", "C", "I"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Financial Technology",
+        "major_standard_score": 26.54,
+        "major_aptitude_trends": ["E", "I", "C"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Accounting",
+        "major_standard_score": "25.7 – 26.17",
+        "major_aptitude_trends": ["E", "C", "I"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Auditing",
+        "major_standard_score": 26.38,
+        "major_aptitude_trends": ["E", "C", "I"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Public Management",
+        "major_standard_score": 24.39,
+        "major_aptitude_trends": ["E", "S", "C"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Management Information Systems",
+        "major_standard_score": "26.35 – 27.25",
+        "major_aptitude_trends": ["E", "I", "C"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Law",
+        "major_standard_score": "25.24 – 25.41",
+        "major_aptitude_trends": ["S", "E", "C"]
+    },
+    {
+        "uni_code": "UEL",
+        "major_name": "Economic Law",
+        "major_standard_score": "25.25 – 26.09",
+        "major_aptitude_trends": ["S", "E", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Education",
+        "major_standard_score": "23.9 – 26.6",
+        "major_aptitude_trends": ["S", "C", "E"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Educational Management",
+        "major_standard_score": "24 – 26.9",
+        "major_aptitude_trends": ["S", "E", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Art Studies",
+        "major_standard_score": "25.8 – 28.15",
+        "major_aptitude_trends": ["A", "S", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "English Language",
+        "major_standard_score": "21 – 26.27",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Russian Language",
+        "major_standard_score": "22.5 – 22.95",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "French Language",
+        "major_standard_score": "23.7 – 24.4",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Chinese Language",
+        "major_standard_score": "24.5 – 25.78",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "German Language",
+        "major_standard_score": "22.9 – 25.33",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Spanish Language",
+        "major_standard_score": "22.5 – 24.48",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Italian Language",
+        "major_standard_score": "22.2 – 22.8",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Philosophy",
+        "major_standard_score": "22.5 – 26.8",
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Religious Studies",
+        "major_standard_score": "22.8 – 26",
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "History",
+        "major_standard_score": "25 – 28.1",
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Linguistics",
+        "major_standard_score": "24.8 – 27.1",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Literature",
+        "major_standard_score": "25.7 – 27.7",
+        "major_aptitude_trends": ["A", "S", "I"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Cultural Studies",
+        "major_standard_score": "25.8 – 28.2",
+        "major_aptitude_trends": ["A", "S", "I"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "International Relations",
+        "major_standard_score": "21 – 27.15",
+        "major_aptitude_trends": ["S", "E", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Sociology",
+        "major_standard_score": "24 – 27.95",
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Anthropology",
+        "major_standard_score": "25.05 – 27.1",
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Psychology",
+        "major_standard_score": "25.9 – 28.3",
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Educational Psychology",
+        "major_standard_score": "24.2 – 26.8",
+        "major_aptitude_trends": ["S", "C", "I"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Geography",
+        "major_standard_score": "22 – 27.32",
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "International Studies",
+        "major_standard_score": "25.75 – 27",
+        "major_aptitude_trends": ["S", "E", "I"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Oriental Studies",
+        "major_standard_score": "24.3 – 25.45",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Japanese Studies",
+        "major_standard_score": "23.1 – 26",
+        "major_aptitude_trends": ["I", "S", "E"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Korean Studies",
+        "major_standard_score": "25 – 25.9",
+        "major_aptitude_trends": ["I", "S", "E"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Vietnamese Studies",
+        "major_standard_score": "25 – 27.7",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Korean Business and Trade",
+        "major_standard_score": "24 – 26.96",
+        "major_aptitude_trends": ["E", "S", "I"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Journalism",
+        "major_standard_score": "26.35 – 28.8",
+        "major_aptitude_trends": ["A", "S", "E"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Communication (linked with Deakin University, Australia)",
+        "major_standard_score": 21,
+        "major_aptitude_trends": ["A", "S", "E"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Multimedia Communication",
+        "major_standard_score": "27.1 – 27.87",
+        "major_aptitude_trends": ["A", "R", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Information - Library Science",
+        "major_standard_score": "23 – 26.6",
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Information Management",
+        "major_standard_score": "24.4 – 27.7",
+        "major_aptitude_trends": ["S", "E", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Archival Studies",
+        "major_standard_score": "24.4 – 26.98",
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Office Administration",
+        "major_standard_score": "25.1 – 27.7",
+        "major_aptitude_trends": ["S", "E", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Urban Studies",
+        "major_standard_score": "22 – 26.3",
+        "major_aptitude_trends": ["I", "S", "E"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Social Work",
+        "major_standard_score": "24.49 – 27.15",
+        "major_aptitude_trends": ["S", "E", "C"]
+    },
+    {
+        "uni_code": "USSH",
+        "major_name": "Tourism and Travel Services Management",
+        "major_standard_score": "25.1 – 28.33",
+        "major_aptitude_trends": ["E", "S", "A"]
+    },
+    {
+        "uni_code": "UHS",
+        "major_name": "Medicine",
+        "major_standard_score": 26.4,
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "UHS",
+        "major_name": "Traditional Medicine",
+        "major_standard_score": 24.24,
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "UHS",
+        "major_name": "Pharmacy",
+        "major_standard_score": 25.31,
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "UHS",
+        "major_name": "Nursing",
+        "major_standard_score": 22.6,
+        "major_aptitude_trends": ["S", "C", "I"]
+    },
+    {
+        "uni_code": "UHS",
+        "major_name": "Odonto-Stomatology",
+        "major_standard_score": 26.33,
+        "major_aptitude_trends": ["S", "I", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "English Language",
+        "major_standard_score": "30 – 34.5",
+        "major_aptitude_trends": ["I", "S", "A"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Economics (Data Analysis in Economics)",
+        "major_standard_score": 23.25,
+        "major_aptitude_trends": ["E", "I", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Business Administration",
+        "major_standard_score": "18 – 22.5",
+        "major_aptitude_trends": ["E", "C", "S"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Marketing",
+        "major_standard_score": 23,
+        "major_aptitude_trends": ["E", "C", "A"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Finance – Banking",
+        "major_standard_score": 22.5,
+        "major_aptitude_trends": ["E", "I", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Finance (linked with Macquarie University)",
+        "major_standard_score": 20,
+        "major_aptitude_trends": ["E", "I", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Accounting",
+        "major_standard_score": "20 – 22.5",
+        "major_aptitude_trends": ["E", "I", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Biotechnology",
+        "major_standard_score": "18 – 20.5",
+        "major_aptitude_trends": ["I", "S", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Chemistry (Biochemistry)",
+        "major_standard_score": 19,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Data Science",
+        "major_standard_score": 24,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Applied Mathematics (Financial Engineering and Risk Management)",
+        "major_standard_score": 20,
+        "major_aptitude_trends": ["E", "I", "R"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Statistics (Applied Statistics)",
+        "major_standard_score": 18,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Computer Science",
+        "major_standard_score": "21 – 24",
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Information Technology",
+        "major_standard_score": "21 – 24",
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Logistics and Supply Chain Management",
+        "major_standard_score": 24,
+        "major_aptitude_trends": ["E", "R", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Industrial Systems Engineering",
+        "major_standard_score": 18,
+        "major_aptitude_trends": ["R", "E", "I"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Aerospace Engineering (Big Data Analysis and Application)",
+        "major_standard_score": 21,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Electronics – Telecommunications Engineering",
+        "major_standard_score": "18 – 21",
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Biomedical Engineering",
+        "major_standard_score": 21,
+        "major_aptitude_trends": ["R", "I", "S"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Control and Automation Engineering",
+        "major_standard_score": 21.5,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Chemical Engineering",
+        "major_standard_score": 19.5,
+        "major_aptitude_trends": ["R", "I", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Food Technology",
+        "major_standard_score": 19,
+        "major_aptitude_trends": ["I", "R", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Civil Engineering",
+        "major_standard_score": "16.5 – 18",
+        "major_aptitude_trends": ["R", "E", "C"]
+    },
+    {
+        "uni_code": "IU",
+        "major_name": "Construction Management",
+        "major_standard_score": 18,
+        "major_aptitude_trends": ["E", "R", "C"]
+    }
+]
