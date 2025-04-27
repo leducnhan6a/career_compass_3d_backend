@@ -21,6 +21,8 @@ tags:
       description: API about education events.
     - name: models
       description: API about 3D Models.
+    - name: gpa
+      description: API about gpa calculation
 
 paths:
     /access/signup:
@@ -114,31 +116,31 @@ paths:
                 '403':
                     description: Bad Request – yêu cầu thiếu hoặc không hợp lệ.
                     content:
-                      application/json:
-                        schema:
-                          type: object
-                          properties:
-                            statusCode:
-                              type: integer
-                              example: 403
-                            message:
-                              type: string"
-                              description: "Chi tiết lỗi (ví dụ định dạng email không hợp lệ, thiếu trường bắt buộc)."
-                              example: Invalid email format
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 403
+                                    message:
+                                        type: string"
+                                        description: 'Chi tiết lỗi (ví dụ định dạng email không hợp lệ, thiếu trường bắt buộc).'
+                                        example: Invalid email format
                 '409':
                     description: Conflict – email hoặc username đã tồn tại.
                     content:
-                      application/json:
-                        schema:
-                          type: object
-                          properties:
-                            statusCode:
-                              type: integer
-                              example: 409
-                            message:
-                              type: string
-                              description: "Chi tiết xung đột (ví dụ: Email is already registered hoặc Username is already registered)."
-                              example: Email is already registered  /  Username is already registered
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 409
+                                    message:
+                                        type: string
+                                        description: 'Chi tiết xung đột (ví dụ: Email is already registered hoặc Username is already registered).'
+                                        example: Email is already registered  /  Username is already registered
     /access/login:
         post:
             tags:
@@ -214,47 +216,47 @@ paths:
                 '401':
                     description: Unauthorized – email/username tồn tại nhưng password không hợp lệ.
                     content:
-                      application/json:
-                        schema:
-                          type: object
-                          properties:
-                            statusCode:
-                              type: integer
-                              example: 401
-                            message:
-                              type: string
-                              example: Invalid password
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 401
+                                    message:
+                                        type: string
+                                        example: Invalid password
                 '403':
                     description: Bad Request – thiếu hoặc sai định dạng email/username/password.
                     content:
-                      application/json:
-                        schema:
-                          type: object
-                          properties:
-                            statusCode:
-                              type: integer
-                              example: 403
-                            message:
-                              type: string
-                              description: Chi tiết lỗi đầu vào.
-                              oneOf:
-                                - example: Invalid email
-                                - example: Username or email is required
-                                - example: Password is required
-                                - example: Failed to generate keystore (lỗi phát sinh khi tạo keystore hoặc token)
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 403
+                                    message:
+                                        type: string
+                                        description: Chi tiết lỗi đầu vào.
+                                        oneOf:
+                                            - example: Invalid email
+                                            - example: Username or email is required
+                                            - example: Password is required
+                                            - example: Failed to generate keystore (lỗi phát sinh khi tạo keystore hoặc token)
                 '404':
                     description: Not Found – không tìm thấy user với email/username đã cho.
                     content:
-                      application/json:
-                        schema:
-                          type: object
-                          properties:
-                            statusCode:
-                              type: integer
-                              example: 404
-                            message:
-                              type: string
-                              example: User not found
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 404
+                                    message:
+                                        type: string
+                                        example: User not found
     /access/logout:
         post:
             tags:
@@ -309,7 +311,7 @@ paths:
                                         example: Not Found
     /access:
         delete:
-            tags: 
+            tags:
                 - users
             summary: Xóa vĩnh viễn tài khoản của người dùng
             description: Xóa vĩnh viễn tài khoản của người dùng, sau đó đăng xuất ra ngoài.
@@ -326,7 +328,7 @@ paths:
                                 properties:
                                     message:
                                         type: string
-                                        example: "Delete this account successfully"
+                                        example: 'Delete this account successfully'
                                     statusCode:
                                         type: integer
                                         example: 200
@@ -2040,14 +2042,274 @@ paths:
                     description: Không có quyền truy cập # Quyền: admin
                     $ref: '#/components/responses/ForbiddenError'
             # Quyền truy cập: admin
-    
+    /gpa/methods:
+        get:
+            tags:
+                - gpa
+            summary: Lấy danh sách phương pháp tính GPA
+            description: Lấy danh sách các phương pháp tính toán GPA hỗ trợ.
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: []
+            responses:
+                '200':
+                    description: Thành công - Lấy danh sách phương pháp tính GPA thành công!
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/GPAMethodListResponse'
+    /gpa/result:
+        post:
+            tags:
+                - gpa
+            summary: Tính toán kết quả GPA
+            description: Gửi thông tin điểm và các ưu tiên để tính toán kết quả GPA cho người dùng.
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: [] # Giả định bạn đang sử dụng Bearer token cho xác thực
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                userId:
+                                    type: string
+                                    description: ID của người dùng.
+                                    example: '67ffd670ec9b781c1af01a16'
+                                method:
+                                    type: string
+                                    description: Phương pháp tính toán.
+                                    enum:
+                                        [
+                                            '3_years',
+                                            '12_all_year',
+                                            '6_semesters',
+                                            '10_11_12_hk1',
+                                            '3_semesters',
+                                            '5_semesters',
+                                        ]
+                                    example: '3_years'
+                                regionPriority:
+                                    type: number
+                                    description: Điểm ưu tiên khu vực.
+                                    example: 1.0
+                                objectPriority:
+                                    type: number
+                                    description: Điểm ưu tiên đối tượng.
+                                    example: 1.5
+                                scores:
+                                    type: object
+                                    description: Đối tượng chứa điểm từng môn theo phương pháp tính.
+                                    example:
+                                        Toán:
+                                            year10: 9
+                                            year11: 8.5
+                                            year12: 9
+                                        Lý:
+                                            year10: 8
+                                            year11: 7.5
+                                            year12: 8
+                                        Hóa:
+                                            year10: 8.5
+                                            year11: 8
+                                            year12: 8.5
+                                        Anh:
+                                            year10: 9
+                                            year11: 9
+                                            year12: 9
+                            required:
+                                - userId
+                                - method
+            responses:
+                '200':
+                    description: Thành công - Tính toán kết quả GPA thành công.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get GPA result successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            method:
+                                                type: string
+                                                example: '3_years'
+                                            usedPriority:
+                                                type: number
+                                                example: 2.5
+                                            subjectAverages:
+                                                type: object
+                                                description: Điểm trung bình từng môn.
+                                                example:
+                                                    Toán: 8.67
+                                                    Lý: 7.83
+                                                    Hóa: 8.33
+                                                    Anh: 9.00
+                                                    Văn: 0.00
+                                            blockResults:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        block:
+                                                            type: string
+                                                            example: 'A00'
+                                                        subjects:
+                                                            type: array
+                                                            items:
+                                                                type: string
+                                                            example: ['Toán', 'Lý', 'Hóa']
+                                                        blockScore:
+                                                            type: number
+                                                            example: 25.17
+                                                        usedPriority:
+                                                            type: number
+                                                            example: 2.5
+                                                        finalPriority:
+                                                            type: number
+                                                            example: 1.0
+                                                        totalScore:
+                                                            type: number
+                                                            example: 26.17
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-04-27T08:30:00.000Z'
+                '403':
+                    description: Bad Request – Thiếu thông tin hoặc không hợp lệ.
+                    content:
+                        application/json:
+                            schema:
+                                oneOf:
+                                  - $ref: '#/components/schemas/ErrorUserIdRequired'
+                                  - $ref: '#/components/schemas/ErrorMethodRequired'
+                                  - $ref: '#/components/schemas/ErrorUnknownMethod'
+                            examples:
+                                MissingUserId:
+                                    summary: Thiếu userId
+                                    value:
+                                        statusCode: 403
+                                        statusError:
+                                            status: 403
+                                        message: "userId is required"
+                                MissingMethod:
+                                    summary: Thiếu calculation method
+                                    value:
+                                        statusCode: 403
+                                        statusError:
+                                            status: 403
+                                        message: "Calculation method is required"
+                                UnknownMethod:
+                                    summary: Phương pháp tính không hợp lệ
+                                    value:
+                                        statusCode: 403
+                                        statusError:
+                                            status: 403
+                                        message: "Unknown calculation method: 3_yew"
+    /gpa/history:
+        get:
+            tags:
+                - gpa
+            summary: Lấy lịch sử tính toán GPA của người dùng
+            description: Lấy tất cả kết quả tính toán GPA đã lưu cho người dùng.
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: [] # Giả định bạn đang sử dụng Bearer token cho xác thực
+            parameters:
+                - in: query
+                  name: userId
+                  required: true
+                  schema:
+                      type: string
+                  description: ID của người dùng.
+                  example: '67ffd670ec9b781c1af01a16'
+            responses:
+                '200':
+                    description: Thành công - Lấy lịch sử tính toán GPA thành công.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get GPA history successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: array
+                                        items:
+                                            type: object
+                                            properties:
+                                                action:
+                                                    type: string
+                                                    example: 'gpa_result'
+                                                metadata:
+                                                    type: object
+                                                    description: Kết quả GPA đã lưu.
+                                                    properties:
+                                                        method:
+                                                            type: string
+                                                            example: '3_years'
+                                                        usedPriority:
+                                                            type: number
+                                                            example: 2.5
+                                                        subjectAverages:
+                                                            type: object
+                                                            example:
+                                                                Toán: 8.67
+                                                                Lý: 7.83
+                                                        blockResults:
+                                                            type: array
+                                                            items:
+                                                                type: object
+                                                                properties:
+                                                                    block:
+                                                                        type: string
+                                                                        example: 'A00'
+                                                                    totalScore:
+                                                                        type: number
+                                                                        example: 26.17
+                                                        createdAt:
+                                                            type: string
+                                                            format: date-time
+                                                            example: '2025-04-27T08:30:00.000Z'
+                                                timestamp:
+                                                    type: string
+                                                    format: date-time
+                                                    example: '2025-04-27T08:30:00.000Z'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    description: Bad Request – Thiếu thông tin hoặc không hợp lệ.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    statusCode:
+                                        type: integer
+                                        example: 403
+                                    message:
+                                        type: string
+                                        example: 'userId is required'
+
 components: # <--- Phần định nghĩa components ở cấp độ root
     securitySchemes: # <--- Định nghĩa các lược đồ bảo mật
         JWTAuth: # Bạn có thể đặt tên khác tùy ý
             type: apiKey
             in: header
             name: authorization
-        ClientIdHeader: 
+        ClientIdHeader:
             type: apiKey
             in: header
             name: x-client-id
@@ -2070,7 +2332,7 @@ components: # <--- Phần định nghĩa components ở cấp độ root
                                         example: 404
                             message:
                                 type: string
-                                example: "Not Found"
+                                example: 'Not Found'
         UnauthorizedError:
             description: Lỗi - Chưa được xác thực
             content:
@@ -2187,36 +2449,36 @@ components: # <--- Phần định nghĩa components ở cấp độ root
                     format: date-time
                     example: '2025-04-23T08:47:09.948Z'
         LoginWithEmail:
-          type: object
-          required:
-            - email
-            - password
-          properties:
-            email:
-              type: string
-              format: email
-              description: Email của người dùng.
-              example: counterstriker@example.com
-            password:
-              type: string
-              format: password
-              description: Mật khẩu của người dùng.
-              example: 123456
+            type: object
+            required:
+                - email
+                - password
+            properties:
+                email:
+                    type: string
+                    format: email
+                    description: Email của người dùng.
+                    example: counterstriker@example.com
+                password:
+                    type: string
+                    format: password
+                    description: Mật khẩu của người dùng.
+                    example: 123456
         LoginWithUsername:
-          type: object
-          required:
-            - username
-            - password
-          properties:
-            username:
-              type: string
-              description: Username của người dùng.
-              example: counterstriker
-            password:
-              type: string
-              format: password
-              description: Mật khẩu của người dùng.
-              example: 123456
+            type: object
+            required:
+                - username
+                - password
+            properties:
+                username:
+                    type: string
+                    description: Username của người dùng.
+                    example: counterstriker
+                password:
+                    type: string
+                    format: password
+                    description: Mật khẩu của người dùng.
+                    example: 123456
         Model:
             type: object
             properties:
@@ -2278,22 +2540,22 @@ components: # <--- Phần định nghĩa components ở cấp độ root
             properties:
                 _id:
                     type: string
-                    example: "680bae95e76d0235911bccc2"
+                    example: '680bae95e76d0235911bccc2'
                 user_name:
                     type: string
-                    example: "counterstriker"
+                    example: 'counterstriker'
                 user_displayname:
                     type: string
-                    example: "Le Duc Nhan"
+                    example: 'Le Duc Nhan'
                 user_password:
                     type: string
-                    example: "$2b$10$tJyvO3LrnsGbeHxXcj0WDul3aVwRqOJCMsJHaO2Xj7tRMUu30v50a"
+                    example: '$2b$10$tJyvO3LrnsGbeHxXcj0WDul3aVwRqOJCMsJHaO2Xj7tRMUu30v50a'
                 user_email:
                     type: string
-                    example: "counterstriker@gmail.com"
+                    example: 'counterstriker@gmail.com'
                 user_permission:
                     type: string
-                    example: "user"
+                    example: 'user'
         DeletedQuestion:
             type: object
             properties:
@@ -2444,3 +2706,90 @@ components: # <--- Phần định nghĩa components ở cấp độ root
                 url:
                     type: string
                     example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/sign/webdev/uploads/low_poly_chemistry_lab.glb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzUyYzc5NWEyLWNiMTAtNDllYS04NThjLWFhYmFjNGQ1ZWYwNiJ9.eyJ1cmwiOiJ3ZWJkZXYvdXBsb2Fkcy9sb3dfcG9seV9jaGVtaXN0cnlfbGFiLmdsYiIsImlhdCI6MTc0NTA1MTQ2MiwiZXhwIjoxNzQ1MDUxNzYyfQ.ndJbXqJuu2erOaR2YpPZpcRiJG8noSqqjYbb2tB3mEs'
+        GPAMethod:
+            type: object
+            properties:
+                code:
+                    type: string
+                    description: Mã phương pháp
+                description:
+                    type: string
+                    description: Mô tả phương pháp
+            example:
+                code: "3_years"
+                description: "Xét học bạ 3 năm (Cả năm lớp 10, 11, 12)"
+        GPAMethodListResponse:
+            type: object
+            properties:
+                message:
+                    type: string
+                    example: "Get GPA methods successfully"
+                statusCode:
+                    type: integer
+                    example: 200
+                metadata:
+                    type: array
+                    items:
+                        $ref: '#/components/schemas/GPAMethod'
+            example:
+                message: "Get GPA methods successfully"
+                statusCode: 200
+                metadata:
+                  - code: "3_years"
+                    description: "Xét học bạ 3 năm (Cả năm lớp 10, 11, 12)"
+                  - code: "12_all_year"
+                    description: "Xét học bạ cả năm lớp 12"
+                  - code: "6_semesters"
+                    description: "Xét học bạ 6 học kỳ"
+                  - code: "10_11_12_hk1"
+                    description: "Xét học bạ lớp 10, lớp 11, HK1 lớp 12"
+                  - code: "3_semesters"
+                    description: "Xét học bạ 3 học kỳ"
+                  - code: "5_semesters"
+                    description: "Xét học bạ 5 học kỳ"
+        ErrorUserIdRequired:
+            type: object
+            properties:
+                statusCode:
+                    type: integer
+                    example: 403
+                statusError:
+                    type: object
+                    properties:
+                        tatus:
+                        type: integer
+                        xample: 403
+                message:
+                    type: string
+                    example: "userId is required"
+        ErrorMethodRequired:
+            type: object
+            properties:
+                statusCode:
+                    type: integer
+                    example: 403
+                statusError:
+                    type: object
+                    properties:
+                        status:
+                        type: integer
+                        example: 403
+                message:
+                    type: string
+                    example: "Calculation method is required"   
+        ErrorUnknownMethod:
+            type: object
+            properties:
+                statusCode:
+                    type: integer
+                    example: 403
+                statusError:
+                    type: object
+                    properties:
+                        status:
+                        type: integer
+                        example: 403
+                message:
+                    type: string
+                    pattern: "^Unknown calculation method: .+$"
+                    example: "Unknown calculation method: 3_yew"
