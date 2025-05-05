@@ -15,7 +15,7 @@ const getAllMajorsByUnicode = async (uniCode) => {
 
 const findAllDeletedmajors = async ({ unselect, sortBy }) => {
     return await MajorModel
-        .findDeleted()
+        .findWithDeleted({ deleted: true })
         .select(unGetSelectData(unselect))
         .sort(sortBy)
         .lean();

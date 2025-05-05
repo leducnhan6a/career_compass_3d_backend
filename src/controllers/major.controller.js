@@ -5,6 +5,15 @@ import MajorService from '../services/major.service.js';
 
 class MajorController {
     
+    // Lấy tất cả thông tin ngành
+    async getAllMajor(req, res) {
+        const result = await MajorService.getAllMajors();
+        new SuccessResponse({
+            message: 'Get all majors successfully',
+            metadata: result,
+        }).send(res);
+    }
+
     // Lấy thông tin ngành có cùng mã trường
     async getMajorsByUniCode(req, res) {
         const result = await MajorService.getMajorsByUniCode(req);
@@ -14,6 +23,7 @@ class MajorController {
         }).send(res);
     }
 
+    // Lấy thông tin ngành đã bị xoá mềm
     async getTrashMajors(req, res) {
         const result = await MajorService.getTrashMajors(req);
         new SuccessResponse({

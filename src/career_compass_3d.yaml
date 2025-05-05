@@ -22,7 +22,7 @@ tags:
     - name: models
       description: API about 3D Models.
     - name: gpa
-      description: API about gpa calculation
+      description: API about GPA calculation.
 
 paths:
     /access/signup:
@@ -123,6 +123,12 @@ paths:
                                     statusCode:
                                         type: integer
                                         example: 403
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 403
                                     message:
                                         type: string"
                                         description: 'Chi tiết lỗi (ví dụ định dạng email không hợp lệ, thiếu trường bắt buộc).'
@@ -137,6 +143,12 @@ paths:
                                     statusCode:
                                         type: integer
                                         example: 409
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 409
                                     message:
                                         type: string
                                         description: 'Chi tiết xung đột (ví dụ: Email is already registered hoặc Username is already registered).'
@@ -214,18 +226,7 @@ paths:
                                                     description: JWT token.
                                                     example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2ODA0OWFjMTNhNTM1NDM2ZTRiMjlkZGEiLCJ1c2VybmFtZSI6ImNvdW50ZXJzdHJpa2VyIiwiaWF0IjoxNzQ1MTMyNzcwLCJleHAiOjE3NDUzMDU1NzB9.SboM7MGnvEDM-mQ6ms2YCt2-SYNxL-ap-WlVLYYMbUY
                 '401':
-                    description: Unauthorized – email/username tồn tại nhưng password không hợp lệ.
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    statusCode:
-                                        type: integer
-                                        example: 401
-                                    message:
-                                        type: string
-                                        example: Invalid password
+                    $ref: '#/components/responses/UnauthorizedError'
                 '403':
                     description: Bad Request – thiếu hoặc sai định dạng email/username/password.
                     content:
@@ -236,6 +237,12 @@ paths:
                                     statusCode:
                                         type: integer
                                         example: 403
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 403
                                     message:
                                         type: string
                                         description: Chi tiết lỗi đầu vào.
@@ -245,18 +252,7 @@ paths:
                                             - example: Password is required
                                             - example: Failed to generate keystore (lỗi phát sinh khi tạo keystore hoặc token)
                 '404':
-                    description: Not Found – không tìm thấy user với email/username đã cho.
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    statusCode:
-                                        type: integer
-                                        example: 404
-                                    message:
-                                        type: string
-                                        example: User not found
+                    $ref: '#/components/responses/NotFoundError'
     /access/logout:
         post:
             tags:
@@ -265,7 +261,7 @@ paths:
             description: API endpoint cho phép người dùng đăng xuất khỏi hệ thống.
             security:
                 - JWTAuth: []
-                - ClientIdHeader: [] # Giả định bạn đang sử dụng Bearer token cho xác thực
+                - ClientIdHeader: []
             responses:
                 '200':
                     description: Đăng xuất thành công.
@@ -290,25 +286,7 @@ paths:
                                                 description: Thông báo chi tiết.
                                                 example: Logged out successfully
                 '404':
-                    description: User not found
-                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    statusCode:
-                                        type: integer
-                                        example: 404
-                                    statusError:
-                                        type: object
-                                        properties:
-                                            status:
-                                                type: integer
-                                                example: 404
-                                    message:
-                                        type: string
-                                        example: Not Found
+                    $ref: '#/components/responses/NotFoundError'
     /access:
         delete:
             tags:
@@ -318,6 +296,17 @@ paths:
             security:
                 - JWTAuth: []
                 - ClientIdHeader: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                userId:
+                                    type: string
+                                    example: '681783d10abc918e005ce0aa'
+                                    description: ID của user
             responses:
                 '200':
                     description: Thành công - xóa tài khoản thành công!
@@ -332,17 +321,12 @@ paths:
                                     statusCode:
                                         type: integer
                                         example: 200
-                                    # Bạn có thể thêm các thuộc tính khác vào metadata nếu cần, ví dụ: {}
                                     metadata:
                                         $ref: '#/components/schemas/DeletedUser'
-                '404':
-                    description: User not found
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/responses/NotFoundError'
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
     /survey/questionsSurvey:
         get:
             tags:
@@ -432,7 +416,7 @@ paths:
             description: Truy vấn câu hỏi theo khóa `groupName` với giá trị là một trong các ký tự `R` | `I` | `A` | `S` | `E` | `C`
             security:
                 - JWTAuth: []
-                - ClientIdHeader: [] # Áp dụng lược đồ bảo mật JWTAuth cho endpoint này
+                - ClientIdHeader: []
             parameters:
                 - in: query
                   name: groupName
@@ -477,7 +461,6 @@ paths:
                                                     example: 'R'
                 '404':
                     description: User not found
-                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
                     content:
                         application/json:
                             schema:
@@ -502,7 +485,7 @@ paths:
             description: Tạo một câu hỏi Holland mới bằng cách định nghĩa mã câu hỏi và nội dung câu hỏi.
             security:
                 - JWTAuth: []
-                - ClientIdHeader: [] # Áp dụng lược đồ bảo mật JWTAuth cho endpoint này
+                - ClientIdHeader: []
             parameters:
                 - in: header
                   name: x-client-id
@@ -576,7 +559,6 @@ paths:
                                         example: {}
                 '404':
                     description: User not found
-                    # Bạn có thể định nghĩa schema chi tiết hơn cho lỗi 400 nếu cần
                     content:
                         application/json:
                             schema:
@@ -761,7 +743,7 @@ paths:
                 - JWTAuth: []
                 - ClientIdHeader: []
             parameters:
-                - in: query # Mặc dù description nói dùng body, nhưng để tuân theo chuẩn RESTful và Swagger, nên dùng query parameter cho GET
+                - in: query
                   name: userId
                   required: true
                   schema:
@@ -1138,12 +1120,64 @@ paths:
                   example: '6800efae57d4b086a061e1aa'
             responses:
                 '200':
-                    description: Thành công - Câu hỏi đã được khôi phục
-                    # (Phần response sẽ được bạn thêm vào)
+                    description: Thành công - Câu hỏi đã được khôi phục (trả về câu hỏi đã được khôi phục)
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
                     $ref: '#/components/responses/ForbiddenError'
+    /major/all:
+        get:
+            summary: Lấy tất cả các ngành học sẵn có
+            description: Lấy danh sách các ngành học sẵn có (trong database)
+            tags:
+                - majors
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: []
+            responses:
+                '200':
+                    description: Thành công - Lấy danh sách tất cả ngành học thành công.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get all majors successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '680225014e28dfa79d0dd28e'
+                                            uni_code:
+                                                type: string
+                                                example: 'UIT'
+                                            major_name:
+                                                type: string
+                                                example: 'Electronic Commerce'
+                                            major_standard_score:
+                                                type: float
+                                                example: 26.12
+                                            major_aptitude_trends:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    enum:
+                                                        - R
+                                                        - I
+                                                        - A
+                                                        - S
+                                                        - E
+                                                        - C
+                                                example: ['E', 'C', 'I']
+                                                description: Danh sách các khuynh hướng nghề nghiệp
+                '404':
+                    $ref: '#/components/responses/NotFoundError'
     /major/unicode:
         get:
             summary: Lấy các ngành học theo mã trường
@@ -1163,8 +1197,46 @@ paths:
                   example: 'UIT'
             responses:
                 '200':
-                    description: Thành công - Lấy danh sách ngành học theo mã trường thành công
-                    # (Bạn sẽ thêm schema response tại đây)
+                    description: Thành công - Lấy danh sách ngành học theo mã trường thành công.
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get majors by unicode successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '680225014e28dfa79d0dd28e'
+                                            uni_code:
+                                                type: string
+                                                example: 'UIT'
+                                            major_name:
+                                                type: string
+                                                example: 'Electronic Commerce'
+                                            major_standard_score:
+                                                type: float
+                                                example: 26.12
+                                            major_aptitude_trends:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    enum:
+                                                        - R
+                                                        - I
+                                                        - A
+                                                        - S
+                                                        - E
+                                                        - C
+                                                example: ['E', 'C', 'I']
+                                                description: Danh sách các khuynh hướng nghề nghiệp
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
@@ -1188,8 +1260,106 @@ paths:
                   example: 'RIC'
             responses:
                 '200':
-                    description: Thành công - Lấy danh sách ngành học theo khuynh hướng thành công
-                    # (Bạn sẽ thêm schema response tại đây)
+                    description: Get majors include aptitude successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Get majors include aptitude successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            fullMatched:
+                                                type: array
+                                                description: Danh sách các ngành phù hợp hoàn toàn
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        _id:
+                                                            type: string
+                                                            example: '680225014e28dfa79d0dd28f'
+                                                        uni_code:
+                                                            type: string
+                                                            example: 'UIT'
+                                                        major_name:
+                                                            type: string
+                                                            example: 'Data Science'
+                                                        major_standard_score:
+                                                            oneOf:
+                                                                - type: number
+                                                                  format: float
+                                                                  example: 27.5
+                                                                - type: string
+                                                                  example: '25.64 – 25.89'
+                                                            description: Có thể là số hoặc khoảng điểm
+                                                        major_aptitude_trends:
+                                                            type: array
+                                                            items:
+                                                                type: string
+                                                                enum: [R, I, A, S, E, C]
+                                                            example: ['I', 'C', 'R']
+                                            partialMatched:
+                                                type: array
+                                                description: Danh sách các ngành phù hợp một phần
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        _id:
+                                                            type: string
+                                                            example: '680225014e28dfa79d0dd28e'
+                                                        uni_code:
+                                                            type: string
+                                                            example: 'UIT'
+                                                        major_name:
+                                                            type: string
+                                                            example: 'Electronic Commerce'
+                                                        major_standard_score:
+                                                            oneOf:
+                                                                - type: number
+                                                                  format: float
+                                                                  example: 26.12
+                                                                - type: string
+                                                                  example: '25.64 – 25.89'
+                                                        major_aptitude_trends:
+                                                            type: array
+                                                            items:
+                                                                type: string
+                                                                enum: [R, I, A, S, E, C]
+                                                            example: ['E', 'C', 'I']
+                                            singleMatched:
+                                                type: array
+                                                description: Danh sách các ngành phù hợp ở mức tối thiểu (chỉ một tiêu chí)
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        _id:
+                                                            type: string
+                                                            example: '680225014e28dfa79d0dd2d2'
+                                                        uni_code:
+                                                            type: string
+                                                            example: 'UEL'
+                                                        major_name:
+                                                            type: string
+                                                            example: 'Economics'
+                                                        major_standard_score:
+                                                            oneOf:
+                                                                - type: number
+                                                                  format: float
+                                                                  example: 26.55
+                                                                - type: string
+                                                                  example: '25.64 – 25.89'
+                                                        major_aptitude_trends:
+                                                            type: array
+                                                            items:
+                                                                type: string
+                                                                enum: [R, I, A, S, E, C]
+                                                            example: ['E', 'C', 'S']
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
@@ -1273,10 +1443,61 @@ paths:
             responses:
                 '201':
                     description: Thành công - Ngành học đã được tạo thành công
-                    # (Bạn sẽ thêm schema response tại đây)
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Major created successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 201
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            uni_code:
+                                                type: string
+                                                example: 'UIT'
+                                            major_name:
+                                                type: string
+                                                example: 'Data Science'
+                                            major_standard_score:
+                                                type: number
+                                                format: float
+                                                example: 27.5
+                                            major_aptitude_trends:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    enum: [R, I, A, S, E, C]
+                                                example: ['I', 'C', 'R']
+                                            _id:
+                                                type: string
+                                                example: '68181b38b24e29e773fa8dbe'
+                                            deleted:
+                                                type: boolean
+                                                example: false
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T01:58:16.521Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T01:58:16.521Z'
+                                            major_slug:
+                                                type: string
+                                                example: 'data-science'
+                                            __v:
+                                                type: integer
+                                                example: 0
+                                    options:
+                                        type: object
+                                        description: Các tuỳ chọn bổ sung
                 '400':
                     description: Lỗi - Dữ liệu không hợp lệ
-                    # (Bạn sẽ thêm schema response lỗi tại đây)
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
@@ -1297,7 +1518,7 @@ paths:
                   schema:
                       type: string
                   description: ID của ngành học cần cập nhật
-                  example: '6804aae07c44d379ae8249f9'
+                  example: '68181b38b24e29e773fa8dbe'
             requestBody:
                 required: true
                 content:
@@ -1333,10 +1554,61 @@ paths:
             responses:
                 '200':
                     description: Thành công - Ngành học đã được cập nhật thành công
-                    # (Bạn sẽ thêm schema response tại đây)
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Major updated successfully'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '68181b38b24e29e773fa8dbe'
+                                            uni_code:
+                                                type: string
+                                                example: 'UIT'
+                                            major_name:
+                                                type: string
+                                                example: 'Data Science'
+                                            major_standard_score:
+                                                oneOf:
+                                                    - type: number
+                                                      format: float
+                                                      example: 27.5
+                                                    - type: string
+                                                      example: '25.64 – 25.89'
+                                            major_aptitude_trends:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    enum: [R, I, A, S, E, C]
+                                                example: ['E', 'A', 'R']
+                                            deleted:
+                                                type: boolean
+                                                example: false
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T01:58:16.521Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:06:59.661Z'
+                                            major_slug:
+                                                type: string
+                                                example: 'lol'
+                                            __v:
+                                                type: integer
+                                                example: 0
                 '400':
                     description: Lỗi - Dữ liệu không hợp lệ
-                    # (Bạn sẽ thêm schema response lỗi tại đây)
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
@@ -1357,11 +1629,68 @@ paths:
                   schema:
                       type: string
                   description: ID của ngành học cần xóa vĩnh viễn
-                  example: '6804aae07c44d379ae8249f9'
+                  example: '68181c0a1026c11f71461283'
             responses:
                 '200':
                     description: Thành công - Ngành học đã được xóa vĩnh viễn
-                    # (Bạn sẽ thêm schema response tại đây)
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Major permanently deleted'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '68181c0a1026c11f71461283'
+                                            uni_code:
+                                                type: string
+                                                example: 'UIT'
+                                            major_name:
+                                                type: string
+                                                example: 'Data Science'
+                                            major_standard_score:
+                                                oneOf:
+                                                    - type: number
+                                                      format: float
+                                                      example: 27.5
+                                                    - type: string
+                                                      example: '25.64 – 25.89'
+                                                description: Có thể là số hoặc chuỗi khoảng điểm
+                                            major_aptitude_trends:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    enum: [R, I, A, S, E, C]
+                                                example: ['R', 'A', 'E']
+                                            deleted:
+                                                type: boolean
+                                                example: true
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:01:46.479Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:03:03.248Z'
+                                            major_slug:
+                                                type: string
+                                                example: 'data-science'
+                                            __v:
+                                                type: integer
+                                                example: 0
+                                            deletedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:03:03.242Z'
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
@@ -1381,11 +1710,68 @@ paths:
                   schema:
                       type: string
                   description: ID của ngành học cần xóa mềm
-                  example: '6804aae07c44d379ae8249f9'
+                  example: '68181c0a1026c11f71461283'
             responses:
                 '200':
                     description: Thành công - Ngành học đã được xóa mềm
-                    # (Bạn sẽ thêm schema response tại đây)
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Major soft deleted'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '68181c0a1026c11f71461283'
+                                            uni_code:
+                                                type: string
+                                                example: 'UIT'
+                                            major_name:
+                                                type: string
+                                                example: 'Data Science'
+                                            major_standard_score:
+                                                oneOf:
+                                                    - type: number
+                                                      format: float
+                                                      example: 27.5
+                                                    - type: string
+                                                      example: '25.64 – 25.89'
+                                                description: Có thể là số hoặc chuỗi khoảng điểm
+                                            major_aptitude_trends:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    enum: [R, I, A, S, E, C]
+                                                example: ['R', 'A', 'E']
+                                            deleted:
+                                                type: boolean
+                                                example: true
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:01:46.479Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:03:03.248Z'
+                                            major_slug:
+                                                type: string
+                                                example: 'data-science'
+                                            __v:
+                                                type: integer
+                                                example: 0
+                                            deletedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:03:03.242Z'
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
@@ -1410,7 +1796,64 @@ paths:
             responses:
                 '200':
                     description: Thành công - Ngành học đã được khôi phục
-                    # (Bạn sẽ thêm schema response tại đây)
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+                                        example: 'Major restored'
+                                    statusCode:
+                                        type: integer
+                                        example: 200
+                                    metadata:
+                                        type: object
+                                        properties:
+                                            _id:
+                                                type: string
+                                                example: '68181c0a1026c11f71461283'
+                                            uni_code:
+                                                type: string
+                                                example: 'UIT'
+                                            major_name:
+                                                type: string
+                                                example: 'Data Science'
+                                            major_standard_score:
+                                                oneOf:
+                                                    - type: number
+                                                      format: float
+                                                      example: 27.5
+                                                    - type: string
+                                                      example: '25.64 – 25.89'
+                                                description: Có thể là số hoặc chuỗi khoảng điểm
+                                            major_aptitude_trends:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                    enum: [R, I, A, S, E, C]
+                                                example: ['R', 'A', 'E']
+                                            deleted:
+                                                type: boolean
+                                                example: true
+                                            createdAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:01:46.479Z'
+                                            updatedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:03:03.248Z'
+                                            major_slug:
+                                                type: string
+                                                example: 'data-science'
+                                            __v:
+                                                type: integer
+                                                example: 0
+                                            deletedAt:
+                                                type: string
+                                                format: date-time
+                                                example: '2025-05-05T02:03:03.242Z'
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
@@ -1445,9 +1888,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin | user
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin | user
     /event/trash:
         get:
             summary: Lấy tất cả các bài viết đã bị xóa mềm
@@ -1473,10 +1915,47 @@ paths:
                                         example: 200
                                     metadata:
                                         type: array
+                                        description: Danh sách các bài viết đã bị xóa
                                         items:
-                                            $ref: '#/components/schemas/DeletedEvent'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
+                                            type: object
+                                            properties:
+                                                _id:
+                                                    type: string
+                                                    example: '68182411b6d55a8396a90c5b'
+                                                source:
+                                                    type: string
+                                                    example: 'tuoitre'
+                                                title:
+                                                    type: string
+                                                    example: 'Webdev Adventure thong bao'
+                                                url:
+                                                    type: string
+                                                    example: 'https://www.webdevstudios.org/'
+                                                publishedAt:
+                                                    type: string
+                                                    format: date-time
+                                                    example: '2024-02-25T00:00:00.000Z'
+                                                thumbnail:
+                                                    type: string
+                                                    format: uri
+                                                    example: 'https://cdn2.tuoitre.vn/zoom/260_163/471584752817336320/2025/3/17/170325trang-14anh-nho2-read-only-1742172129007763324057-54-0-1654-2560-crop-1742172309580426565128.jpg'
+                                                createdAt:
+                                                    type: string
+                                                    format: date-time
+                                                    example: '2025-05-05T02:36:01.962Z'
+                                                updatedAt:
+                                                    type: string
+                                                    format: date-time
+                                                    example: '2025-05-05T02:39:12.509Z'
+                                                __v:
+                                                    type: integer
+                                                    example: 0
+                                                deletedAt:
+                                                    type: string
+                                                    format: date-time
+                                                    example: '2025-05-05T02:39:12.509Z'
+                                    '401':
+                                        $ref: '#/components/responses/UnauthorizedError'
     /event/create:
         post:
             summary: Tạo sự kiện mới
@@ -1535,13 +2014,11 @@ paths:
                                         example: {}
                 '400':
                     description: Lỗi - Dữ liệu không hợp lệ
-                    # (Bạn sẽ thêm schema response lỗi tại đây)
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
     /event/{scraperId}/delete:
         delete:
             summary: Xóa vĩnh viễn sự kiện
@@ -1578,9 +2055,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
         patch:
             summary: Xóa mềm sự kiện
             description: Xóa mềm một sự kiện theo ID (scraperId). Sự kiện sẽ không hiển thị nhưng chưa bị xóa hoàn toàn.
@@ -1616,9 +2092,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
     /event/{scraperId}/restore:
         patch:
             summary: Khôi phục sự kiện đã xóa mềm
@@ -1655,9 +2130,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
     /model:
         get:
             summary: Lấy tất cả 3D Models chưa bị xóa mềm
@@ -1703,9 +2177,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: user | admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: user | admin
     /model/{modelId}:
         get:
             summary: Lấy signed URL của 3D Model theo modelId
@@ -1787,9 +2260,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: user | admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: user | admin
         put:
             summary: Cập nhật chi tiết 3D Model theo modelId
             description: Cập nhật thông tin của model qua modelId. Chỉ cập nhật được thông tin của model chưa xóa mềm.
@@ -1840,13 +2312,11 @@ paths:
                                             $ref: '#/components/schemas/ModelDetail'
                 '400':
                     description: Lỗi - Dữ liệu không hợp lệ hoặc model đã bị xóa mềm.
-                    # (Bạn sẽ thêm schema response lỗi tại đây)
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
     /model/deleted:
         get:
             summary: Lấy tất cả 3D Models đã bị xóa mềm
@@ -1892,9 +2362,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
     /model/{modelId}/delete:
         patch:
             summary: Xóa mềm 3D Model theo modelId
@@ -1947,9 +2416,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
         delete:
             summary: Xóa vĩnh viễn 3D Model theo modelId
             description: Xóa vĩnh viễn model qua modelId. Xóa luôn khỏi database.
@@ -1984,9 +2452,8 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
     /model/{modelId}/restore:
         patch:
             summary: Khôi phục 3D Model theo modelId
@@ -2039,92 +2506,20 @@ paths:
                 '401':
                     $ref: '#/components/responses/UnauthorizedError'
                 '403':
-                    description: Không có quyền truy cập # Quyền: admin
+                    description: Không có quyền truy cập
                     $ref: '#/components/responses/ForbiddenError'
-            # Quyền truy cập: admin
     /gpa/methods:
         get:
             tags:
                 - gpa
-            summary: Lấy danh sách phương pháp tính GPA
-            description: Lấy danh sách các phương pháp tính toán GPA hỗ trợ.
+            summary: Lấy danh sách các phương pháp tính GPA
+            description: Trả về danh sách các phương pháp tính GPA được hỗ trợ.
             security:
                 - JWTAuth: []
                 - ClientIdHeader: []
             responses:
                 '200':
-                    description: Thành công - Lấy danh sách phương pháp tính GPA thành công!
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/GPAMethodListResponse'
-    /gpa/result:
-        post:
-            tags:
-                - gpa
-            summary: Tính toán kết quả GPA
-            description: Gửi thông tin điểm và các ưu tiên để tính toán kết quả GPA cho người dùng.
-            security:
-                - JWTAuth: []
-                - ClientIdHeader: [] # Giả định bạn đang sử dụng Bearer token cho xác thực
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                userId:
-                                    type: string
-                                    description: ID của người dùng.
-                                    example: '67ffd670ec9b781c1af01a16'
-                                method:
-                                    type: string
-                                    description: Phương pháp tính toán.
-                                    enum:
-                                        [
-                                            '3_years',
-                                            '12_all_year',
-                                            '6_semesters',
-                                            '10_11_12_hk1',
-                                            '3_semesters',
-                                            '5_semesters',
-                                        ]
-                                    example: '3_years'
-                                regionPriority:
-                                    type: number
-                                    description: Điểm ưu tiên khu vực.
-                                    example: 1.0
-                                objectPriority:
-                                    type: number
-                                    description: Điểm ưu tiên đối tượng.
-                                    example: 1.5
-                                scores:
-                                    type: object
-                                    description: Đối tượng chứa điểm từng môn theo phương pháp tính.
-                                    example:
-                                        Toán:
-                                            year10: 9
-                                            year11: 8.5
-                                            year12: 9
-                                        Lý:
-                                            year10: 8
-                                            year11: 7.5
-                                            year12: 8
-                                        Hóa:
-                                            year10: 8.5
-                                            year11: 8
-                                            year12: 8.5
-                                        Anh:
-                                            year10: 9
-                                            year11: 9
-                                            year12: 9
-                            required:
-                                - userId
-                                - method
-            responses:
-                '200':
-                    description: Thành công - Tính toán kết quả GPA thành công.
+                    description: Thành công - Lấy danh sách phương pháp tính thành công
                     content:
                         application/json:
                             schema:
@@ -2132,108 +2527,341 @@ paths:
                                 properties:
                                     message:
                                         type: string
-                                        example: 'Get GPA result successfully'
+                                        example: 'Get GPA methods successfully'
                                     statusCode:
                                         type: integer
                                         example: 200
                                     metadata:
-                                        type: object
-                                        properties:
-                                            method:
-                                                type: string
-                                                example: '3_years'
-                                            usedPriority:
-                                                type: number
-                                                example: 2.5
-                                            subjectAverages:
-                                                type: object
-                                                description: Điểm trung bình từng môn.
-                                                example:
-                                                    Toán: 8.67
-                                                    Lý: 7.83
-                                                    Hóa: 8.33
-                                                    Anh: 9.00
-                                                    Văn: 0.00
-                                            blockResults:
-                                                type: array
-                                                items:
-                                                    type: object
-                                                    properties:
-                                                        block:
-                                                            type: string
-                                                            example: 'A00'
-                                                        subjects:
-                                                            type: array
-                                                            items:
-                                                                type: string
-                                                            example: ['Toán', 'Lý', 'Hóa']
-                                                        blockScore:
-                                                            type: number
-                                                            example: 25.17
-                                                        usedPriority:
-                                                            type: number
-                                                            example: 2.5
-                                                        finalPriority:
-                                                            type: number
-                                                            example: 1.0
-                                                        totalScore:
-                                                            type: number
-                                                            example: 26.17
-                                            createdAt:
-                                                type: string
-                                                format: date-time
-                                                example: '2025-04-27T08:30:00.000Z'
-                '403':
-                    description: Bad Request – Thiếu thông tin hoặc không hợp lệ.
+                                        type: array
+                                        items:
+                                            type: object
+                                            properties:
+                                                code:
+                                                    type: string
+                                                    example: '3_years'
+                                                description:
+                                                    type: string
+                                                    example: 'Xét học bạ 3 năm (Cả năm lớp 10, 11, 12)'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+    /gpa/result:
+        post:
+            tags:
+                - gpa
+            summary: Tính điểm GPA dựa trên phương thức và dữ liệu điểm
+            security:
+                - JWTAuth: []
+                - ClientIdHeader: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            oneOf:
+                                - $ref: '#/components/schemas/GPARequest_3_years'
+                                - $ref: '#/components/schemas/GPARequest_12_all_year'
+                                - $ref: '#/components/schemas/GPARequest_6_semesters'
+                        examples:
+                            3_years:
+                                summary: Tính GPA theo phương thức 3_years
+                                value:
+                                    userId: '68049ac13a535436e4b29dda'
+                                    method: '3_years'
+                                    regionPriority: 0
+                                    objectPriority: 0
+                                    scores:
+                                        Toán:
+                                            year10: 9.75
+                                            year11: 9.5
+                                            year12: 9.8
+                                        Lý:
+                                            year10: 8.5
+                                            year11: 8.7
+                                            year12: 8.9
+                                        Hoá:
+                                            year10: 7.8
+                                            year11: 8.0
+                                            year12: 8.2
+                            12_all_year:
+                                summary: Tính GPA theo phương thức 12_all_year
+                                value:
+                                    userId: '68049ac13a535436e4b29dda'
+                                    method: '12_all_year'
+                                    regionPriority: 0
+                                    objectPriority: 0
+                                    scores:
+                                        Toán:
+                                            year12: 9.8
+                                        Văn:
+                                            year12: 8.9
+                                        Anh:
+                                            year12: 8.2
+                            6_semesters:
+                                summary: Tính GPA theo phương thức 6_semesters
+                                value:
+                                    userId: '68049ac13a535436e4b29dda'
+                                    method: '6_semesters'
+                                    regionPriority: 0
+                                    objectPriority: 0
+                                    scores:
+                                        Toán:
+                                            hk10_1: 9.5
+                                            hk10_2: 9.6
+                                            hk11_1: 9.7
+                                            hk11_2: 9.8
+                                            hk12_1: 9.9
+                                            hk12_2: 10.0
+                                        Văn:
+                                            hk10_1: 8.5
+                                            hk10_2: 8.6
+                                            hk11_1: 8.7
+                                            hk11_2: 8.8
+                                            hk12_1: 8.9
+                                            hk12_2: 9.0
+                                        Anh:
+                                            hk10_1: 7.8
+                                            hk10_2: 7.9
+                                            hk11_1: 8.0
+                                            hk11_2: 8.1
+                                            hk12_1: 8.2
+                                            hk12_2: 8.3
+                            10_11_12_hk1:
+                                summary: Tính GPA theo phương thức 10_11_12_hk1
+                                value:
+                                    userId: '68049ac13a535436e4b29dda'
+                                    method: '10_11_12_hk1'
+                                    regionPriority: 0
+                                    objectPriority: 0
+                                    scores:
+                                        Toán:
+                                            year10: 9.75
+                                            year11: 9.5
+                                            hk12_1: 9.8
+                                        Văn:
+                                            year10: 8.5
+                                            year11: 8.7
+                                            hk12_1: 8.9
+                                        Anh:
+                                            year10: 7.8
+                                            year11: 8.0
+                                            hk12_1: 8.2
+                            3_semesters:
+                                summary: Tính GPA theo phương thức 3_semesters
+                                value:
+                                    userId: '68049ac13a535436e4b29dda'
+                                    method: '3_semesters'
+                                    regionPriority: 0
+                                    objectPriority: 0
+                                    scores:
+                                        Toán:
+                                            sem1: 9.5
+                                            sem2: 9.7
+                                            sem3: 9.8
+                                        Văn:
+                                            sem1: 8.5
+                                            sem2: 8.7
+                                            sem3: 8.9
+                                        Anh:
+                                            sem1: 7.8
+                                            sem2: 8.0
+                                            sem3: 8.2
+                            5_semesters:
+                                summary: Tính GPA theo phương thức 5_semesters
+                                value:
+                                    userId: '68049ac13a535436e4b29dda'
+                                    method: '5_semesters'
+                                    regionPriority: 0
+                                    objectPriority: 0
+                                    scores:
+                                        Toán:
+                                            sem1: 9.5
+                                            sem2: 9.6
+                                            sem3: 9.7
+                                            sem4: 9.8
+                                            sem5: 9.9
+                                        Văn:
+                                            sem1: 8.5
+                                            sem2: 8.6
+                                            sem3: 8.7
+                                            sem4: 8.8
+                                            sem5: 8.9
+                                        Anh:
+                                            sem1: 7.8
+                                            sem2: 7.9
+                                            sem3: 8.0
+                                            sem4: 8.1
+                                            sem5: 8.2
+            responses:
+                '200':
+                    description: Thành công - Tính GPA thành công
                     content:
                         application/json:
                             schema:
-                                oneOf:
-                                  - $ref: '#/components/schemas/ErrorUserIdRequired'
-                                  - $ref: '#/components/schemas/ErrorMethodRequired'
-                                  - $ref: '#/components/schemas/ErrorUnknownMethod'
+                                $ref: '#/components/schemas/GPAResponse'
                             examples:
-                                MissingUserId:
-                                    summary: Thiếu userId
+                                3_years:
+                                    summary: Kết quả GPA cho phương thức 3_years
                                     value:
-                                        statusCode: 403
-                                        statusError:
-                                            status: 403
-                                        message: "userId is required"
-                                MissingMethod:
-                                    summary: Thiếu calculation method
+                                        message: 'Get GPA result successfully'
+                                        statusCode: 200
+                                        metadata:
+                                            method: '3_years'
+                                            usedPriority: 0
+                                            subjectAverages:
+                                                Toán: 9.68
+                                                Lý: 8.7
+                                                Hoá: 8.0
+                                            blockResults:
+                                                - block: 'A00'
+                                                  subjects: ['Toán', 'Lý', 'Hóa']
+                                                  blockScore: 26.38
+                                                  usedPriority: 0
+                                                  finalPriority: 0
+                                                  totalScore: 26.38
+                                            createdAt: '2023-10-01T12:00:00Z'
+                                12_all_year:
+                                    summary: Kết quả GPA cho phương thức 12_all_year
                                     value:
-                                        statusCode: 403
-                                        statusError:
-                                            status: 403
-                                        message: "Calculation method is required"
-                                UnknownMethod:
-                                    summary: Phương pháp tính không hợp lệ
+                                        message: 'Get GPA result successfully'
+                                        statusCode: 200
+                                        metadata:
+                                            method: '12_all_year'
+                                            usedPriority: 0
+                                            subjectAverages:
+                                                Toán: 9.8
+                                                Văn: 8.9
+                                                Anh: 8.2
+                                            blockResults:
+                                                - block: 'D01'
+                                                  subjects: ['Văn', 'Toán', 'Anh']
+                                                  blockScore: 26.9
+                                                  usedPriority: 0
+                                                  finalPriority: 0
+                                                  totalScore: 26.9
+                                            createdAt: '2023-10-01T12:00:00Z'
+                                6_semesters:
+                                    summary: Kết quả GPA cho phương thức 6_semesters
                                     value:
-                                        statusCode: 403
-                                        statusError:
-                                            status: 403
-                                        message: "Unknown calculation method: 3_yew"
+                                        message: 'Get GPA result successfully'
+                                        statusCode: 200
+                                        metadata:
+                                            method: '6_semesters'
+                                            usedPriority: 0
+                                            subjectAverages:
+                                                Toán: 9.75
+                                                Văn: 8.75
+                                                Anh: 8.05
+                                            blockResults:
+                                                - block: 'D01'
+                                                  subjects: ['Toán', 'Văn', 'Anh']
+                                                  blockScore: 26.55
+                                                  usedPriority: 0
+                                                  finalPriority: 0
+                                                  totalScore: 26.55
+                                            createdAt: '2023-10-01T12:00:00Z'
+                                10_11_12_hk1:
+                                    summary: Kết quả GPA cho phương thức 10_11_12_hk1
+                                    value:
+                                        message: 'Get GPA result successfully'
+                                        statusCode: 200
+                                        metadata:
+                                            method: '10_11_12_hk1'
+                                            usedPriority: 0
+                                            subjectAverages:
+                                                Toán: 9.68
+                                                Văn: 8.7
+                                                Anh: 8.0
+                                            blockResults:
+                                                - block: 'D01'
+                                                  subjects: ['Toán', 'Văn', 'Anh']
+                                                  blockScore: 26.38
+                                                  usedPriority: 0
+                                                  finalPriority: 0
+                                                  totalScore: 26.38
+                                            createdAt: '2023-10-01T12:00:00Z'
+                                3_semesters:
+                                    summary: Kết quả GPA cho phương thức 3_semesters
+                                    value:
+                                        message: 'Get GPA result successfully'
+                                        statusCode: 200
+                                        metadata:
+                                            method: '3_semesters'
+                                            usedPriority: 0
+                                            subjectAverages:
+                                                Toán: 9.67
+                                                Văn: 8.7
+                                                Anh: 8.0
+                                            blockResults:
+                                                - block: 'A00'
+                                                  subjects: ['Toán', 'Văn', 'Anh']
+                                                  blockScore: 26.37
+                                                  usedPriority: 0
+                                                  finalPriority: 0
+                                                  totalScore: 26.37
+                                            createdAt: '2023-10-01T12:00:00Z'
+                                5_semesters:
+                                    summary: Kết quả GPA cho phương thức 5_semesters
+                                    value:
+                                        message: 'Get GPA result successfully'
+                                        statusCode: 200
+                                        metadata:
+                                            method: '5_semesters'
+                                            usedPriority: 0
+                                            subjectAverages:
+                                                Toán: 9.7
+                                                Văn: 8.7
+                                                Anh: 8.0
+                                            blockResults:
+                                                - block: 'A00'
+                                                  subjects: ['Văn', 'Toán', 'Anh']
+                                                  blockScore: 26.4
+                                                  usedPriority: 0
+                                                  finalPriority: 0
+                                                  totalScore: 26.4
+                                            createdAt: '2023-10-01T12:00:00Z'
+                            '400':
+                                description: Lỗi - Thiếu tham số hoặc method không hợp lệ
+                                content:
+                                    application/json:
+                                        schema:
+                                            type: object
+                                            properties:
+                                                statusCode:
+                                                    type: integer
+                                                    example: 400
+                                                statusError:
+                                                    type: object
+                                                    properties:
+                                                        status:
+                                                            type: integer
+                                                            example: 400
+                                                message:
+                                                    type: string
+                                                    example: 'userId is required'
+                            '401':
+                                $ref: '#/components/responses/UnauthorizedError'
+                            '403':
+                                $ref: '#/components/responses/ForbiddenError'
     /gpa/history:
         get:
             tags:
                 - gpa
-            summary: Lấy lịch sử tính toán GPA của người dùng
-            description: Lấy tất cả kết quả tính toán GPA đã lưu cho người dùng.
+            summary: Lấy lịch sử tính GPA
+            description: Lấy lịch sử tính GPA của người dùng.
             security:
                 - JWTAuth: []
-                - ClientIdHeader: [] # Giả định bạn đang sử dụng Bearer token cho xác thực
+                - ClientIdHeader: []
             parameters:
                 - in: query
                   name: userId
                   required: true
                   schema:
                       type: string
-                  description: ID của người dùng.
-                  example: '67ffd670ec9b781c1af01a16'
+                  description: ID của người dùng
+                  example: '68049ac13a535436e4b29dda'
             responses:
                 '200':
-                    description: Thành công - Lấy lịch sử tính toán GPA thành công.
+                    description: Thành công - Lấy lịch sử thành công!
                     content:
                         application/json:
                             schema:
@@ -2253,21 +2881,27 @@ paths:
                                                 action:
                                                     type: string
                                                     example: 'gpa_result'
+                                                timestamp:
+                                                    type: string
+                                                    format: date-time
+                                                    example: '2023-10-01T12:00:00Z'
                                                 metadata:
                                                     type: object
-                                                    description: Kết quả GPA đã lưu.
                                                     properties:
                                                         method:
                                                             type: string
                                                             example: '3_years'
                                                         usedPriority:
                                                             type: number
-                                                            example: 2.5
+                                                            example: 0
                                                         subjectAverages:
                                                             type: object
+                                                            additionalProperties:
+                                                                type: number
                                                             example:
-                                                                Toán: 8.67
-                                                                Lý: 7.83
+                                                                Toán: 8.5
+                                                                Lý: 7.8
+                                                                Hóa: 9.0
                                                         blockResults:
                                                             type: array
                                                             items:
@@ -2276,21 +2910,29 @@ paths:
                                                                     block:
                                                                         type: string
                                                                         example: 'A00'
+                                                                    subjects:
+                                                                        type: array
+                                                                        items:
+                                                                            type: string
+                                                                        example: ['Toán', 'Lý', 'Hóa']
+                                                                    blockScore:
+                                                                        type: number
+                                                                        example: 25.3
+                                                                    usedPriority:
+                                                                        type: number
+                                                                        example: 0
+                                                                    finalPriority:
+                                                                        type: number
+                                                                        example: 0
                                                                     totalScore:
                                                                         type: number
-                                                                        example: 26.17
+                                                                        example: 25.3
                                                         createdAt:
                                                             type: string
                                                             format: date-time
-                                                            example: '2025-04-27T08:30:00.000Z'
-                                                timestamp:
-                                                    type: string
-                                                    format: date-time
-                                                    example: '2025-04-27T08:30:00.000Z'
-                '401':
-                    $ref: '#/components/responses/UnauthorizedError'
-                '403':
-                    description: Bad Request – Thiếu thông tin hoặc không hợp lệ.
+                                                            example: '2023-10-01T12:00:00Z'
+                '400':
+                    description: Lỗi - Thiếu userId
                     content:
                         application/json:
                             schema:
@@ -2298,10 +2940,20 @@ paths:
                                 properties:
                                     statusCode:
                                         type: integer
-                                        example: 403
+                                        example: 400
+                                    statusError:
+                                        type: object
+                                        properties:
+                                            status:
+                                                type: integer
+                                                example: 400
                                     message:
                                         type: string
                                         example: 'userId is required'
+                '401':
+                    $ref: '#/components/responses/UnauthorizedError'
+                '403':
+                    $ref: '#/components/responses/ForbiddenError'
 
 components: # <--- Phần định nghĩa components ở cấp độ root
     securitySchemes: # <--- Định nghĩa các lược đồ bảo mật
@@ -2706,90 +3358,680 @@ components: # <--- Phần định nghĩa components ở cấp độ root
                 url:
                     type: string
                     example: 'https://qhacbnetoymsukdhzioa.supabase.co/storage/v1/object/sign/webdev/uploads/low_poly_chemistry_lab.glb?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6InN0b3JhZ2UtdXJsLXNpZ25pbmcta2V5XzUyYzc5NWEyLWNiMTAtNDllYS04NThjLWFhYmFjNGQ1ZWYwNiJ9.eyJ1cmwiOiJ3ZWJkZXYvdXBsb2Fkcy9sb3dfcG9seV9jaGVtaXN0cnlfbGFiLmdsYiIsImlhdCI6MTc0NTA1MTQ2MiwiZXhwIjoxNzQ1MDUxNzYyfQ.ndJbXqJuu2erOaR2YpPZpcRiJG8noSqqjYbb2tB3mEs'
-        GPAMethod:
+        ScoresFor3Years:
             type: object
             properties:
-                code:
-                    type: string
-                    description: Mã phương pháp
-                description:
-                    type: string
-                    description: Mô tả phương pháp
-            example:
-                code: "3_years"
-                description: "Xét học bạ 3 năm (Cả năm lớp 10, 11, 12)"
-        GPAMethodListResponse:
-            type: object
-            properties:
-                message:
-                    type: string
-                    example: "Get GPA methods successfully"
-                statusCode:
-                    type: integer
-                    example: 200
-                metadata:
-                    type: array
-                    items:
-                        $ref: '#/components/schemas/GPAMethod'
-            example:
-                message: "Get GPA methods successfully"
-                statusCode: 200
-                metadata:
-                  - code: "3_years"
-                    description: "Xét học bạ 3 năm (Cả năm lớp 10, 11, 12)"
-                  - code: "12_all_year"
-                    description: "Xét học bạ cả năm lớp 12"
-                  - code: "6_semesters"
-                    description: "Xét học bạ 6 học kỳ"
-                  - code: "10_11_12_hk1"
-                    description: "Xét học bạ lớp 10, lớp 11, HK1 lớp 12"
-                  - code: "3_semesters"
-                    description: "Xét học bạ 3 học kỳ"
-                  - code: "5_semesters"
-                    description: "Xét học bạ 5 học kỳ"
-        ErrorUserIdRequired:
-            type: object
-            properties:
-                statusCode:
-                    type: integer
-                    example: 403
-                statusError:
+                Toán:
                     type: object
                     properties:
-                        tatus:
-                        type: integer
-                        xample: 403
-                message:
-                    type: string
-                    example: "userId is required"
-        ErrorMethodRequired:
-            type: object
-            properties:
-                statusCode:
-                    type: integer
-                    example: 403
-                statusError:
+                        year10:
+                            type: number
+                            example: 9.75
+                        year11:
+                            type: number
+                            example: 9.5
+                        year12:
+                            type: number
+                            example: 9.8
+                Văn:
                     type: object
                     properties:
-                        status:
-                        type: integer
-                        example: 403
-                message:
-                    type: string
-                    example: "Calculation method is required"   
-        ErrorUnknownMethod:
-            type: object
-            properties:
-                statusCode:
-                    type: integer
-                    example: 403
-                statusError:
+                        year10:
+                            type: number
+                            example: 8.5
+                        year11:
+                            type: number
+                            example: 8.7
+                        year12:
+                            type: number
+                            example: 8.9
+                Anh:
                     type: object
                     properties:
-                        status:
-                        type: integer
-                        example: 403
-                message:
-                    type: string
-                    pattern: "^Unknown calculation method: .+$"
-                    example: "Unknown calculation method: 3_yew"
+                        year10:
+                            type: number
+                            example: 7.8
+                        year11:
+                            type: number
+                            example: 8.0
+                        year12:
+                            type: number
+                            example: 8.2
+                Lý:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.0
+                        year11:
+                            type: number
+                            example: 8.3
+                        year12:
+                            type: number
+                            example: 8.5
+                Hóa:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.2
+                        year11:
+                            type: number
+                            example: 8.4
+                        year12:
+                            type: number
+                            example: 8.6
+                Sinh:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 7.9
+                        year11:
+                            type: number
+                            example: 8.1
+                        year12:
+                            type: number
+                            example: 8.3
+                Sử:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.4
+                        year11:
+                            type: number
+                            example: 8.6
+                        year12:
+                            type: number
+                            example: 8.8
+                Địa:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.1
+                        year11:
+                            type: number
+                            example: 8.3
+                        year12:
+                            type: number
+                            example: 8.5
+            additionalProperties: false
+
+        ScoresFor12AllYear:
+            type: object
+            properties:
+                Toán:
+                    type: object
+                    properties:
+                        year12:
+                            type: number
+                            example: 9.8
+                Văn:
+                    type: object
+                    properties:
+                        year12:
+                            type: number
+                            example: 8.9
+                Anh:
+                    type: object
+                    properties:
+                        year12:
+                            type: number
+                            example: 8.2
+                Lý:
+                    type: object
+                    properties:
+                        year12:
+                            type: number
+                            example: 8.5
+                Hóa:
+                    type: object
+                    properties:
+                        year12:
+                            type: number
+                            example: 8.6
+                Sinh:
+                    type: object
+                    properties:
+                        year12:
+                            type: number
+                            example: 8.3
+                Sử:
+                    type: object
+                    properties:
+                        year12:
+                            type: number
+                            example: 8.8
+                Địa:
+                    type: object
+                    properties:
+                        year12:
+                            type: number
+                            example: 8.5
+            additionalProperties: false
+
+        ScoresFor6Semesters:
+            type: object
+            properties:
+                Toán:
+                    type: object
+                    properties:
+                        hk10_1:
+                            type: number
+                            example: 9.5
+                        hk10_2:
+                            type: number
+                            example: 9.6
+                        hk11_1:
+                            type: number
+                            example: 9.7
+                        hk11_2:
+                            type: number
+                            example: 9.8
+                        hk12_1:
+                            type: number
+                            example: 9.9
+                        hk12_2:
+                            type: number
+                            example: 10.0
+                Văn:
+                    type: object
+                    properties:
+                        hk10_1:
+                            type: number
+                            example: 8.5
+                        hk10_2:
+                            type: number
+                            example: 8.6
+                        hk11_1:
+                            type: number
+                            example: 8.7
+                        hk11_2:
+                            type: number
+                            example: 8.8
+                        hk12_1:
+                            type: number
+                            example: 8.9
+                        hk12_2:
+                            type: number
+                            example: 9.0
+                Anh:
+                    type: object
+                    properties:
+                        hk10_1:
+                            type: number
+                            example: 7.8
+                        hk10_2:
+                            type: number
+                            example: 7.9
+                        hk11_1:
+                            type: number
+                            example: 8.0
+                        hk11_2:
+                            type: number
+                            example: 8.1
+                        hk12_1:
+                            type: number
+                            example: 8.2
+                        hk12_2:
+                            type: number
+                            example: 8.3
+                Lý:
+                    type: object
+                    properties:
+                        hk10_1:
+                            type: number
+                            example: 8.0
+                        hk10_2:
+                            type: number
+                            example: 8.1
+                        hk11_1:
+                            type: number
+                            example: 8.2
+                        hk11_2:
+                            type: number
+                            example: 8.3
+                        hk12_1:
+                            type: number
+                            example: 8.4
+                        hk12_2:
+                            type: number
+                            example: 8.5
+                Hóa:
+                    type: object
+                    properties:
+                        hk10_1:
+                            type: number
+                            example: 8.2
+                        hk10_2:
+                            type: number
+                            example: 8.3
+                        hk11_1:
+                            type: number
+                            example: 8.4
+                        hk11_2:
+                            type: number
+                            example: 8.5
+                        hk12_1:
+                            type: number
+                            example: 8.6
+                        hk12_2:
+                            type: number
+                            example: 8.7
+                Sinh:
+                    type: object
+                    properties:
+                        hk10_1:
+                            type: number
+                            example: 7.9
+                        hk10_2:
+                            type: number
+                            example: 8.0
+                        hk11_1:
+                            type: number
+                            example: 8.1
+                        hk11_2:
+                            type: number
+                            example: 8.2
+                        hk12_1:
+                            type: number
+                            example: 8.3
+                        hk12_2:
+                            type: number
+                            example: 8.4
+                Sử:
+                    type: object
+                    properties:
+                        hk10_1:
+                            type: number
+                            example: 8.4
+                        hk10_2:
+                            type: number
+                            example: 8.5
+                        hk11_1:
+                            type: number
+                            example: 8.6
+                        hk11_2:
+                            type: number
+                            example: 8.7
+                        hk12_1:
+                            type: number
+                            example: 8.8
+                        hk12_2:
+                            type: number
+                            example: 8.9
+                Địa:
+                    type: object
+                    properties:
+                        hk10_1:
+                            type: number
+                            example: 8.1
+                        hk10_2:
+                            type: number
+                            example: 8.2
+                        hk11_1:
+                            type: number
+                            example: 8.3
+                        hk11_2:
+                            type: number
+                            example: 8.4
+                        hk12_1:
+                            type: number
+                            example: 8.5
+                        hk12_2:
+                            type: number
+                            example: 8.6
+            additionalProperties: false
+
+        ScoresFor10_11_12_hk1:
+            type: object
+            properties:
+                Toán:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 9.75
+                        year11:
+                            type: number
+                            example: 9.5
+                        hk12_1:
+                            type: number
+                            example: 9.8
+                Văn:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.5
+                        year11:
+                            type: number
+                            example: 8.7
+                        hk12_1:
+                            type: number
+                            example: 8.9
+                Anh:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 7.8
+                        year11:
+                            type: number
+                            example: 8.0
+                        hk12_1:
+                            type: number
+                            example: 8.2
+                Lý:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.0
+                        year11:
+                            type: number
+                            example: 8.3
+                        hk12_1:
+                            type: number
+                            example: 8.5
+                Hóa:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.2
+                        year11:
+                            type: number
+                            example: 8.4
+                        hk12_1:
+                            type: number
+                            example: 8.6
+                Sinh:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 7.9
+                        year11:
+                            type: number
+                            example: 8.1
+                        hk12_1:
+                            type: number
+                            example: 8.3
+                Sử:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.4
+                        year11:
+                            type: number
+                            example: 8.6
+                        hk12_1:
+                            type: number
+                            example: 8.8
+                Địa:
+                    type: object
+                    properties:
+                        year10:
+                            type: number
+                            example: 8.1
+                        year11:
+                            type: number
+                            example: 8.3
+                        hk12_1:
+                            type: number
+                            example: 8.5
+            additionalProperties: false
+
+        ScoresFor3Semesters:
+            type: object
+            properties:
+                Toán:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 9.5
+                        sem2:
+                            type: number
+                            example: 9.7
+                        sem3:
+                            type: number
+                            example: 9.8
+                Văn:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.5
+                        sem2:
+                            type: number
+                            example: 8.7
+                        sem3:
+                            type: number
+                            example: 8.9
+                Anh:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 7.8
+                        sem2:
+                            type: number
+                            example: 8.0
+                        sem3:
+                            type: number
+                            example: 8.2
+                Lý:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.0
+                        sem2:
+                            type: number
+                            example: 8.2
+                        sem3:
+                            type: number
+                            example: 8.4
+                Hóa:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.2
+                        sem2:
+                            type: number
+                            example: 8.4
+                        sem3:
+                            type: number
+                            example: 8.6
+                Sinh:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 7.9
+                        sem2:
+                            type: number
+                            example: 8.1
+                        sem3:
+                            type: number
+                            example: 8.3
+                Sử:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.4
+                        sem2:
+                            type: number
+                            example: 8.6
+                        sem3:
+                            type: number
+                            example: 8.8
+                Địa:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.1
+                        sem2:
+                            type: number
+                            example: 8.3
+                        sem3:
+                            type: number
+                            example: 8.5
+            additionalProperties: false
+
+        ScoresFor5Semesters:
+            type: object
+            properties:
+                Toán:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 9.5
+                        sem2:
+                            type: number
+                            example: 9.6
+                        sem3:
+                            type: number
+                            example: 9.7
+                        sem4:
+                            type: number
+                            example: 9.8
+                        sem5:
+                            type: number
+                            example: 9.9
+                Văn:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.5
+                        sem2:
+                            type: number
+                            example: 8.6
+                        sem3:
+                            type: number
+                            example: 8.7
+                        sem4:
+                            type: number
+                            example: 8.8
+                        sem5:
+                            type: number
+                            example: 8.9
+                Anh:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 7.8
+                        sem2:
+                            type: number
+                            example: 7.9
+                        sem3:
+                            type: number
+                            example: 8.0
+                        sem4:
+                            type: number
+                            example: 8.1
+                        sem5:
+                            type: number
+                            example: 8.2
+                Lý:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.0
+                        sem2:
+                            type: number
+                            example: 8.1
+                        sem3:
+                            type: number
+                            example: 8.2
+                        sem4:
+                            type: number
+                            example: 8.3
+                        sem5:
+                            type: number
+                            example: 8.4
+                Hóa:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.2
+                        sem2:
+                            type: number
+                            example: 8.3
+                        sem3:
+                            type: number
+                            example: 8.4
+                        sem4:
+                            type: number
+                            example: 8.5
+                        sem5:
+                            type: number
+                            example: 8.6
+                Sinh:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 7.9
+                        sem2:
+                            type: number
+                            example: 8.0
+                        sem3:
+                            type: number
+                            example: 8.1
+                        sem4:
+                            type: number
+                            example: 8.2
+                        sem5:
+                            type: number
+                            example: 8.3
+                Sử:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.4
+                        sem2:
+                            type: number
+                            example: 8.5
+                        sem3:
+                            type: number
+                            example: 8.6
+                        sem4:
+                            type: number
+                            example: 8.7
+                        sem5:
+                            type: number
+                            example: 8.8
+                Địa:
+                    type: object
+                    properties:
+                        sem1:
+                            type: number
+                            example: 8.1
+                        sem2:
+                            type: number
+                            example: 8.2
+                        sem3:
+                            type: number
+                            example: 8.3
+                        sem4:
+                            type: number
+                            example: 8.4
+                        sem5:
+                            type: number
+                            example: 8.5
+            additionalProperties: false
