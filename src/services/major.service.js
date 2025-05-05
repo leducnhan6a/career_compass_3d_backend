@@ -13,6 +13,12 @@ import {
 } from './repositories/major.service.js';
 
 class MajorService {
+    // Lấy tất cả ngành
+    static async getAllMajors() {
+        const majorList = await getAllMajors();
+        if (!majorList || majorList.length === 0) throw new NotFoundError('No majors found in database');
+        return majorList;
+    }
 
     // Lấy danh sách ngành theo mã trường
     static async getMajorsByUniCode({ query: { uni_code } }) {

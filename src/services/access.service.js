@@ -5,7 +5,7 @@ import bcryptjs from 'bcryptjs';
 import validator from 'validator';
 
 import KeyTokenService from './keyToken.service.js';
-import { findUserByName, findUserByEmail, createUser } from './repositories/user.service.js';
+import { findUserByName, findUserByEmail, createUser, findUserAndDelete } from './repositories/user.service.js';
 import { createTokenPair } from '../utils/AuthUtil/auth.util.js';
 import { getIntoData } from '../utils/getIntoData.util.js';
 import { BadRequestError, AuthFailureError, NotFoundError, ConflictRequestError } from '../core/error.response.js';
@@ -123,10 +123,8 @@ class AccessService {
         return { message: 'Logged out successfully' };
     }
 
-    static async permanentDeleteUser({ user }) {
-        const { userId } = user;
+    static async permanentDeleteUser({ body: { userId } }) {
         if (!userId) throw new NotFoundError('User not found');
-        console.log('userId::: ', userId)
         const deletedUser = await findUserAndDelete({ userId });
         return deletedUser;
     }

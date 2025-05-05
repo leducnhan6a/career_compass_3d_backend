@@ -9,12 +9,12 @@ import { permission } from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 // Xác thực đã đăng nhập
-router.use(authenticationV2);
+// router.use(authenticationV2);
 
 // -----------------------------------------------------------------------
 
 // Check user permission
-router.use(permission('user'));
+// router.use(permission('user'));
 
 // Lấy tất cả bài viết đã crawl
 router.get('', asyncHandler(ScraperController.getAllArticles));
@@ -22,7 +22,7 @@ router.get('', asyncHandler(ScraperController.getAllArticles));
 // -----------------------------------------------------------------------
 
 // check admin permission
-router.use(permission('admin'));
+// router.use(permission('admin'));
 
 // lấy trash articles
 router.get('/trash', asyncHandler(ScraperController.getTrashArticles));

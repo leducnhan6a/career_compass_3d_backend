@@ -15,6 +15,9 @@ router.use(authenticationV2);
 // check user permission
 router.use(permission('user'));
 
+// get all majors
+router.get('/all', asyncHandler(MajorController.getAllMajor));
+
 // get majors by uni_code
 router.get('/unicode', asyncHandler(MajorController.getMajorsByUniCode));
 

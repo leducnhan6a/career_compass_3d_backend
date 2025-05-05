@@ -34,6 +34,7 @@ class AccessController {
 
     // Xóa vĩnh viễn user
     async permanentDeleteUser(req, res) {
+        console.log("DELETE");
         const result = await AccessService.permanentDeleteUser(req);
         new SuccessResponse({
             message: 'Permanantly delete this user successfully!',

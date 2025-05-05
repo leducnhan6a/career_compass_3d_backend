@@ -29,7 +29,7 @@ const getAllQuestions = async ({ limit, sort, page }) => {
 
 const findAllDeletedQuestions = async ({ sort = 'ctime', unselect = ['deleted'] }) => {
     const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 };
-    const foundDeletedQuestions = await HollandQuestionModel.findDeleted()
+    const foundDeletedQuestions = await HollandQuestionModel.findWithDeleted({ deleted: true })
         .sort(sortBy)
         .select(unGetSelectData(unselect))
         .lean();
