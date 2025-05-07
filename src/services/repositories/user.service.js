@@ -58,6 +58,14 @@ const findHistoryResultByUserId = async (userId) => {
     return foundUser.user_history;
 };
 
+const getHistoryResultByResultId = async (userId, resultId) => {
+    const foundUserHistories = await userModel.findById(userId).select('user_history').lean()
+    if (!foundUserHistories) throw new NotFoundError('User history not found')
+    const foundHistory = foundUserHistories.filter(history => history._id === resultId)
+    if (!foundHistory) throw new NotFoundError('History of this user not found')
+    return foundHistory
+};
+
 // Cập nhật thông tin user
 const findUserAndUpdate = async (userId, updateData) => {
     return await userModel.findByIdAndUpdate(userId, updateData);
@@ -70,5 +78,12 @@ const findUserAndDelete = async ({ userId }) => {
     return foundUserAndDelete;
 };
 
-export { findUserByName, findHistoryResultByUserId, findUserAndUpdate, findUserAndDelete, findUserByEmail,
-    createUser };
+export {
+    findUserByName,
+    findHistoryResultByUserId,
+    findUserAndUpdate,
+    findUserAndDelete,
+    findUserByEmail,
+    createUser,
+    getHistoryResultByResultId,
+};

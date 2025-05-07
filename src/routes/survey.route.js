@@ -24,6 +24,9 @@ router.get('/questions', asyncHandler(SurveyController.getQuestionsByGroup));
 // Xử lý kết quả khảo sát
 router.post('/result', asyncHandler(SurveyController.solveSurveyResult));
 
+// lay result theo resultid 
+router.get('/result/:resultId', asyncHandler(SurveyController.getHistoryByResultId));
+
 // Lấy dữ liệu lịch sử người dùng
 router.get('/history', asyncHandler(SurveyController.getAllHistoryResult));
 

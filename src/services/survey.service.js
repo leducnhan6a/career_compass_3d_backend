@@ -1,6 +1,6 @@
 'use strict';
 
-import { findHistoryResultByUserId, findUserAndUpdate } from './repositories/user.service.js';
+import { findHistoryResultByUserId, findUserAndUpdate, getHistoryResultByResultId } from './repositories/user.service.js';
 import { BadRequestError, NotFoundError } from '../core/error.response.js';
 import {
     restoreQuestionById,
@@ -12,7 +12,7 @@ import {
     deleteQuestionById,
     getAllGroups,
     getAllQuestions,
-    findAllDeletedQuestions
+    findAllDeletedQuestions,
 } from './repositories/survey.service.js';
 
 class SurveyService {
@@ -97,8 +97,13 @@ class SurveyService {
         return await findHistoryResultByUserId(userId);
     }
 
+    static async getHistoryResultByResultId({ params, user }) {
+        const { userId } = user, { resultId } = params
+        return await getHistoryResultByResultId(userId, resultId);
+    }
+
     static async getTrashQuestions({ query: { sort = 'ctime' } }) {
-        const unselect = ['deleted']
+        const unselect = ['deleted'];
         const sortBy = sort === 'ctime' ? { createdAt: -1 } : { createdAt: 1 };
         const deletedQuestions = await findAllDeletedQuestions({ unselect, sortBy });
         return deletedQuestions;

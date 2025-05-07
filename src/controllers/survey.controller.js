@@ -41,6 +41,14 @@ class SurveyController {
         }).send(res);
     }
 
+    async getHistoryByResultId(req, res) { 
+        const result = await SurveyService.getHistoryResultByResultId(req)
+        new SuccessResponse({
+            message: 'Get history result by userId successfully',
+            metadata: result,
+        }).send(res);
+    }
+
     async getTrashQuestions(req, res) { 
         const result = await SurveyService.getTrashQuestions(req)
         new SuccessResponse({
