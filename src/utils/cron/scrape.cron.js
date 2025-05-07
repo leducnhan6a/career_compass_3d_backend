@@ -10,10 +10,10 @@ const jobs = [
     { name: 'TuoiTre', fn: scrapeTuoiTre },
 ];
 
-// Schedule job chạy mỗi 30 phút: '* * * * *'
+// Schedule job chạy mỗi 60 phút: '* * * * *'
 const cronSchedule = () => {
     jobs.forEach(({ name, fn }) => {
-        cron.schedule('* * * * *', async () => {
+        cron.schedule('0 * * * *', async () => {
             console.log(`[${new Date().toISOString()}] Starting ${name} scrape`);
             try {
                 const articles = await fn();
