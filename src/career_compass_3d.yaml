@@ -2792,7 +2792,7 @@ paths:
                                                 Văn: 8.7
                                                 Anh: 8.0
                                             blockResults:
-                                                - block: 'A00'
+                                                - block: 'D01'
                                                   subjects: ['Toán', 'Văn', 'Anh']
                                                   blockScore: 26.37
                                                   usedPriority: 0
@@ -2812,7 +2812,7 @@ paths:
                                                 Văn: 8.7
                                                 Anh: 8.0
                                             blockResults:
-                                                - block: 'A00'
+                                                - block: 'D01'
                                                   subjects: ['Văn', 'Toán', 'Anh']
                                                   blockScore: 26.4
                                                   usedPriority: 0

@@ -79,6 +79,6 @@ app.use((error, req, res, next) => {
 });
 
 // Tự động crawl data từ các web
-// cronSchedule();
+cronSchedule();
 
 export default app;

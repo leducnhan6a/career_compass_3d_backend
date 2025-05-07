@@ -7,13 +7,13 @@ import { permission } from '../middlewares/auth.middleware.js';
 const router = express.Router();
 
 // Xác thực đã đăng nhập
-// router.use(authenticationV2);
+router.use(authenticationV2);
 
 // List of methods to calculate gpa
 router.get('/methods', asyncHandler(GPAController.getGPACalcMethods));
 
 // Check user permission
-// router.use(permission('user'));
+router.use(permission('user'));
 
 // Calculate GPA
 router.post('/result', asyncHandler(GPAController.getGPAresult));
