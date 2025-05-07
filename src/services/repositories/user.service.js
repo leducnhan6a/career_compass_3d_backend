@@ -59,9 +59,9 @@ const findHistoryResultByUserId = async (userId) => {
 };
 
 const getHistoryResultByResultId = async (userId, resultId) => {
-    const foundUserHistories = await userModel.findById(userId).select('user_history').lean()
+    const foundUserHistories = await userModel.findById(userId).lean()
     if (!foundUserHistories) throw new NotFoundError('User history not found')
-    const foundHistory = foundUserHistories.filter(history => history._id === resultId)
+    const foundHistory = foundUserHistories.user_history.filter(history => history._id === resultId)
     if (!foundHistory) throw new NotFoundError('History of this user not found')
     return foundHistory
 };
