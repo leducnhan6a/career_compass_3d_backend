@@ -2,6 +2,7 @@
 
 import { NotFoundError } from '../../core/error.response.js';
 import userModel from '../../models/user.model.js';
+import { convertToObjectIdMongoDB } from '../../utils/convertToObjectIdMongoDB.js';
 
 // Tìm thông tin người dùng theo tên (username)
 const findUserByName = async ({
@@ -59,11 +60,13 @@ const findHistoryResultByUserId = async (userId) => {
 };
 
 const getHistoryResultByResultId = async (userId, resultId) => {
-    const foundUserHistories = await userModel.findById(userId).lean()
-    if (!foundUserHistories) throw new NotFoundError('User history not found')
-    const foundHistory = foundUserHistories.user_history.filter(history => history._id === resultId)
-    if (!foundHistory) throw new NotFoundError('History of this user not found')
-    return foundHistory
+    const foundUserHistories = await userModel.findById(userId).lean();
+    if (!foundUserHistories) throw new NotFoundError('User history not found');
+    const foundHistory = foundUserHistories.user_history.filter(
+        (history) => history._id.toString() === convertToObjectIdMongoDB(resultId).toString(),
+    );
+    if (!foundHistory) throw new NotFoundError('History of this user not found');
+    return foundHistory;
 };
 
 // Cập nhật thông tin user
