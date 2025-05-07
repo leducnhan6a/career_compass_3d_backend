@@ -1,7 +1,9 @@
 'use strict';
 
+import { NotFoundError } from '../../core/error.response.js';
 import HollandGroupModel from '../../models/hollandGroup.model.js';
 import HollandQuestionModel from '../../models/hollandQuestion.model.js';
+import { convertToObjectIdMongoDB } from '../../utils/convertToObjectIdMongoDB.js';
 import { getSelectData, unGetSelectData } from '../../utils/selectDataOptions.js';
 
 // Tăng số totalQuestion
@@ -22,7 +24,7 @@ const getAllQuestions = async ({ limit, sort, page }) => {
         .sort(sortBy)
         .skip(skip)
         .limit(limit)
-        .select('-_id question_code question_text')
+        .select('_id question_code question_text')
         .lean();
     return questions;
 };
@@ -55,7 +57,10 @@ const getAllQuestionsByGroupName = async (groupName) => {
 
 // Tìm question với id
 const findQuestionById = async (questionId) => {
-    return await HollandQuestionModel.findById(questionId);
+    // const foundQuestion = await HollandQuestionModel.findOneDeleted(convertToObjectIdMongoDB(questionId)).lean();
+    const foundQuestion = await HollandQuestionModel.findById(questionId)
+    if (!foundQuestion) throw new NotFoundError('Question not found')
+    return foundQuestion
 };
 
 // Tạo question mới
@@ -111,14 +116,18 @@ const restoreQuestionById = async (questionId) => {
 
 // Xoá vĩnh viễn
 const deleteQuestionById = async (questionId) => {
-    const question = await findQuestionById(questionId);
+    const question = await HollandQuestionModel.findOneDeleted(convertToObjectIdMongoDB(questionId));
     if (!question) return null;
 
     if (question?.question_code)
         // Giảm số lượng câu hỏi trong group tương ứng
         await decreaseTotalQuestion(question.question_code);
 
-    return await HollandQuestionModel.findByIdAndDelete(questionId).lean();
+    return await HollandQuestionModel.findByIdAndDelete(questionId, { 
+        deleted: { 
+            $ne: true
+        }
+    })
 };
 
 export {

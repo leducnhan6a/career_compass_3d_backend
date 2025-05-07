@@ -132,7 +132,6 @@ class SurveyService {
     static async deleteQuestion({ params: { questionId } }) {
         const removed = await deleteQuestionById(questionId);
         if (!removed) throw new BadRequestError('Cannot delete question');
-
         return removed;
     }
 }

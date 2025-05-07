@@ -123,7 +123,8 @@ class AccessService {
         return { message: 'Logged out successfully' };
     }
 
-    static async permanentDeleteUser({ body: { userId } }) {
+    static async permanentDeleteUser({ user }) {
+        const { userId } = user;
         if (!userId) throw new NotFoundError('User not found');
         const deletedUser = await findUserAndDelete({ userId });
         return deletedUser;
